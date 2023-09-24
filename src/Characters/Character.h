@@ -2,11 +2,16 @@
 #define CHARACTER_H
 
 #include "../Object/GameObject.h"
+#include "../Animation/Animation.h"
 
 class Character: public GameObject
 {
 public:
     Character(Properties *props) : GameObject(props){}
+    ~Character(){
+        delete animation;
+        GameObject::~GameObject();
+    }
 
 
     // IObject interface
@@ -16,6 +21,7 @@ public:
 
 protected:
     std::string name;
+    Animation *animation;
 };
 
 #endif // CHARACTER_H

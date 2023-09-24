@@ -1,27 +1,25 @@
 #include "Player.h"
-#include <SDL2/SDL_timer.h>
-#include "../Graphics/TextureManager.h"
 
 Player::Player(Properties *props) : Character(props)
 {
-    row = 1;
-    frameCount = 4;
-    animSpeed = 80;
-
+    AnimationSeqList *animationSeqs = new AnimationSeqList();
+    animationSeqs->insert( "player_stand", new AnimationSeq("player_stand",1,1,0  ,width,height) );
+    animationSeqs->insert( "player_walk",  new AnimationSeq("player_walk" ,1,4,150,width,height) );
+    animation = new Animation(animationSeqs,"player_walk");
 }
 
 Player::~Player()
 {
+    Character::~Character();
 }
 
 void Player::draw()
 {
-    TextureManager::getInstance()->drawFrame(textureId, transform->x, transform->y, width, height, row, frame);
+    animation->draw( 100, 100 );
 }
 
 void Player::update( float dt ){
-    frame = ( SDL_GetTicks() / animSpeed ) % frameCount;
-    cout << frame << endl;
+    animation->update();
 }
 
 

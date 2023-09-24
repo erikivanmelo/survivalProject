@@ -44,6 +44,7 @@ void TextureManager::drawFrame(std::string id, int x, int y, int width, int heig
 {
 	//A row se le resta uno, porque en el sprite sheet la primera fila es la 0
 	SDL_Rect srcRect = { width*frame, height*(row-1), width, height};
+	cout << "srcRect: " << srcRect.x << " " << srcRect.y << " " << srcRect.w << " " << srcRect.h << " " << frame << endl;
 	SDL_Rect datRect = { x, y, width, height };
 	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), textureMap[id], &srcRect,&datRect,0,nullptr,flip);
 }

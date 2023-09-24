@@ -45,6 +45,11 @@ class GameObject : public IObject
             );
         }
 
+        ~GameObject(){
+            delete transform;
+            delete origin;
+        }
+
         inline Point *getOrigin(){return origin;}
 
         virtual void draw()=0;

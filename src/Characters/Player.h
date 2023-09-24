@@ -17,10 +17,6 @@ public:
 
     inline Transform *getTransform()const{return transform;}
 
-private:
-    int row, frame, frameCount;
-    int animSpeed;
-
 };
 
 #endif // PLAYER_H

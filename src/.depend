@@ -5,7 +5,8 @@ Engine.o: Core/Engine.cpp Core/Engine.h Core/../Graphics/TextureManager.h \
  Core/../Characters/../Object/IObject.h \
  Core/../Characters/../Object/../Physics/Transform.h \
  Core/../Characters/../Object/../Physics/Vector2D.h \
- Core/../Characters/../Object/../Physics/Point.h
+ Core/../Characters/../Object/../Physics/Point.h \
+ Core/../Characters/../Animation/Animation.h
 TextureManager.o: Graphics/TextureManager.cpp Graphics/TextureManager.h \
  Graphics/../Core/Engine.h
 Player.o: Characters/Player.cpp Characters/Player.h \
@@ -14,4 +15,6 @@ Player.o: Characters/Player.cpp Characters/Player.h \
  Characters/../Object/../Physics/Transform.h \
  Characters/../Object/../Physics/Vector2D.h \
  Characters/../Object/../Physics/Point.h \
- Characters/../Graphics/TextureManager.h
+ Characters/../Animation/Animation.h
+Animation.o: Animation/Animation.cpp Animation/Animation.h \
+ Animation/../Graphics/TextureManager.h
