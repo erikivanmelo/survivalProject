@@ -1,2 +1,17 @@
 main.o: main.cpp Core/Engine.h
-Engine.o: Core/Engine.cpp Core/Engine.h
+Engine.o: Core/Engine.cpp Core/Engine.h Core/../Graphics/TextureManager.h \
+ Core/../Characters/Player.h Core/../Characters/Character.h \
+ Core/../Characters/../Object/GameObject.h \
+ Core/../Characters/../Object/IObject.h \
+ Core/../Characters/../Object/../Physics/Transform.h \
+ Core/../Characters/../Object/../Physics/Vector2D.h \
+ Core/../Characters/../Object/../Physics/Point.h
+TextureManager.o: Graphics/TextureManager.cpp Graphics/TextureManager.h \
+ Graphics/../Core/Engine.h
+Player.o: Characters/Player.cpp Characters/Player.h \
+ Characters/Character.h Characters/../Object/GameObject.h \
+ Characters/../Object/IObject.h \
+ Characters/../Object/../Physics/Transform.h \
+ Characters/../Object/../Physics/Vector2D.h \
+ Characters/../Object/../Physics/Point.h \
+ Characters/../Graphics/TextureManager.h

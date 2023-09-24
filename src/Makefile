@@ -17,10 +17,17 @@ SOURCES = \
 	main.cpp \
 	Core/Engine.cpp \
 	Graphics/TextureManager.cpp \
+	Characters/Player.cpp \
 
 HEADERS = \
 	Core/Engine.h \
 	Graphics/TextureManager.h \
+	Physics/Vector2D.h \
+	Physics/Transform.h \
+	Object/IObject.h \
+	Object/GameObject.h \
+	Characters/Character.h \
+	Characters/Player.h \
 
 # Objetos generados
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(SOURCES:.cpp=.o))

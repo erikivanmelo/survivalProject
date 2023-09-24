@@ -10,13 +10,17 @@
 
 TextureManager* TextureManager::instance = nullptr;
 
-bool TextureManager::load( string id, string fileName ){
+bool TextureManager::load( string id, string fileName, bool withTransparentMagenta ){
 	SDL_Surface* surface = IMG_Load( fileName.c_str() );
 	if( surface == nullptr ){
 		SDL_Log("Failed to load image %s! SDL_image Error: %s\n", fileName.c_str(), IMG_GetError());
 		return false;
 	}
 	
+	// Añade el color magenta a la lista de colores transparentes.
+	if( withTransparentMagenta)
+		SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
+
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(),surface);
 	if ( texture == nullptr ){
 		SDL_Log("Failed to create texture from %s! SDL Error: %s\n", fileName.c_str(), SDL_GetError());
@@ -36,16 +40,25 @@ void TextureManager::draw( string id, int x, int y, int width, int height, SDL_R
 
 }
 
+void TextureManager::drawFrame(std::string id, int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip)
+{
+	//A row se le resta uno, porque en el sprite sheet la primera fila es la 0
+	SDL_Rect srcRect = { width*frame, height*(row-1), width, height};
+	SDL_Rect datRect = { x, y, width, height };
+	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), textureMap[id], &srcRect,&datRect,0,nullptr,flip);
+}
+
 void TextureManager::drop( string id ){
 	SDL_DestroyTexture( textureMap[id] );
 	textureMap.erase( id );
 }
 
 TextureManager::~TextureManager(){
-	for( auto& texture : textureMap )
-		SDL_DestroyTexture( texture.second );
-
-	textureMap.clear();
+	auto it = textureMap.begin();
+	while (it != textureMap.end()) {
+		SDL_DestroyTexture(it->second);
+		it = textureMap.erase(it);
+	}
 	SDL_Log("TextureMap cleaned!");
 }
 
