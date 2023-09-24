@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "../Graphics/TextureManager.h"
 #include "../Characters/Player.h"
+#include "../Inputs/Input.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -88,13 +89,7 @@ void Engine::render(){
 
 
 void Engine::events(){
-    SDL_Event event;
-    SDL_PollEvent(&event);
-    switch( event.type ){
-        case SDL_QUIT:
-            quit();
-            break;
-    }
+    Input::getInstance()->listen();
 }
 
 

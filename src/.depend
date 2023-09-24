@@ -8,7 +8,7 @@ Engine.o: Core/Engine.cpp Core/Engine.h Core/../Graphics/TextureManager.h \
  Core/../Characters/../Object/../Physics/Point.h \
  Core/../Characters/../Animation/Animation.h \
  Core/../Characters/../Physics/RigidBody.h \
- Core/../Characters/../Physics/Vector2D.h
+ Core/../Characters/../Physics/Vector2D.h Core/../Inputs/Input.h
 TextureManager.o: Graphics/TextureManager.cpp Graphics/TextureManager.h \
  Graphics/../Core/Engine.h
 Player.o: Characters/Player.cpp Characters/Player.h \
@@ -21,3 +21,4 @@ Player.o: Characters/Player.cpp Characters/Player.h \
  Characters/../Physics/Vector2D.h
 Animation.o: Animation/Animation.cpp Animation/Animation.h \
  Animation/../Graphics/TextureManager.h
+Input.o: Inputs/Input.cpp Inputs/Input.h Inputs/../Core/Engine.h
