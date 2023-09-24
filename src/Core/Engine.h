@@ -15,9 +15,9 @@ class Engine
         }
        
         bool init();
-        bool clean();
-        bool quit();
+        void quit();
 
+        bool clean();
         void update( float dt );
         void render();
         void events();
@@ -27,6 +27,7 @@ class Engine
 
     private:
         Engine(){}
+        ~Engine();
         bool running = false;
         SDL_Window* window;
         SDL_Renderer* renderer;

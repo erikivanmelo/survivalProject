@@ -16,9 +16,11 @@ OBJ_DIR = ./../bin
 SOURCES = \
 	main.cpp \
 	Core/Engine.cpp \
+	Graphics/TextureManager.cpp \
 
 HEADERS = \
 	Core/Engine.h \
+	Graphics/TextureManager.h \
 
 # Objetos generados
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(SOURCES:.cpp=.o))
