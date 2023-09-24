@@ -30,6 +30,7 @@ HEADERS = \
 	Characters/Character.h \
 	Characters/Player.h \
 	Animation/Animation.h \
+	Physics/RigidBody.h \
 
 # Objetos generados
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(SOURCES:.cpp=.o))

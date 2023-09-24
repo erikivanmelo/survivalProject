@@ -10,9 +10,6 @@ public:
 
     ~Player();
 
-    virtual void draw();
-    virtual void update(float dt);
-
     void animationState();
 
     inline Transform *getTransform()const{return transform;}

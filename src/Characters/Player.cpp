@@ -13,13 +13,3 @@ Player::~Player()
     Character::~Character();
 }
 
-void Player::draw()
-{
-    animation->draw( 100, 100 );
-}
-
-void Player::update( float dt ){
-    animation->update();
-}
-
-
