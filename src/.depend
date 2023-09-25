@@ -1,4 +1,4 @@
-main.o: main.cpp Core/Engine.h
+main.o: main.cpp Core/Engine.h Timer/Timer.h
 Engine.o: Core/Engine.cpp Core/Engine.h Core/../Graphics/TextureManager.h \
  Core/../Characters/Player.h Core/../Characters/Character.h \
  Core/../Characters/../Object/GameObject.h \
@@ -8,7 +8,8 @@ Engine.o: Core/Engine.cpp Core/Engine.h Core/../Graphics/TextureManager.h \
  Core/../Characters/../Object/../Physics/Point.h \
  Core/../Characters/../Animation/Animation.h \
  Core/../Characters/../Physics/RigidBody.h \
- Core/../Characters/../Physics/Vector2D.h Core/../Inputs/Input.h
+ Core/../Characters/../Physics/Vector2D.h Core/../Inputs/Input.h \
+ Core/../Timer/Timer.h
 TextureManager.o: Graphics/TextureManager.cpp Graphics/TextureManager.h \
  Graphics/../Core/Engine.h
 Player.o: Characters/Player.cpp Characters/Player.h \
@@ -22,3 +23,4 @@ Player.o: Characters/Player.cpp Characters/Player.h \
 Animation.o: Animation/Animation.cpp Animation/Animation.h \
  Animation/../Graphics/TextureManager.h
 Input.o: Inputs/Input.cpp Inputs/Input.h Inputs/../Core/Engine.h
+Timer.o: Timer/Timer.cpp Timer/Timer.h

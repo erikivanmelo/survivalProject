@@ -2,6 +2,7 @@
 #include "../Graphics/TextureManager.h"
 #include "../Characters/Player.h"
 #include "../Inputs/Input.h"
+#include "../Timer/Timer.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -53,6 +54,7 @@ bool Engine::init(){
 
 Engine::~Engine(){
     TextureManager::getInstance()->clean();
+    Timer::getInstance()->clean();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();
@@ -69,7 +71,8 @@ void Engine::quit(){
     running = false;
 }
 
-void Engine::update( float dt ){
+void Engine::update(){
+    float dt = Timer::getInstance()->getDeltaTime();
     player->update(dt);
 }
 

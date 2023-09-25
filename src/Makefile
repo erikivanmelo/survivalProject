@@ -20,6 +20,7 @@ SOURCES = \
 	Characters/Player.cpp \
 	Animation/Animation.cpp \
 	Inputs/Input.cpp \
+	Timer/Timer.cpp \
 
 HEADERS = \
 	Core/Engine.h \
@@ -33,6 +34,7 @@ HEADERS = \
 	Animation/Animation.h \
 	Physics/RigidBody.h \
 	Inputs/Input.h \
+	Timer/Timer.h \
 
 # Objetos generados
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(SOURCES:.cpp=.o))

@@ -18,7 +18,7 @@ class Engine
         void quit();
 
         bool clean();
-        void update( float dt );
+        void update();
         void render();
         void events();
 
