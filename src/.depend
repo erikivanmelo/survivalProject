@@ -19,7 +19,7 @@ Player.o: Characters/Player.cpp Characters/Player.h \
  Characters/../Object/../Physics/Vector2D.h \
  Characters/../Object/../Physics/Point.h \
  Characters/../Animation/Animation.h Characters/../Physics/RigidBody.h \
- Characters/../Physics/Vector2D.h
+ Characters/../Physics/Vector2D.h Characters/../Inputs/Input.h
 Animation.o: Animation/Animation.cpp Animation/Animation.h \
  Animation/../Graphics/TextureManager.h
 Input.o: Inputs/Input.cpp Inputs/Input.h Inputs/../Core/Engine.h

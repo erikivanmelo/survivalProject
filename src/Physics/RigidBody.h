@@ -2,9 +2,14 @@
 #define RIGIDBODY_H
 
 #include "Vector2D.h"
+#include <SDL2/SDL.h>
+
+#define METER_TO_PIXEL 16 // 16 pixels = 1 meter
+#define PIXEL_TO_METER (1.0f / METER_TO_PIXEL)
 
 #define UNIT_MASS 1.0f
-#define GRAVITY 9.8f
+
+#define GRAVITY 9.81f // m/s^2
 
 class RigidBody
 {
@@ -15,7 +20,7 @@ public:
     }
 
 
-    inline void setMass( float newMass ){ mass = newMass; }
+    inline void setMass   ( float newMass    ){ mass = newMass;       }
     inline void setGravity( float newGravity ){ gravity = newGravity; }
 
     //Force
@@ -25,19 +30,29 @@ public:
     inline void unsetForce()             { force = Vector2D(0,0); }
 
     //Friction
-    inline void ApplyFriction(Vector2D fr){friction = fr;}
-    inline void unsetFriction(){friction = Vector2D(0,0);}
+    inline void ApplyFriction(Vector2D fr) { friction = fr;             }
+    inline void unsetFriction()            { friction = Vector2D(0, 0); }
 
     //Update methods
-    inline float    getMass     (){ return mass;        }
+    inline float    getMass        (){ return mass;        }
     inline Vector2D getPosition    (){ return position;    }
     inline Vector2D getVelocity    (){ return velocity;    }
     inline Vector2D getAcceleration(){ return acceleration;}
 
     void update(float dt){
-        acceleration.x = (force.x + friction.x) / mass;
-        acceleration.y = (force.y + gravity) / mass;
-        velocity  = acceleration * dt;
+        dt *= 100; //para que el calculo lo haga por segundo
+        // Convertimos las fuerzas a unidades de píxeles por segundo
+        Vector2D forceInPixels = force * METER_TO_PIXEL;
+        Vector2D frictionInPixels = friction * METER_TO_PIXEL;
+        Vector2D gravityInPixels = Vector2D(0, gravity) * METER_TO_PIXEL;
+
+        // Calculamos la aceleración en unidades de píxeles por segundo cuadrado
+        acceleration = (forceInPixels + gravityInPixels - frictionInPixels ) / mass;
+
+        // Actualizamos la velocidad en unidades de píxeles por segundo
+        velocity = acceleration * dt;
+
+        // Actualizamos la posición en unidades de píxeles
         position = velocity * dt;
     }
 

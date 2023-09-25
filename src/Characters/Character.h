@@ -8,8 +8,9 @@
 class Character: public GameObject
 {
 public:
-    Character(Properties *props) : GameObject(props){
+    Character(Properties *props, string name) : GameObject(props), name(name){
         rigidBody = new RigidBody();
+        walkSpeed = 1;
     }
     ~Character(){
         delete animation;
@@ -26,17 +27,25 @@ public:
     }
 
     void update( float dt ){
-        rigidBody->update(0.4);
+        rigidBody->update(dt);
         transform->translateX( rigidBody->getPosition().x );
         transform->translateY( rigidBody->getPosition().y );
 
         animation->update();
     }
 
+    void walk(bool toRight){
+        rigidBody->ApplyForceX( toRight ? walkSpeed : walkSpeed*-1 );
+        animation->setCurrentSeq( name + "_walk", toRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
+        lookingRight = toRight;
+    }
+
 protected:
     std::string name;
     Animation *animation;
     RigidBody *rigidBody;
+    float walkSpeed;
+    bool lookingRight;
 };
 
 #endif // CHARACTER_H

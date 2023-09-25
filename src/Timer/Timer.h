@@ -13,13 +13,21 @@ public:
 
     void tickUpdate();
     
-    inline int getFPS() const { 
-        return currentFPS; 
-    }
+    int getFPS() const { 
+        static const int numSamples = 60; // Número de muestras para calcular el promedio de FPS.
+        static double frameTimes[numSamples];
+        static int currentFrame = 0;
 
-    inline void setMaxFps(int maxFps){ 
-        this->maxFps = maxFps; 
-        targetFrameTime = 1.0 / static_cast<double>(maxFps); 
+        frameTimes[currentFrame] = deltaTime;
+        currentFrame = (currentFrame + 1) % numSamples;
+
+        double totalTime = 0.0;
+        for (int i = 0; i < numSamples; ++i)
+        {
+            totalTime += frameTimes[i];
+        }
+
+        return static_cast<int>(1.0 / (totalTime / numSamples));
     }
 
     inline float getDeltaTime(){ 
@@ -36,15 +44,11 @@ private:
     float deltaTime;
     Uint64 lastTime;
     Uint64 performanceFrequency;
-    
-    int frameCount;
-    double fpsTimer;
-    int currentFPS;
 
     int maxFps;
-    float frameDuration;
 
     double targetFrameTime;
+
 };
 
 #endif // TIMER_H 

@@ -12,6 +12,8 @@ public:
 
     void animationState();
 
+    void update(float dt);
+
     inline Transform *getTransform()const{return transform;}
 
 };
