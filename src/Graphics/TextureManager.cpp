@@ -9,6 +9,7 @@
 #include <SDL2/SDL_image.h>
 
 TextureManager* TextureManager::instance = nullptr;
+const std::string TextureManager::assets = "../assets/";
 
 bool TextureManager::load( string id, string fileName, bool withTransparentMagenta ){
 	SDL_Surface* surface = IMG_Load( fileName.c_str() );
@@ -46,6 +47,13 @@ void TextureManager::drawFrame(std::string id, int x, int y, int width, int heig
 	SDL_Rect srcRect = { width*frame, height*(row-1), width, height};
 	SDL_Rect datRect = { x, y, width, height };
 	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), textureMap[id], &srcRect,&datRect,0,nullptr,flip);
+}
+
+void TextureManager::drawTile(std::string tilesetId, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip)
+{
+		SDL_Rect srcRect = { tileSize*frame, tileSize*row, tileSize, tileSize};
+		SDL_Rect datRect = { x, y, tileSize, tileSize };
+    SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), textureMap[tilesetId], &srcRect,&datRect,0,nullptr,flip);
 }
 
 void TextureManager::drop( string id ){

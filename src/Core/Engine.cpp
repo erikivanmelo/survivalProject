@@ -3,6 +3,7 @@
 #include "../Characters/Player.h"
 #include "../Inputs/Input.h"
 #include "../Timer/Timer.h"
+#include "../Map/MapParser.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -38,11 +39,13 @@ bool Engine::init(){
         return false;
     }
 
+    if( !MapParser::getInstance()->load() ){
+        cerr << "Failed to load map" << endl;
+        return false;
+    }
+    map = MapParser::getInstance()->getMap("overworld");
 
-    //load the uwutest texture
-    TextureManager::getInstance()->load( "uwutest", "../assets/uwutest.png", true );
-    
-    TextureManager::getInstance()->load( "player_walk", "../assets/player_walk.png", true );
+    TextureManager::getInstance()->load( "player_walk", TextureManager::assets+"player_walk.png", true );
     player = new Player(new Properties( "player_walk", 100, 100, 32, 32 ));
 
     Transform tf;
@@ -57,6 +60,7 @@ Engine::~Engine(){
     Timer::getInstance()->clean();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    delete map;
     IMG_Quit();
     SDL_Quit();
 }
@@ -73,6 +77,7 @@ void Engine::quit(){
 
 void Engine::update(){
     float dt = Timer::getInstance()->getDeltaTime();
+    map->update();
     player->update(dt);
 }
 
@@ -82,9 +87,7 @@ void Engine::render(){
     //Clear the buffer
     SDL_RenderClear(renderer);
 
-    //Draw the uwutest texture
-    TextureManager::getInstance()->draw( "uwutest", (SCREEN_WIDTH/2)-(336/2), (SCREEN_HEIGHT/2)-(280/2), 336, 280 );
-
+    map->render();
     player->draw();
     //Update the screen with the buffer
     SDL_RenderPresent(renderer);

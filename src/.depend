@@ -1,5 +1,7 @@
-main.o: main.cpp Core/Engine.h Timer/Timer.h
-Engine.o: Core/Engine.cpp Core/Engine.h Core/../Graphics/TextureManager.h \
+main.o: main.cpp Core/Engine.h Core/../Map/GameMap.h Core/../Map/Layer.h \
+ Timer/Timer.h
+Engine.o: Core/Engine.cpp Core/Engine.h Core/../Map/GameMap.h \
+ Core/../Map/Layer.h Core/../Graphics/TextureManager.h \
  Core/../Characters/Player.h Core/../Characters/Character.h \
  Core/../Characters/../Object/GameObject.h \
  Core/../Characters/../Object/IObject.h \
@@ -9,9 +11,11 @@ Engine.o: Core/Engine.cpp Core/Engine.h Core/../Graphics/TextureManager.h \
  Core/../Characters/../Animation/Animation.h \
  Core/../Characters/../Physics/RigidBody.h \
  Core/../Characters/../Physics/Vector2D.h Core/../Inputs/Input.h \
- Core/../Timer/Timer.h
+ Core/../Timer/Timer.h Core/../Map/MapParser.h Core/../Map/GameMap.h \
+ Core/../Map/TileLayer.h
 TextureManager.o: Graphics/TextureManager.cpp Graphics/TextureManager.h \
- Graphics/../Core/Engine.h
+ Graphics/../Core/Engine.h Graphics/../Core/../Map/GameMap.h \
+ Graphics/../Core/../Map/Layer.h
 Player.o: Characters/Player.cpp Characters/Player.h \
  Characters/Character.h Characters/../Object/GameObject.h \
  Characters/../Object/IObject.h \
@@ -22,5 +26,10 @@ Player.o: Characters/Player.cpp Characters/Player.h \
  Characters/../Physics/Vector2D.h Characters/../Inputs/Input.h
 Animation.o: Animation/Animation.cpp Animation/Animation.h \
  Animation/../Graphics/TextureManager.h
-Input.o: Inputs/Input.cpp Inputs/Input.h Inputs/../Core/Engine.h
+Input.o: Inputs/Input.cpp Inputs/Input.h Inputs/../Core/Engine.h \
+ Inputs/../Core/../Map/GameMap.h Inputs/../Core/../Map/Layer.h
 Timer.o: Timer/Timer.cpp Timer/Timer.h
+MapParser.o: Map/MapParser.cpp Map/MapParser.h Map/GameMap.h Map/Layer.h \
+ Map/TileLayer.h Map/../Graphics/TextureManager.h
+TileLayer.o: Map/TileLayer.cpp Map/TileLayer.h Map/Layer.h \
+ Map/../Graphics/TextureManager.h

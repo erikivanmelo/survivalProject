@@ -3,9 +3,10 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "../Map/GameMap.h"
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 800
 
 class Engine
 {
@@ -32,6 +33,7 @@ class Engine
         SDL_Window* window;
         SDL_Renderer* renderer;
         static Engine* instance;
+        GameMap *map;
 };
 
 #endif

@@ -21,6 +21,8 @@ SOURCES = \
 	Animation/Animation.cpp \
 	Inputs/Input.cpp \
 	Timer/Timer.cpp \
+	Map/MapParser.cpp \
+	Map/TileLayer.cpp \
 
 HEADERS = \
 	Core/Engine.h \
@@ -35,6 +37,9 @@ HEADERS = \
 	Physics/RigidBody.h \
 	Inputs/Input.h \
 	Timer/Timer.h \
+	Map/GameMap.h \
+	Map/Layer.h \
+	Map/TileLayer.h \
 
 # Objetos generados
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(SOURCES:.cpp=.o))
