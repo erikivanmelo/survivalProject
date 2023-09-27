@@ -1,5 +1,6 @@
 #include "TextureManager.h"
 #include "../Core/Engine.h"
+#include "../Camera/Camera.h"
 
 #include <SDL2/SDL_log.h>
 #include <SDL2/SDL_rect.h>
@@ -52,7 +53,8 @@ void TextureManager::drawFrame(std::string id, int x, int y, int width, int heig
 void TextureManager::drawTile(std::string tilesetId, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip)
 {
 		SDL_Rect srcRect = { tileSize*frame, tileSize*row, tileSize, tileSize};
-		SDL_Rect datRect = { x, y, tileSize, tileSize };
+    Vector2D cam =  Camera::getInstance()->getPosition();
+    SDL_Rect datRect = {(int)(x - cam.x),(int)(y - cam.y),tileSize,tileSize};
     SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), textureMap[tilesetId], &srcRect,&datRect,0,nullptr,flip);
 }
 

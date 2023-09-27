@@ -23,6 +23,7 @@ SOURCES = \
 	Timer/Timer.cpp \
 	Map/MapParser.cpp \
 	Map/TileLayer.cpp \
+	Camera/Camera.cpp \
 
 HEADERS = \
 	Core/Engine.h \
@@ -40,6 +41,9 @@ HEADERS = \
 	Map/GameMap.h \
 	Map/Layer.h \
 	Map/TileLayer.h \
+	Physics/Point.h \
+	Camera/Camera.h \
+
 
 # Objetos generados
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(SOURCES:.cpp=.o))

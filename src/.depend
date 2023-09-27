@@ -12,10 +12,15 @@ Engine.o: Core/Engine.cpp Core/Engine.h Core/../Map/GameMap.h \
  Core/../Characters/../Physics/RigidBody.h \
  Core/../Characters/../Physics/Vector2D.h Core/../Inputs/Input.h \
  Core/../Timer/Timer.h Core/../Map/MapParser.h Core/../Map/GameMap.h \
- Core/../Map/TileLayer.h
+ Core/../Map/TileLayer.h Core/../Camera/Camera.h \
+ Core/../Camera/../Core/Engine.h Core/../Camera/../Physics/Point.h \
+ Core/../Camera/../Physics/Vector2D.h
 TextureManager.o: Graphics/TextureManager.cpp Graphics/TextureManager.h \
  Graphics/../Core/Engine.h Graphics/../Core/../Map/GameMap.h \
- Graphics/../Core/../Map/Layer.h
+ Graphics/../Core/../Map/Layer.h Graphics/../Camera/Camera.h \
+ Graphics/../Camera/../Core/Engine.h \
+ Graphics/../Camera/../Physics/Point.h \
+ Graphics/../Camera/../Physics/Vector2D.h
 Player.o: Characters/Player.cpp Characters/Player.h \
  Characters/Character.h Characters/../Object/GameObject.h \
  Characters/../Object/IObject.h \
@@ -23,7 +28,12 @@ Player.o: Characters/Player.cpp Characters/Player.h \
  Characters/../Object/../Physics/Vector2D.h \
  Characters/../Object/../Physics/Point.h \
  Characters/../Animation/Animation.h Characters/../Physics/RigidBody.h \
- Characters/../Physics/Vector2D.h Characters/../Inputs/Input.h
+ Characters/../Physics/Vector2D.h Characters/../Inputs/Input.h \
+ Characters/../Camera/Camera.h Characters/../Camera/../Core/Engine.h \
+ Characters/../Camera/../Core/../Map/GameMap.h \
+ Characters/../Camera/../Core/../Map/Layer.h \
+ Characters/../Camera/../Physics/Point.h \
+ Characters/../Camera/../Physics/Vector2D.h
 Animation.o: Animation/Animation.cpp Animation/Animation.h \
  Animation/../Graphics/TextureManager.h
 Input.o: Inputs/Input.cpp Inputs/Input.h Inputs/../Core/Engine.h \
@@ -33,3 +43,8 @@ MapParser.o: Map/MapParser.cpp Map/MapParser.h Map/GameMap.h Map/Layer.h \
  Map/TileLayer.h Map/../Graphics/TextureManager.h
 TileLayer.o: Map/TileLayer.cpp Map/TileLayer.h Map/Layer.h \
  Map/../Graphics/TextureManager.h
+Camera.o: Camera/Camera.cpp Camera/Camera.h Camera/../Core/Engine.h \
+ Camera/../Core/../Map/GameMap.h Camera/../Core/../Map/Layer.h \
+ Camera/../Physics/Point.h Camera/../Physics/Vector2D.h \
+ Camera/../Map/MapParser.h Camera/../Map/GameMap.h \
+ Camera/../Map/TileLayer.h Camera/../Map/Layer.h

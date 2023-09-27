@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../Inputs/Input.h"
+#include "../Camera/Camera.h"
 
 Player::Player(Properties *props) : Character(props,"player")
 {
@@ -16,6 +17,7 @@ Player::~Player()
 }
 
 void Player::update( float dt ){
+    rigidBody->getPosition().log();
 
     animation->setCurrentSeq( "player_stand", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
     rigidBody->unsetForce();
@@ -28,6 +30,10 @@ void Player::update( float dt ){
         rigidBody->ApplyForceX(0);
     }
 
+    //Actualiza el punto de visto del personaje al centro de la pantalla
+    origin->x = transform->x + width/2;
+    origin->y = transform->y + height/2;
+    
+    Camera::getInstance()->update( dt );
     Character::update( dt );
-    rigidBody->getPosition().log();
 }

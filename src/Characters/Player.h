@@ -16,6 +16,8 @@ public:
 
     inline Transform *getTransform()const{return transform;}
 
+    bool flymode;
+
 };
 
 #endif // PLAYER_H

@@ -4,6 +4,7 @@
 #include "../Inputs/Input.h"
 #include "../Timer/Timer.h"
 #include "../Map/MapParser.h"
+#include "../Camera/Camera.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -48,10 +49,7 @@ bool Engine::init(){
     TextureManager::getInstance()->load( "player_walk", TextureManager::assets+"player_walk.png", true );
     player = new Player(new Properties( "player_walk", 100, 100, 32, 32 ));
 
-    Transform tf;
-    tf.log();
-
-
+    Camera::getInstance()->setTarget( player->getOrigin() );
     return running = true;
 }
 
