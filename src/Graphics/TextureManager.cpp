@@ -28,6 +28,7 @@ bool TextureManager::load( string id, string fileName, bool withTransparentMagen
 		SDL_Log("Failed to create texture from %s! SDL Error: %s\n", fileName.c_str(), SDL_GetError());
 		return false;
 	}
+	SDL_FreeSurface(surface);
 	
 	textureMap[id] = texture;
 

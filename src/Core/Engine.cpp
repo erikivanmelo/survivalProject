@@ -53,7 +53,7 @@ bool Engine::init(){
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 
-    debugInfo = new Text("Debug", 0, 0, 20, {255,255,255,255}, TextureManager::assets+"arial.ttf");
+    debugInfo = new Text("", 0, 0, 20, {255,255,255,255}, TextureManager::assets+"arial.ttf");
 
     return running = true;
 }
@@ -61,12 +61,12 @@ bool Engine::init(){
 Engine::~Engine(){
     TextureManager::getInstance()->clean();
     Timer::getInstance()->clean();
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
     delete map;
     delete debugInfo;
-    IMG_Quit();
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     TTF_Quit();
+    IMG_Quit();
     SDL_Quit();
 }
 

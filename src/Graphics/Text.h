@@ -16,34 +16,26 @@ public:
 	~Text();
 
 	void show();
-	void clear();
 
 	void setText(string text);
 	inline void setX(int x){ this->x = x; }
 	inline void setY(int y){ this->y = y; }
 	inline void setColor(SDL_Color color){ this->color = color; }
 
-	inline void setFontSize(int fontSize){ 
-		this->fontSize = fontSize;
-		this->fontType = TTF_OpenFont(font.c_str(), fontSize);
-	}
-
-	inline void setFont(string font){ 
-		this->font = font;
-		this->fontType = TTF_OpenFont(font.c_str(), fontSize); 
-	}
-
+	void setFontSize(int fontSize);
+	void setFont(string font);
 
 private:
 	int fontSize;
 	SDL_Color color;
-	int x,y;
+	int x,y,h,w;
 	string font;
 	string text;
 
+	void updateTexture();
+
 	SDL_Texture *texture;
 	TTF_Font* fontType;
-	SDL_Surface *surface;
 
 };
 
