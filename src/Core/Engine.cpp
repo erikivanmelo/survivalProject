@@ -19,7 +19,7 @@ using namespace std;
 Engine* Engine::instance = nullptr;
 Player* player = nullptr;
 
-bool Engine::init(){
+void Engine::init(){
     //Initialize SDL
     TTF_Init();
 
@@ -52,7 +52,7 @@ bool Engine::init(){
 
     debugInfo = new Text(" ", 0, 0, 20, {255,255,255,255}, TextureManager::assets+"arial.ttf");
 
-    return running = true;
+    running = true;
 }
 
 Engine::~Engine(){
@@ -60,17 +60,15 @@ Engine::~Engine(){
     delete debugInfo;
 }
 
-bool Engine::clean(){
+void Engine::clean(){
     running = false;
     TextureManager::getInstance()->clean();
-    Timer::getInstance()->clean();
     delete instance;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
-    return true;
 }
 
 void Engine::quit(){

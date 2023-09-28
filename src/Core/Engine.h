@@ -16,10 +16,10 @@ class Engine
             return instance ? instance : ( instance = new Engine() );
         }
        
-        bool init();
+        void init();
         static void quit();
 
-        bool clean();
+        void clean();
         void update();
         void render();
         void events();
