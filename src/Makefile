@@ -1,5 +1,6 @@
 # Nombre del ejecutable
 TARGET = survivalProject
+USE_VALGRIND = 0
 
 # Compilador
 CC = g++
@@ -9,7 +10,7 @@ CFLAGS = -std=c++17 -I/usr/local/include
 
 # Rutas a las bibliotecas
 LDFLAGS = -L/usr/local/lib
-LIBS = -lSDL2 -lSDL2_image -ltinyxml
+LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -ltinyxml
 OBJ_DIR = ./../bin
 
 # Fuentes y cabeceras
@@ -24,6 +25,7 @@ SOURCES = \
 	Map/MapParser.cpp \
 	Map/TileLayer.cpp \
 	Camera/Camera.cpp \
+	Graphics/Text.cpp \
 
 HEADERS = \
 	Core/Engine.h \
@@ -43,6 +45,7 @@ HEADERS = \
 	Map/TileLayer.h \
 	Physics/Point.h \
 	Camera/Camera.h \
+	Graphics/Text.h \
 
 
 # Objetos generados
@@ -52,8 +55,12 @@ OBJECTS = $(addprefix $(OBJ_DIR)/,$(SOURCES:.cpp=.o))
 $(TARGET): $(OBJECTS)
 	mkdir -p $(dir $@)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $(OBJ_DIR)/$(TARGET) $(LIBS)
+ifeq ($(USE_VALGRIND), 1)
+	valgrind --leak-check=full $(OBJ_DIR)/$(TARGET) # Ejecutar con Valgrind
+else
+	$(OBJ_DIR)/$(TARGET) # Ejecutar sin Valgrind
+endif# Regla de compilación de archivos fuente
 
-# Regla de compilación de archivos fuente
 $(OBJ_DIR)/%.o: %.cpp $(HEADERS)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@

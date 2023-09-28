@@ -12,6 +12,7 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_video.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 using namespace std;
 
@@ -20,6 +21,7 @@ Player* player = nullptr;
 
 bool Engine::init(){
     //Initialize SDL
+    TTF_Init();
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 && IMG_Init( IMG_INIT_JPG ) < 0 ){
         SDL_Log("SDL could not initialize! SDL_Error: %s", SDL_GetError());
         return false;
@@ -50,6 +52,9 @@ bool Engine::init(){
     player = new Player(new Properties( "player_walk", 100, 100, 32, 32 ));
 
     Camera::getInstance()->setTarget( player->getOrigin() );
+
+    debugInfo = new Text("Debug", 0, 0, 20, {255,255,255,255}, TextureManager::assets+"arial.ttf");
+
     return running = true;
 }
 
@@ -59,24 +64,27 @@ Engine::~Engine(){
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     delete map;
+    delete debugInfo;
     IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
 }
 
 bool Engine::clean(){
+    running = false;
     delete instance;
     return true;
 }
 
 void Engine::quit(){
-    SDL_Quit();
-    running = false;
+    Engine::getInstance()->clean();
 }
 
 void Engine::update(){
     float dt = Timer::getInstance()->getDeltaTime();
     map->update();
     player->update(dt);
+    debugInfo->setText("FPS:"+to_string(Timer::getInstance()->getFPS()));
 }
 
 void Engine::render(){
@@ -87,6 +95,7 @@ void Engine::render(){
 
     map->render();
     player->draw();
+    debugInfo->show();
     //Update the screen with the buffer
     SDL_RenderPresent(renderer);
 }

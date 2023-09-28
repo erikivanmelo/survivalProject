@@ -17,8 +17,6 @@ Player::~Player()
 }
 
 void Player::update( float dt ){
-    rigidBody->getPosition().log();
-
     animation->setCurrentSeq( "player_stand", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
     rigidBody->unsetForce();
 

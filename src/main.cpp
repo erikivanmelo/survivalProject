@@ -11,8 +11,6 @@ int main()
         Engine::getInstance()->update();
         Engine::getInstance()->render();
         Timer::getInstance()->tickUpdate();
-        SDL_Log("FPS: %i \n", Timer::getInstance()->getFPS());
-        SDL_Log("DeltaTime: %f \n\n", Timer::getInstance()->getDeltaTime());
     }
 
     Engine::getInstance()->clean();

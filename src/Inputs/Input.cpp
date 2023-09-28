@@ -19,7 +19,7 @@ void Input::listen()
     while(SDL_PollEvent(&event)){
         switch(event.type){
             case SDL_QUIT: 
-                Engine::getInstance()->quit(); break;
+                Engine::quit(); break;
 
             case SDL_KEYDOWN: 
                 keyDown(); break;
