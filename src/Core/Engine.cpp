@@ -22,30 +22,27 @@ Player* player = nullptr;
 bool Engine::init(){
     //Initialize SDL
     TTF_Init();
-    if( SDL_Init( SDL_INIT_VIDEO ) < 0 && IMG_Init( IMG_INIT_JPG ) < 0 ){
-        SDL_Log("SDL could not initialize! SDL_Error: %s", SDL_GetError());
-        return false;
-    }
+
+    if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+        throw "SDL could not initialize! SDL_Error: " + string(SDL_GetError());
+
+    if( IMG_Init( IMG_INIT_JPG ) < 0 )
+        throw "IMG could not initialize! SDL_Error: " + string(IMG_GetError());
+
+    if( TTF_Init() < 0 )
+        throw "TTF could not initialize! SDL_Error: " + string(TTF_GetError());
 
     //Create window
-    window = SDL_CreateWindow("survivalProject2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-
-    if( window == nullptr ){
-        SDL_Log("Window could not be created! SDL_Error: %s", SDL_GetError());
-        return false;
-    }
+    if( !(window = SDL_CreateWindow("survivalProject2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0)) )
+        throw "Window could not be created! SDL_Error: " + string(SDL_GetError());
 
     //Create renderer
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if( renderer == nullptr ){
-        SDL_Log("Renderer could not be created! SDL_Error: %s", SDL_GetError());
-        return false;
-    }
+    if( !(renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)) )
+        throw "Renderer could not be created! SDL_Error: " + string(SDL_GetError());
 
-    if( !MapParser::getInstance()->load() ){
-        cerr << "Failed to load map" << endl;
-        return false;
-    }
+    if( !MapParser::getInstance()->load() )
+        throw "Failed to load map";
+
     map = MapParser::getInstance()->getMap("overworld");
 
     TextureManager::getInstance()->load( "player_walk", TextureManager::assets+"player_walk.png", true );
@@ -53,26 +50,26 @@ bool Engine::init(){
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 
-    debugInfo = new Text("", 0, 0, 20, {255,255,255,255}, TextureManager::assets+"arial.ttf");
+    debugInfo = new Text(" ", 0, 0, 20, {255,255,255,255}, TextureManager::assets+"arial.ttf");
 
     return running = true;
 }
 
 Engine::~Engine(){
-    TextureManager::getInstance()->clean();
-    Timer::getInstance()->clean();
     delete map;
     delete debugInfo;
+}
+
+bool Engine::clean(){
+    running = false;
+    TextureManager::getInstance()->clean();
+    Timer::getInstance()->clean();
+    delete instance;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
-}
-
-bool Engine::clean(){
-    running = false;
-    delete instance;
     return true;
 }
 

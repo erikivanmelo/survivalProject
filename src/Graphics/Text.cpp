@@ -39,16 +39,14 @@ void Text::updateTexture(){
 		SDL_DestroyTexture(texture);
 
 	SDL_Surface *surface = TTF_RenderText_Solid(fontType, text.c_str(), color);
-	if (!surface) {
-		SDL_Log("Failed to create surface from your font! SDL Error: %s\n", SDL_GetError());
-		return;
-	}
+	if( !surface ) 
+		throw "Failed to create surface from your font! SDL Error: " + string(SDL_GetError());
+
 	this->h = surface->h;
 	this->w = surface->w;
-	this->texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), surface);
-	if (!texture) {
-		SDL_Log("Failed to create texture from your text! SDL Error: %s\n", SDL_GetError());
-		return;
-	}
+
+	if( !(this->texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), surface)) )
+		throw "Failed to create texture from your text! SDL Error: " + string(SDL_GetError());
+	
 	SDL_FreeSurface(surface);
 }

@@ -14,20 +14,17 @@ const std::string TextureManager::assets = "../assets/";
 
 bool TextureManager::load( string id, string fileName, bool withTransparentMagenta ){
 	SDL_Surface* surface = IMG_Load( fileName.c_str() );
-	if( surface == nullptr ){
-		SDL_Log("Failed to load image %s! SDL_image Error: %s\n", fileName.c_str(), IMG_GetError());
-		return false;
-	}
+	if( !surface )
+		throw "Failed to load image " + fileName + "! SDL_image Error: " + string(IMG_GetError());
 	
 	// Añade el color magenta a la lista de colores transparentes.
 	if( withTransparentMagenta)
 		SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(),surface);
-	if ( texture == nullptr ){
-		SDL_Log("Failed to create texture from %s! SDL Error: %s\n", fileName.c_str(), SDL_GetError());
-		return false;
-	}
+	if ( !texture )
+		throw "Failed to create texture from " + fileName + "! SDL Error: " + string(SDL_GetError());
+	
 	SDL_FreeSurface(surface);
 	
 	textureMap[id] = texture;
