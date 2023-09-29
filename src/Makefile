@@ -56,9 +56,7 @@ $(TARGET): $(OBJECTS)
 	mkdir -p $(dir $@)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $(OBJ_DIR)/$(TARGET) $(LIBS)
 ifeq ($(USE_VALGRIND), 1)
-	valgrind --leak-check=full $(OBJ_DIR)/$(TARGET) # Ejecutar con Valgrind
-else
-	$(OBJ_DIR)/$(TARGET) # Ejecutar sin Valgrind
+	valgrind --show-leak-kinds=definite $(OBJ_DIR)/$(TARGET) 2> valgind.txt
 endif# Regla de compilación de archivos fuente
 
 $(OBJ_DIR)/%.o: %.cpp $(HEADERS)

@@ -8,7 +8,8 @@
 class Character: public GameObject
 {
 public:
-    Character(Properties *props, string name) : GameObject(props), name(name){
+    Character(Properties *props, const string &name) : GameObject(props), name(name){
+        animation = nullptr;
         rigidBody = new RigidBody();
         walkSpeed = 1;
     }
@@ -45,7 +46,7 @@ protected:
     Animation *animation;
     RigidBody *rigidBody;
     float walkSpeed;
-    bool lookingRight;
+    bool lookingRight = true;
 };
 
 #endif // CHARACTER_H

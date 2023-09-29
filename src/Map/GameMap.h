@@ -17,7 +17,7 @@ public:
             mapLayers[i]->update();
     }
 
-    std::vector<Layer*> getMapLayers(){return mapLayers;}
+    std::vector<Layer*> getMapLayers()const{return mapLayers;}
 
 private:
     friend class MapParser;

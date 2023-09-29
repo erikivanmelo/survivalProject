@@ -21,10 +21,10 @@ public:
         delete target;
     }
 
-    inline SDL_Rect getViewBox(){return viewBox;}
-    inline Vector2D getPosition(){return position;}
+    inline SDL_Rect getViewBox()const{return viewBox;}
+    inline Vector2D getPosition()const{return position;}
     inline void setTarget(Point *target){this->target = target;}
-    inline Scala getScala(){return scala;}
+    inline Scala getScala()const{return scala; }
 
     void update(float dt);
 

@@ -31,7 +31,7 @@ public:
     }
 
 
-    void log(std::string msg = ""){
+    void log(const std::string &msg = ""){
         std::cout << msg << "(X, Y) = (" << x << " " << y << ")" << std::endl;
     }
 

@@ -19,9 +19,10 @@ class TileLayer : public Layer
 {
 public:
     TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, Tileset tileset);
-    virtual void render();
-    virtual void update();
-    inline TileMap getTileMap(){return tileMap;}
+    inline TileMap getTileMap()const{return tileMap;}
+    void render()override;
+    void update()override{};
+
 private:
     int tileSize;
     int rowCount, colCount;

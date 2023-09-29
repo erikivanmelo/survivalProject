@@ -11,7 +11,7 @@ using namespace std;
 
 struct AnimationSeq{
     AnimationSeq(
-        string textureId,
+        const string &textureId,
         int spriteRow,
         int frameCount, 
         int animSpeed,
@@ -45,15 +45,15 @@ public:
         }
     }
 
-    AnimationSeq* operator[](string index) {
+    AnimationSeq* operator[](const string &index) {
         return list[index];
     }
 
-    void insert( string key, AnimationSeq *value ){
+    void insert(const string &key, AnimationSeq *value ){
         list[key] = value;
     }
 
-    AnimationSeq* at( string key ){
+    AnimationSeq* at( const string &key ){
         return list[key];
     }
     
@@ -68,11 +68,11 @@ typedef pair< string, AnimationSeq* > AnimationSeqPair;
 class Animation
 {
 public:
-    Animation( AnimationSeqList *list, string defaultSeq );
+    Animation( AnimationSeqList *list, const string &defaultSeq );
     ~Animation();
     void update();
     void draw( float x, float y );
-    void setCurrentSeq( string seqId, SDL_RendererFlip flip = SDL_FLIP_NONE, int animSpeed = -1 );
+    void setCurrentSeq( const string &seqId, SDL_RendererFlip flip = SDL_FLIP_NONE, int animSpeed = -1 );
 
 private:
     SDL_RendererFlip flip;

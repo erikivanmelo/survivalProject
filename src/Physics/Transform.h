@@ -11,7 +11,8 @@ class Transform
 
     public:
         Transform(float X = 0, float Y = 0):x(X),y(Y){};
-        void log(std::string msg = ""){
+
+        void log(const std::string &msg = ""){
             std::cout << msg << "(X, Y) = (" << x << " " << y << ")" << std::endl;
         }
 

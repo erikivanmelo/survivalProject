@@ -14,8 +14,8 @@ int main()
             Engine::getInstance()->render();
             Timer::getInstance()->tickUpdate();
         }
-    }catch(const string e){
-        SDL_Log(e.c_str());
+    }catch(const string &e){
+        cerr << e;
     }
     Engine::getInstance()->clean();
     return 0;

@@ -20,13 +20,13 @@ class TextureManager{
 
 		static const std::string assets;
 
-		bool load( string id, string fileName, bool withTransparentMagenta = false );
-		void drop( string id );
+		bool load( const string &id, const string &fileName, bool withTransparentMagenta = false );
+		void drop( const string &id );
 		void clean();
 
-		void draw( string id, int x, int y, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE );
-    void drawFrame(std::string id,int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
-    void drawTile(std::string tilesetId, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
+		void draw( const string &id, int x, int y, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE );
+    void drawFrame( const string &id,int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
+    void drawTile( const string &tilesetId, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 	private:
 		TextureManager(){}

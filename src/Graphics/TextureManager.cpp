@@ -12,7 +12,7 @@
 TextureManager* TextureManager::instance = nullptr;
 const std::string TextureManager::assets = "../assets/";
 
-bool TextureManager::load( string id, string fileName, bool withTransparentMagenta ){
+bool TextureManager::load( const string &id, const string &fileName, bool withTransparentMagenta ){
 	SDL_Surface* surface = IMG_Load( fileName.c_str() );
 	if( !surface )
 		throw "Failed to load image " + fileName + "! SDL_image Error: " + string(IMG_GetError());
@@ -32,7 +32,7 @@ bool TextureManager::load( string id, string fileName, bool withTransparentMagen
 	return true;
 }
 
-void TextureManager::draw( string id, int x, int y, int width, int height, SDL_RendererFlip flip ){
+void TextureManager::draw( const string &id, int x, int y, int width, int height, SDL_RendererFlip flip ){
 
 	SDL_Rect srcRect = { 0, 0, width, height };
 	SDL_Rect destRect = { x, y, width, height };
@@ -40,7 +40,7 @@ void TextureManager::draw( string id, int x, int y, int width, int height, SDL_R
 
 }
 
-void TextureManager::drawFrame(std::string id, int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip)
+void TextureManager::drawFrame( const string &id, int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip)
 {
 	//A row se le resta uno, porque en el sprite sheet la primera fila es la 0
 	SDL_Rect srcRect = { width*frame, height*(row-1), width, height};
@@ -48,7 +48,7 @@ void TextureManager::drawFrame(std::string id, int x, int y, int width, int heig
 	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), textureMap[id], &srcRect,&datRect,0,nullptr,flip);
 }
 
-void TextureManager::drawTile(std::string tilesetId, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip)
+void TextureManager::drawTile( const string &tilesetId, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip)
 {
 		SDL_Rect srcRect = { tileSize*frame, tileSize*row, tileSize, tileSize};
     Vector2D cam =  Camera::getInstance()->getPosition();
@@ -56,7 +56,7 @@ void TextureManager::drawTile(std::string tilesetId, int tileSize, int x, int y,
     SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), textureMap[tilesetId], &srcRect,&datRect,0,nullptr,flip);
 }
 
-void TextureManager::drop( string id ){
+void TextureManager::drop( const string &id ){
 	SDL_DestroyTexture( textureMap[id] );
 	textureMap.erase( id );
 }

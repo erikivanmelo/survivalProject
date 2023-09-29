@@ -1,12 +1,13 @@
 #include "Animation.h"
 #include "../Graphics/TextureManager.h"
 
-Animation::Animation( AnimationSeqList *list, string defaultSeq ):
+Animation::Animation( AnimationSeqList *list, const string &defaultSeq ):
     seqList(list)
 {
     currentSeq = list->at(defaultSeq);
     forceAnimSpeed = -1;
     flip = SDL_FLIP_NONE;
+    spriteFrame = 0;
 }
 
 Animation::~Animation()
@@ -37,7 +38,7 @@ void Animation::draw( float x, float y )
     );
 }
 
-void Animation::setCurrentSeq( string seqId, SDL_RendererFlip flip, int animSpeed )
+void Animation::setCurrentSeq( const string &seqId, SDL_RendererFlip flip, int animSpeed )
 {
     spriteFrame = 0;
     this->flip = flip;

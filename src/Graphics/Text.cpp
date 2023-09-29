@@ -2,9 +2,10 @@
 #include "../Core/Engine.h"
 
 
-Text::Text(string text, int x, int y, int fontSize, SDL_Color color, string font):
+Text::Text(const string &text, int x, int y, int fontSize, SDL_Color color, const string &font):
 text(text),x(x),y(y),fontSize(fontSize),color(color),font(font){
 
+	this->texture = nullptr;
 	this->fontType = TTF_OpenFont(font.c_str(), fontSize);
 	this->updateTexture();
 }
@@ -14,17 +15,17 @@ Text::~Text(){
 	TTF_CloseFont(fontType);
 }
 
-void Text::setText(string text){ 
+void Text::setText(const string &text){ 
 	this->text = text;
 	this->updateTexture();
 }
 
-void Text::setFontSize(int fontSize){ 
+void Text::setFontSize(const int fontSize){ 
 	this->fontSize = fontSize;
 	this->fontType = TTF_OpenFont(font.c_str(), fontSize);
 }
 
-void Text::setFont(string font){ 
+void Text::setFont(const string &font){ 
 	this->font = font;
 	this->fontType = TTF_OpenFont(font.c_str(), fontSize); 
 }

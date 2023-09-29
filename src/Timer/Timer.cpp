@@ -5,6 +5,7 @@ Timer *Timer::instance = nullptr;
 
 Timer::Timer()
 {       
+    deltaTime = 0;
     performanceFrequency = SDL_GetPerformanceFrequency();
     maxFps = 0;
     targetFrameTime = 1.0 / static_cast<double>(maxFps);

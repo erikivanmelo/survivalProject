@@ -30,7 +30,7 @@ public:
         return static_cast<int>(1.0 / (totalTime / numSamples));
     }
 
-    inline float getDeltaTime(){ 
+    inline float getDeltaTime() const { 
         return deltaTime; 
     }
 

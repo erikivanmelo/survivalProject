@@ -16,7 +16,7 @@ public:
     }
 
     //Adition
-    inline friend Point operator+=(Point &p1, Point &p2){
+    inline friend Point operator+=(Point p1, Point p2){
         p1.x += p2.x;
         p1.y += p2.y;
         return p1;
@@ -28,7 +28,7 @@ public:
     }
 
     //substraction
-    inline friend Point operator-=(Point &p1, Point &p2){
+    inline friend Point operator-=(Point p1, Point p2){
         p1.x -= p2.x;
         p1.y -= p2.y;
         return p1;
@@ -38,7 +38,7 @@ public:
         return Point(x*scalar,y*scalar);
     }
 
-    void log(std::string msg = ""){
+    void log(const std::string &msg = "")const{
         std::cout << msg << "(x,y) = ("<< x << " " << y <<")"<<std::endl;
     }
 

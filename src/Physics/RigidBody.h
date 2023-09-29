@@ -34,10 +34,10 @@ public:
     inline void unsetFriction()            { friction = Vector2D(0, 0); }
 
     //Update methods
-    inline float    getMass        (){ return mass;        }
-    inline Vector2D getPosition    (){ return position;    }
-    inline Vector2D getVelocity    (){ return velocity;    }
-    inline Vector2D getAcceleration(){ return acceleration;}
+    inline float    getMass        ()const{ return mass;        }
+    inline Vector2D getPosition    ()const{ return position;    }
+    inline Vector2D getVelocity    ()const{ return velocity;    }
+    inline Vector2D getAcceleration()const{ return acceleration;}
 
     void update(float dt){
         dt *= 100; //para que el calculo lo haga por segundo

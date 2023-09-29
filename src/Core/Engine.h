@@ -24,10 +24,10 @@ class Engine
         void render();
         void events();
 
-        inline bool isRunning(){ return running; }
-        inline SDL_Renderer* getRenderer(){ return renderer; }
+        inline bool isRunning()const{ return running; }
+        inline SDL_Renderer* getRenderer()const{ return renderer; }
 
-        inline GameMap* getMap(){ return map; }
+        inline GameMap* getMap()const{ return map; }
 
     private:
         Engine(){}

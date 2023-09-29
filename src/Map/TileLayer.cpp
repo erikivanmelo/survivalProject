@@ -47,7 +47,6 @@ void TileLayer::determineRotation(unsigned int& tileId, SDL_RendererFlip& flip)
     // Check flags
     bool flipH = (tileId & TextureManager::TileH);
     bool flipV = (tileId & TextureManager::TileV);
-    bool flipD = (tileId & TextureManager::TileD);
 
     // Clear flags
     tileId &= ~(TextureManager::TileD | TextureManager::TileV | TextureManager::TileH | 0x10000000);
@@ -61,7 +60,3 @@ void TileLayer::determineRotation(unsigned int& tileId, SDL_RendererFlip& flip)
         flip = SDL_FLIP_VERTICAL;
 }
 
-void TileLayer::update()
-{
-
-}

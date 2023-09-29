@@ -12,11 +12,11 @@ public:
 
     void animationState();
 
-    void update(float dt);
+    void update(float dt) override;
 
     inline Transform *getTransform()const{return transform;}
 
-    bool flymode;
+    bool flymode = false;
 
 };
 

@@ -10,7 +10,7 @@ const std::string MapParser::blocksAsset = TextureManager::assets+"blocks.png";
 MapParser::~MapParser()
 {
     std::map<std::string, GameMap*>::iterator i;
-    for(i = mapDict.begin(); i != mapDict.end();i++){
+    for(i = mapDict.begin(); i != mapDict.end();++i){
         delete i->second;
     }
 
@@ -94,10 +94,8 @@ Tileset MapParser::parseTileSet(TiXmlElement *xmlTileset)
 
 TileLayer *MapParser::parseTileLayer(TiXmlElement *xmlLayer, Tileset tileset, int tilesize, int rowcount, int colcount)
 {
-    TiXmlElement *data;
-    std::string str;
+    TiXmlElement *data = nullptr;
     for(TiXmlElement *e = xmlLayer->FirstChildElement(); e != nullptr; e=e->NextSiblingElement()){
-        str = e->Value();
         if(e->Value() == std::string("data")){
             data = e;
             break;

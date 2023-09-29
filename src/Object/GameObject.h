@@ -12,18 +12,12 @@
 struct Properties{
 
 public:
-    Properties( std::string TextureId, int X, int Y, int Width, int Height,SDL_RendererFlip Flip = SDL_FLIP_NONE ){
-        x = X;
-        y = Y;
-        width = Width;
-        height = Height;
-        flip = Flip;
-        textureId = TextureId;
+    Properties( const std::string &TextureId, int X, int Y, int Width, int Height,SDL_RendererFlip Flip = SDL_FLIP_NONE ): textureId(TextureId), x(X), y(Y), width(Width), height(Height), flip(Flip){
     }
 
-    std::string textureId;
-    int width,height;
+    const std::string textureId;
     float x,y;
+    int width,height;
     SDL_RendererFlip flip;
 
 };
@@ -40,8 +34,8 @@ class GameObject : public IObject
             transform = new Transform( props->x, props->y );
 
             origin = new Point(
-                props->x + props->width/2,
-                props->y + props->height/2
+                props->x + (int)props->width/2,
+                props->y + (int)props->height/2
             );
         }
 
@@ -52,8 +46,6 @@ class GameObject : public IObject
 
         inline Point *getOrigin(){return origin;}
 
-        virtual void draw()=0;
-        virtual void update(float dt)=0;
 
     protected:
         Point *origin;

@@ -12,25 +12,25 @@ class Text{
 
 public:
 	
-	Text(string text, int x, int y, int fontSize, SDL_Color color, string font);
+	Text(const string &text, int x, int y, int fontSize, SDL_Color color, const string &font);
 	~Text();
 
 	void show();
 
-	void setText(string text);
+	void setText(const string &text);
 	inline void setX(int x){ this->x = x; }
 	inline void setY(int y){ this->y = y; }
 	inline void setColor(SDL_Color color){ this->color = color; }
 
-	void setFontSize(int fontSize);
-	void setFont(string font);
+	void setFontSize(const int fontSize);
+	void setFont(const string &font);
 
 private:
+	string text;
+	int x,y,h,w;
 	int fontSize;
 	SDL_Color color;
-	int x,y,h,w;
 	string font;
-	string text;
 
 	void updateTexture();
 
