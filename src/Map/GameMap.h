@@ -7,6 +7,9 @@
 class GameMap
 {
 public:
+    static constexpr int background = 0;
+    static constexpr int foreground = 1;
+
     void render(){
         for(unsigned int i = 0; i < mapLayers.size(); i++)
             mapLayers[i]->render();

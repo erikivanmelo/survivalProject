@@ -1,7 +1,5 @@
 #include "Camera.h"
 
-#include "../Map/MapParser.h"
-
 Camera *Camera::instance = nullptr;
 
 void Camera::update(float dt)

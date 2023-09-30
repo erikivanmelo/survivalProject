@@ -5,7 +5,13 @@
 
 
 TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, Tileset tileset):
-    tileSize(tilesize),rowCount(rowcount),colCount(colcount),tileMap(tilemap),tileset(tileset)
+    tileSize(tilesize),
+    rowCount(rowcount),
+    colCount(colcount),
+    width(colcount*tilesize),
+    height(rowcount*tilesize),
+    tileMap(tilemap),
+    tileset(tileset)
 {
     if( !TextureManager::getInstance()->load(tileset.name,tileset.source) )
         exit(1);

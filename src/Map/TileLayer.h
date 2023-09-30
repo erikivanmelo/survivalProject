@@ -26,10 +26,13 @@ public:
     inline int getTileSize()const{return tileSize;}
     inline int getRowCount()const{return rowCount;}
     inline int getColCount()const{return colCount;}
+    inline int getWidth()const{return width;}
+    inline int getHeight()const{return height;}
 
 private:
-    int tileSize;
-    int rowCount, colCount;
+    const int tileSize;
+    const int rowCount, colCount;
+    const int width, height;
 
     TileMap tileMap;
     Tileset tileset;

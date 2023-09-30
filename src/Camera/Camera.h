@@ -32,8 +32,10 @@ private:
             SCREEN_WIDTH,
             SCREEN_HEIGHT
         };
-        TileLayer *t = Engine::getInstance()->getMap()->getMapLayers()[0];
-        maxY = t->getRowCount() * t->getTileSize();
+        target = nullptr;
+
+        const TileLayer *t = Engine::getInstance()->getMap()->getMapLayers()[GameMap::foreground];
+        maxY = t->getHeight();
     }
 
     SDL_Rect viewBox;
