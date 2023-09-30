@@ -22,7 +22,7 @@ bool MapParser::load()
     return parse(worldName,worldAsset);
 }
 
-bool MapParser::parse(std::string id, std::string source)
+bool MapParser::parse(const std::string &id, const std::string &source)
 {
     TiXmlDocument xml;
     xml.LoadFile(source);

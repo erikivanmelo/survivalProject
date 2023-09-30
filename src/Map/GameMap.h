@@ -2,7 +2,7 @@
 #define GAMEMAP_H
 
 #include <vector>
-#include "Layer.h"
+#include "TileLayer.h"
 
 class GameMap
 {
@@ -17,11 +17,11 @@ public:
             mapLayers[i]->update();
     }
 
-    std::vector<Layer*> getMapLayers()const{return mapLayers;}
+    std::vector<TileLayer*> getMapLayers()const{return mapLayers;}
 
 private:
     friend class MapParser;
-    std::vector<Layer*> mapLayers;
+    std::vector<TileLayer*> mapLayers;
 
 };
 

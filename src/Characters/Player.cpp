@@ -2,7 +2,7 @@
 #include "../Inputs/Input.h"
 #include "../Camera/Camera.h"
 
-Player::Player(Properties *props) : Character(props,"player")
+Player::Player( int x, int y ) : Character(new Properties( "player_walk", x, y, 32, 32 ),"player")
 {
     AnimationSeqList *animationSeqs = new AnimationSeqList();
     animationSeqs->insert( "player_stand", new AnimationSeq("player_walk" ,1,1,0,width,height) );
@@ -20,11 +20,30 @@ void Player::update( float dt ){
     animation->setCurrentSeq( "player_stand", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
     rigidBody->unsetForce();
 
-    if( Input::getInstance()->getKeyDown( SDL_SCANCODE_S ) )
-        walk(true);
-    else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_A ) )
-        walk(false);
-    else{
+
+    if( Input::getInstance()->getKeyDown( SDL_SCANCODE_D ) ){
+        if( this->god )
+            walk(true);
+        else
+            fly( RIGHT );
+    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_A ) ){
+        if( this->god )
+            walk(false);
+        else
+            fly( LEFT );
+    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_W) && this->god ){
+        fly( UP ); 
+    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_S) && this->god ){
+        fly( DOWN ); 
+    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_G ) ){
+        this->god = !this->god;
+        if( this->god )
+            rigidBody->setGravity(0);
+        else
+            rigidBody->setGravity(GRAVITY);
+    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_W ) ){
+        
+    }else{
         rigidBody->ApplyForceX(0);
     }
 

@@ -23,6 +23,10 @@ public:
     void render()override;
     void update()override{};
 
+    inline int getTileSize()const{return tileSize;}
+    inline int getRowCount()const{return rowCount;}
+    inline int getColCount()const{return colCount;}
+
 private:
     int tileSize;
     int rowCount, colCount;

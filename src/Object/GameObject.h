@@ -34,8 +34,8 @@ class GameObject : public IObject
             transform = new Transform( props->x, props->y );
 
             origin = new Point(
-                props->x + (int)props->width/2,
-                props->y + (int)props->height/2
+                props->x + (int)(props->width/2),
+                props->y + (int)(props->height/2)
             );
         }
 

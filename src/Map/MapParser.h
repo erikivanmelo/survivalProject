@@ -25,7 +25,7 @@ public:
     void clean();
 
 private:
-    bool parse(std::string id, std::string source);
+    bool parse(const std::string &id,const std::string &source);
     Tileset parseTileSet( TiXmlElement* xmlTileset );
     TileLayer *parseTileLayer( TiXmlElement* xmlLayer, Tileset tileset, int tilesize, int rowcount, int colcount );
 

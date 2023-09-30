@@ -47,7 +47,7 @@ public:
         Vector2D gravityInPixels = Vector2D(0, gravity) * METER_TO_PIXEL;
 
         // Calculamos la aceleración en unidades de píxeles por segundo cuadrado
-        acceleration = (forceInPixels + gravityInPixels - frictionInPixels ) / mass;
+        acceleration = ( gravity == 0? forceInPixels : (forceInPixels + gravityInPixels - frictionInPixels )) / mass;
 
         // Actualizamos la velocidad en unidades de píxeles por segundo
         velocity = acceleration * dt;

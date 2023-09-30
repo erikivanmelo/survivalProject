@@ -6,7 +6,7 @@ class Player : public Character
 {
 
 public:
-    Player(Properties *props);
+    Player( int x = 0, int y = 0 );
 
     ~Player();
 
@@ -16,7 +16,8 @@ public:
 
     inline Transform *getTransform()const{return transform;}
 
-    bool flymode = false;
+    bool god = false;
+
 
 };
 

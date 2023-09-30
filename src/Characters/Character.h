@@ -12,16 +12,20 @@ public:
         animation = nullptr;
         rigidBody = new RigidBody();
         walkSpeed = 1;
+        flySpeed = 2;
     }
     ~Character(){
         delete animation;
         delete rigidBody;
         GameObject::~GameObject();
     }
+    enum MoveDirection{
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
 
-
-    // IObject interface
-public:
 
     void draw(){
         animation->draw( transform->x, transform->y );
@@ -35,17 +39,38 @@ public:
         animation->update();
     }
 
+
+protected:
+
     void walk(bool toRight){
         rigidBody->ApplyForceX( toRight ? walkSpeed : walkSpeed*-1 );
         animation->setCurrentSeq( name + "_walk", toRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
         lookingRight = toRight;
     }
 
-protected:
+    void fly( MoveDirection direction ){
+        switch (direction) {
+            case UP:
+                rigidBody->ApplyForceY( flySpeed*-1 );
+                break;
+            case DOWN:
+                rigidBody->ApplyForceY( flySpeed );
+                break;
+            case LEFT:
+                rigidBody->ApplyForceX( flySpeed*-1 );
+                break;
+            case RIGHT:
+                rigidBody->ApplyForceX( flySpeed );
+                break;
+        }
+    }
+
+
     std::string name;
     Animation *animation;
     RigidBody *rigidBody;
     float walkSpeed;
+    float flySpeed;
     bool lookingRight = true;
 };
 

@@ -46,7 +46,8 @@ void Engine::init(){
     map = MapParser::getInstance()->getMap("overworld");
 
     TextureManager::getInstance()->load( "player_walk", TextureManager::assets+"player_walk.png", true );
-    player = new Player(new Properties( "player_walk", 100, 100, 32, 32 ));
+    player = new Player( 0, 0 );
+
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 
@@ -64,8 +65,8 @@ void Engine::clean(){
     running = false;
     TextureManager::getInstance()->clean();
     delete instance;
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->window);
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
@@ -76,10 +77,13 @@ void Engine::quit(){
 }
 
 void Engine::update(){
+    string fps = "FPS:"+to_string(Timer::getInstance()->getFPS())+"\n";
+    string cam = "Camera:("+to_string(Camera::getInstance()->getPosition().x)+","+to_string(Camera::getInstance()->getPosition().y)+")\n";
     float dt = Timer::getInstance()->getDeltaTime();
     map->update();
     player->update(dt);
-    debugInfo->setText("FPS:"+to_string(Timer::getInstance()->getFPS()));
+
+    debugInfo->setText( fps + cam );
 }
 
 void Engine::render(){

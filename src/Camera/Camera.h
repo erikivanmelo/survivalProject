@@ -7,24 +7,16 @@
 #include "../Core/Engine.h"
 #include "../Physics/Point.h"
 #include "../Physics/Vector2D.h"
-
-struct Scala{
-    float w = 1.5;
-    float h = 1.5;
-};
+#include "../Map/TileLayer.h"
 
 class Camera
 {
 public:
     inline static Camera *getInstance(){ return instance = (instance == nullptr)? new Camera() : instance; }
-    ~Camera(){
-        delete target;
-    }
 
     inline SDL_Rect getViewBox()const{return viewBox;}
     inline Vector2D getPosition()const{return position;}
     inline void setTarget(Point *target){this->target = target;}
-    inline Scala getScala()const{return scala; }
 
     void update(float dt);
 
@@ -37,16 +29,18 @@ private:
         viewBox = {
             0,
             0,
-            static_cast<int>(SCREEN_WIDTH/scala.w),
-            static_cast<int>(SCREEN_HEIGHT/scala.h)
+            SCREEN_WIDTH,
+            SCREEN_HEIGHT
         };
+        TileLayer *t = Engine::getInstance()->getMap()->getMapLayers()[0];
+        maxY = t->getRowCount() * t->getTileSize();
     }
 
     SDL_Rect viewBox;
     Point *target;
     Vector2D position;
+    int maxY;
 
-    Scala scala;
 
     static Camera* instance;
 };
