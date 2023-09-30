@@ -15,16 +15,22 @@ public:
 
     void listen();
     bool getKeyDown(SDL_Scancode key);
+    bool getKeyPressed(SDL_Scancode key);
 
 private:
     Input();
     static Input *instance;
 
-    void keyUp();
-    void keyDown();
+    void keyUp(SDL_Scancode key);
+    void keyDown(SDL_Scancode key);
 
     const Uint8* keyStates;
 
+    double startTime = 0;
+    double endTime = 0;
+    double intervalTime = 0;
+    const double intervalPressed = 200;
+    SDL_Scancode lastKeyPressed;
 };
 
 #endif // INPUT_H

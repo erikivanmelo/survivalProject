@@ -10,22 +10,23 @@ Input::Input()
 
 Input::~Input()
 {
-    delete keyStates;
 }
 
 void Input::listen()
 {
     SDL_Event event;
-    while(SDL_PollEvent(&event)){
+    while(SDL_PollEvent(&event))
+        {
         switch(event.type){
-            case SDL_QUIT: 
-                Engine::quit(); break;
+            case SDL_QUIT:
+                Engine::quit();
+            break;
 
-            case SDL_KEYDOWN: 
-                keyDown(); break;
+            case SDL_KEYDOWN:
+                keyDown(event.key.keysym.scancode);break;
 
-            case SDL_KEYUP: 
-                keyUp(); break;
+            case SDL_KEYUP:
+                keyUp(event.key.keysym.scancode); break;
         }
     }
 }
@@ -35,13 +36,25 @@ bool Input::getKeyDown(SDL_Scancode key)
     return (keyStates[key] == 1);
 }
 
-void Input::keyUp()
+bool Input::getKeyPressed(SDL_Scancode key)
 {
-    keyStates = SDL_GetKeyboardState(nullptr);
+    if (intervalTime > 0 && intervalTime < intervalPressed && lastKeyPressed == key)
+    {
+        intervalTime = 0;
+        return true;
+    }
+    return false;
 }
 
-void Input::keyDown()
+void Input::keyUp(SDL_Scancode key)
 {
-    keyStates = SDL_GetKeyboardState(nullptr);
+    endTime = SDL_GetTicks();
+    lastKeyPressed = key;
+    intervalTime = endTime - startTime;
 }
 
+void Input::keyDown(SDL_Scancode key)
+{
+    startTime = SDL_GetTicks();
+    keyStates = SDL_GetKeyboardState(nullptr);
+}
