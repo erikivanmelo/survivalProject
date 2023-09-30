@@ -3,6 +3,7 @@
 
 #include "Vector2D.h"
 #include <SDL2/SDL.h>
+#include <cstdint>
 
 #define METER_TO_PIXEL 16 // 16 pixels = 1 meter
 #define PIXEL_TO_METER (1.0f / METER_TO_PIXEL)
@@ -10,6 +11,20 @@
 #define UNIT_MASS 1.0f
 
 #define GRAVITY 9.81f // m/s^2
+
+namespace MoveDirection{
+    constexpr int8_t UP = -1;
+    constexpr int8_t DOWN = 1;
+    constexpr int8_t LEFT = -1;
+    constexpr int8_t RIGHT = 1;
+}
+
+enum MoveOption{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
 
 class RigidBody
 {

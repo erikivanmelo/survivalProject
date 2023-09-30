@@ -4,6 +4,10 @@
 #include "../Object/GameObject.h"
 #include "../Animation/Animation.h"
 #include "../Physics/RigidBody.h"
+#include "../Physics/Collider.h"
+
+#define JUMP_TIME 20.0f
+#define JUMP_FORCE 5.0f
 
 class Character: public GameObject
 {
@@ -17,21 +21,14 @@ public:
     ~Character(){
         delete animation;
         delete rigidBody;
-        GameObject::~GameObject();
     }
-    enum MoveDirection{
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
-    };
 
 
-    void draw(){
+    void draw()override{
         animation->draw( transform->x, transform->y );
     }
 
-    void update( float dt ){
+    void update( float dt )override{
         rigidBody->update(dt);
         transform->translateX( rigidBody->getPosition().x );
         transform->translateY( rigidBody->getPosition().y );
@@ -46,32 +43,53 @@ protected:
         rigidBody->ApplyForceX( toRight ? walkSpeed : walkSpeed*-1 );
         animation->setCurrentSeq( name + "_walk", toRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
         lookingRight = toRight;
+        walking = true;
     }
 
-    void fly( MoveDirection direction ){
+    void fly( MoveOption direction ){
+        if( !flyMode )
+            return;
+
         switch (direction) {
             case UP:
-                rigidBody->ApplyForceY( flySpeed*-1 );
+                rigidBody->ApplyForceY( MoveDirection::UP * flySpeed );
                 break;
             case DOWN:
-                rigidBody->ApplyForceY( flySpeed );
+                rigidBody->ApplyForceY( MoveDirection::DOWN * flySpeed );
                 break;
             case LEFT:
-                rigidBody->ApplyForceX( flySpeed*-1 );
+                rigidBody->ApplyForceX( MoveDirection::LEFT * flySpeed );
+                animation->setCurrentSeq( name + "_stand", SDL_FLIP_HORIZONTAL );
+                lookingRight = false;
                 break;
             case RIGHT:
-                rigidBody->ApplyForceX( flySpeed );
+                rigidBody->ApplyForceX( MoveDirection::RIGHT * flySpeed );
+                animation->setCurrentSeq( name + "_stand", SDL_FLIP_NONE );
+                lookingRight = true;
                 break;
         }
+        flying = true;
     }
 
 
     std::string name;
     Animation *animation;
     RigidBody *rigidBody;
-    float walkSpeed;
-    float flySpeed;
+    
+    float walkSpeed, flySpeed;
+    bool walking = false, flying = false, jumping = false, grounded = false;
+    bool flyMode = false;
+
+    float jumpTime;
+    float jumpForce;
+
     bool lookingRight = true;
+
+    Collider *collider;
+
+    Vector2D lastSafePosition;
+
+    int collisionZone;
 };
 
 #endif // CHARACTER_H

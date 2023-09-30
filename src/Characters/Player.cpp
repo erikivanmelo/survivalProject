@@ -11,46 +11,37 @@ Player::Player( int x, int y ) : Character(new Properties( "player_walk", x, y, 
     rigidBody->setMass( 44 );
 }
 
-Player::~Player()
-{
-    Character::~Character();
+void Player::updateViewPoint(){
+    origin->x = transform->x + (int)(width/2);
+    origin->y = transform->y + (int)(height/2);
+}
+
+void Player::checkInput(){
+    if( INPUT_D )
+        this->flyMode? fly( RIGHT ) : walk(true);
+
+    if( INPUT_A )
+        this->flyMode? fly( LEFT ) : walk(false);
+
+    if( INPUT_W && this->flyMode )
+        fly( UP );
+
+    if( INPUT_S && this->flyMode )
+        fly( DOWN ); 
+
+    if( INPUT_G )
+        rigidBody->setGravity( (this->flyMode = !this->flyMode)? 0 : GRAVITY );
 }
 
 void Player::update( float dt ){
     animation->setCurrentSeq( "player_stand", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
     rigidBody->unsetForce();
 
-
-    if( Input::getInstance()->getKeyDown( SDL_SCANCODE_D ) ){
-        if( this->god )
-            walk(true);
-        else
-            fly( RIGHT );
-    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_A ) ){
-        if( this->god )
-            walk(false);
-        else
-            fly( LEFT );
-    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_W) && this->god ){
-        fly( UP ); 
-    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_S) && this->god ){
-        fly( DOWN ); 
-    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_G ) ){
-        this->god = !this->god;
-        if( this->god )
-            rigidBody->setGravity(0);
-        else
-            rigidBody->setGravity(GRAVITY);
-    }else if( Input::getInstance()->getKeyDown( SDL_SCANCODE_W ) ){
-        
-    }else{
-        rigidBody->ApplyForceX(0);
-    }
-
-    //Actualiza el punto de visto del personaje al centro de la pantalla
-    origin->x = transform->x + width/2;
-    origin->y = transform->y + height/2;
-    
-    Camera::getInstance()->update( dt );
+    checkInput();
     Character::update( dt );
+
+    updateViewPoint();
+    Camera::getInstance()->update();
 }
+
+

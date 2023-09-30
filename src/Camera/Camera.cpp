@@ -2,7 +2,7 @@
 
 Camera *Camera::instance = nullptr;
 
-void Camera::update(float dt)
+void Camera::update()
 {
     if(target != nullptr){
 

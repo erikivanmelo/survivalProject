@@ -9,6 +9,7 @@ class GameMap
 public:
     static constexpr int background = 0;
     static constexpr int foreground = 1;
+    static constexpr int blockSize = 8;
 
     void render(){
         for(unsigned int i = 0; i < mapLayers.size(); i++)

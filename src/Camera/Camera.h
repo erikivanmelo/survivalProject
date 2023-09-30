@@ -18,7 +18,7 @@ public:
     inline Vector2D getPosition()const{return position;}
     inline void setTarget(Point *target){this->target = target;}
 
-    void update(float dt);
+    void update();
 
     inline void clear(){
         delete instance;
@@ -34,8 +34,7 @@ private:
         };
         target = nullptr;
 
-        const TileLayer *t = Engine::getInstance()->getMap()->getMapLayers()[GameMap::foreground];
-        maxY = t->getHeight();
+        maxY = Engine::getInstance()->getMap()->getMapLayers()[GameMap::foreground]->getHeight();
     }
 
     SDL_Rect viewBox;
