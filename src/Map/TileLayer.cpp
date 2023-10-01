@@ -13,7 +13,7 @@ TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, 
     tileMap(tilemap),
     tileset(tileset)
 {
-    if( !TextureManager::getInstance()->load(tileset.name,tileset.source) )
+    if( !TextureManager::getInstance()->load(tileset.name,tileset.source,true) )
         exit(1);
 }
 

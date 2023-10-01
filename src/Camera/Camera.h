@@ -13,6 +13,7 @@ class Camera
 {
 public:
     inline static Camera *getInstance(){ return instance = (instance == nullptr)? new Camera() : instance; }
+    inline static void clean(){ delete instance; }
 
     inline SDL_Rect getViewBox()const{return viewBox;}
     inline Vector2D getPosition()const{return position;}
@@ -20,10 +21,7 @@ public:
 
     void update();
 
-    inline void clear(){
-        delete instance;
-    }
-
+    ~Camera(){}
 private:
     Camera(){
         viewBox = {

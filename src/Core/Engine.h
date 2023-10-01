@@ -9,17 +9,24 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 300
 
+namespace Assets{
+	const string base			= "../assets/";
+	const string maps			= base+"maps/";
+	const string fonts		= base+"fonts/";
+	const string sprites	= base+"sprites/";
+}
+
 class Engine
 {
     public:
         static Engine* getInstance(){
             return instance ? instance : ( instance = new Engine() );
         }
+        inline static void clean(){ delete instance; }
        
         void init();
         static void quit();
 
-        void clean();
         void update();
         void render();
         void events();
@@ -29,9 +36,10 @@ class Engine
 
         inline GameMap* getMap()const{ return map; }
 
-    private:
-        Engine(){}
         ~Engine();
+    private:
+        inline void setRunning( bool running ){ this->running = running; }
+        Engine(){}
         bool running = false;
         SDL_Window* window;
         SDL_Renderer* renderer;

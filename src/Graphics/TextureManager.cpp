@@ -10,7 +10,6 @@
 #include <SDL2/SDL_image.h>
 
 TextureManager* TextureManager::instance = nullptr;
-const std::string TextureManager::assets = "../assets/";
 
 bool TextureManager::load( const string &id, const string &fileName, bool withTransparentMagenta ){
 	SDL_Surface* surface = IMG_Load( fileName.c_str() );
@@ -70,10 +69,6 @@ TextureManager::~TextureManager(){
 		it = textureMap.erase(it);
 	}
 	SDL_Log("TextureMap cleaned!");
-}
-
-void TextureManager::clean(){
-	delete instance;
 }
 
 

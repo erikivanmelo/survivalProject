@@ -1,11 +1,16 @@
 #include "MapParser.h"
-#include "../Graphics/TextureManager.h"
+#include "../Core/Engine.h"
 
 MapParser *MapParser::instance = nullptr;
 
 const std::string MapParser::worldName = "overworld";
-const std::string MapParser::worldAsset = TextureManager::assets+"maps/"+worldName+".tmx";
-const std::string MapParser::blocksAsset = TextureManager::assets+"blocks.png";
+const std::string MapParser::worldAsset = Assets::maps+worldName+".tmx";
+const std::string MapParser::blocksAsset = Assets::sprites+"blocks.tga";
+
+MapParser::MapParser() {
+    // Inicializa cualquier miembro necesario en el constructor
+    // Puedes poner tu código de inicialización aquí
+}
 
 MapParser::~MapParser()
 {
@@ -27,11 +32,8 @@ bool MapParser::parse(const std::string &id, const std::string &source)
     TiXmlDocument xml;
     xml.LoadFile(source);
 
-    if(xml.Error()){
-        std::cerr << "Failed to load: " << source;
-        std::cerr << " Error(" << xml.ErrorId() << "):" << std::endl;
-        return false;
-    }
+    if(xml.Error())
+        throw "Failed to load: " + source + " Error(" + to_string(xml.ErrorId()) + "):";
 
     TiXmlElement *root = xml.RootElement();
     int rowcount,colcount,tilesize = 0;
@@ -63,15 +65,13 @@ Tileset MapParser::parseTileSet(TiXmlElement *xmlTileset)
 {
     Tileset tileset;
     xmlTileset->Attribute("firstgid",&tileset.firstId);
-    std::string source = TextureManager::assets+"maps/"+xmlTileset->Attribute("source");
+    const std::string source = Assets::maps+xmlTileset->Attribute("source");
     tileset.source = MapParser::blocksAsset;
 
     TiXmlDocument xml;
     xml.LoadFile(source);
-    if(xml.Error()){
-        std::cerr << "Failed to load: " << source << std::endl;
-        exit(1) ;
-    }
+    if(xml.Error())
+        throw "Failed to load: " + source;
 
     for(TiXmlElement* e=xml.RootElement(); e != nullptr;e=e->NextSiblingElement()){
         if(e->Value() == std::string("tileset")){
@@ -88,8 +88,7 @@ Tileset MapParser::parseTileSet(TiXmlElement *xmlTileset)
         }
     }
 
-    std::cout << "Error al intentar leer el archivo de bloques: " << TextureManager::assets+"maps/"+xmlTileset->Attribute("source");
-    exit(1);
+    throw "Error al intentar leer el archivo de bloques: " + string(xmlTileset->Attribute("source"));
 }
 
 TileLayer *MapParser::parseTileLayer(TiXmlElement *xmlLayer, Tileset tileset, int tilesize, int rowcount, int colcount)
@@ -121,15 +120,4 @@ TileLayer *MapParser::parseTileLayer(TiXmlElement *xmlLayer, Tileset tileset, in
 
     return new TileLayer(tilesize,rowcount,colcount,tilemap,tileset);
 }
-
-void MapParser::clean()
-{
-    delete instance;
-}
-
-
-
-
-
-
 

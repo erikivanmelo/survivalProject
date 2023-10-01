@@ -26,7 +26,7 @@ void Engine::init(){
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
         throw "SDL could not initialize! SDL_Error: " + string(SDL_GetError());
 
-    if( IMG_Init( IMG_INIT_JPG ) < 0 )
+    if( IMG_Init( IMG_INIT_JPG | IMG_INIT_PNG ) < 0 )
         throw "IMG could not initialize! SDL_Error: " + string(IMG_GetError());
 
     if( TTF_Init() < 0 )
@@ -45,26 +45,24 @@ void Engine::init(){
 
     map = MapParser::getInstance()->getMap("overworld");
 
-    TextureManager::getInstance()->load( "player_walk", TextureManager::assets+"player_walk.png", true );
+    TextureManager::getInstance()->load( "player_walk", Assets::sprites+"player_walk.tga", true );
     player = new Player( 0, 0 );
 
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 
-    debugInfo = new Text(" ", 0, 0, 20, {255,255,255,255}, TextureManager::assets+"arial.ttf");
+    debugInfo = new Text(" ", 0, 0, 20, {255,255,255,255}, Assets::fonts+"arial.ttf");
 
     running = true;
 }
 
 Engine::~Engine(){
-    delete map;
     delete debugInfo;
-}
-
-void Engine::clean(){
-    running = false;
-    TextureManager::getInstance()->clean();
-    delete instance;
+    TextureManager::clean();
+    Timer::clean();
+    Camera::clean();
+    Input::clean();
+    MapParser::clean();
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
     TTF_Quit();
@@ -73,7 +71,7 @@ void Engine::clean(){
 }
 
 void Engine::quit(){
-    Engine::getInstance()->clean();
+    getInstance()->setRunning(false);
 }
 
 void Engine::update(){

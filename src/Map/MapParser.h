@@ -17,21 +17,22 @@ public:
 
     bool load();
 
-    ~MapParser();
 
     inline GameMap* getMap(std::string id){ return mapDict[id]; }
     inline static MapParser *getInstance(){ return instance = (instance == nullptr)? new MapParser() : instance; }
-
-    void clean();
+    inline static void clean(){ delete instance; }
 
 private:
     bool parse(const std::string &id,const std::string &source);
     Tileset parseTileSet( TiXmlElement* xmlTileset );
     TileLayer *parseTileLayer( TiXmlElement* xmlLayer, Tileset tileset, int tilesize, int rowcount, int colcount );
 
-    MapParser(){}
+    MapParser();
+    ~MapParser();
     static MapParser *instance;
     std::map<std::string, GameMap*> mapDict;
+
+    bool deleted = false;
 
 };
 

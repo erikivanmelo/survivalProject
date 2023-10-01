@@ -15,8 +15,8 @@ int main()
             Timer::getInstance()->tickUpdate();
         }
     }catch(const string &e){
-        cerr << e;
+        cerr << e << endl;
     }
-    Engine::getInstance()->clean();
+    Engine::clean();
     return 0;
 }

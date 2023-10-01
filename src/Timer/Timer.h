@@ -7,38 +7,20 @@ class Timer
 {
 public:
 
-    void clean(){
-        delete instance;
-    }
-
     void tickUpdate();
     
-    int getFPS() const { 
-        static const int numSamples = 60; // Número de muestras para calcular el promedio de FPS.
-        static double frameTimes[numSamples];
-        static int currentFrame = 0;
-
-        frameTimes[currentFrame] = deltaTime;
-        currentFrame = (currentFrame + 1) % numSamples;
-
-        double totalTime = 0.0;
-        for (int i = 0; i < numSamples; ++i)
-        {
-            totalTime += frameTimes[i];
-        }
-
-        return static_cast<int>(1.0 / (totalTime / numSamples));
-    }
+    int getFPS();
 
     inline float getDeltaTime() const { 
         return deltaTime; 
     }
 
     inline static Timer* getInstance(){ return instance = (instance == nullptr)? new Timer() : instance; }
+    inline static void clean(){ delete instance; }
 
 private:
-    Timer();
     ~Timer(){}
+    Timer();
     static Timer *instance;
     
     float deltaTime;
