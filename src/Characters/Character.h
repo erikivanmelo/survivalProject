@@ -15,8 +15,8 @@ public:
     Character(Properties *props, const string &name) : GameObject(props), name(name){
         animation = nullptr;
         rigidBody = new RigidBody();
-        walkSpeed = 1;
-        flySpeed = 2;
+        walkSpeed = 8;
+        flySpeed = 16;
     }
     ~Character(){
         delete animation;

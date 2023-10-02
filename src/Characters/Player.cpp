@@ -8,7 +8,6 @@ Player::Player( int x, int y ) : Character(new Properties( "player_walk", x, y, 
     animationSeqs->insert( "player_stand", new AnimationSeq("player_walk" ,1,1,0,width,height) );
     animationSeqs->insert( "player_walk",  new AnimationSeq("player_walk" ,1,4,150,width,height) );
     animation = new Animation(animationSeqs,"player_stand");
-    rigidBody->setMass( 44 );
 }
 
 void Player::updateViewPoint(){

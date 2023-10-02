@@ -37,7 +37,7 @@ void Engine::init(){
         throw "Window could not be created! SDL_Error: " + string(SDL_GetError());
 
     //Create renderer
-    if( !(renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)) )
+    if( !(renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED )) )
         throw "Renderer could not be created! SDL_Error: " + string(SDL_GetError());
 
     if( !MapParser::getInstance()->load() )

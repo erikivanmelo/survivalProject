@@ -9,7 +9,9 @@ public:
 
     void tickUpdate();
     
-    int getFPS();
+    inline int getFPS() const { 
+        return currentFPS; 
+    }
 
     inline float getDeltaTime() const { 
         return deltaTime; 
@@ -27,7 +29,9 @@ private:
     Uint64 lastTime;
     Uint64 performanceFrequency;
 
-    int maxFps;
+    int frameCount;
+    double fpsTimer;
+    int currentFPS;
 
     double targetFrameTime;
 

@@ -6,7 +6,6 @@
 #include <cstdint>
 
 #define METER_TO_PIXEL 16 // 16 pixels = 1 meter
-#define PIXEL_TO_METER (1.0f / METER_TO_PIXEL)
 
 #define UNIT_MASS 1.0f
 
@@ -30,8 +29,8 @@ class RigidBody
 {
 public:
     RigidBody(){
-        mass = UNIT_MASS;
         gravity = GRAVITY;
+        friction = 0;
     }
 
 
@@ -55,14 +54,13 @@ public:
     inline Vector2D getAcceleration()const{ return acceleration;}
 
     void update(float dt){
-        dt *= 100; //para que el calculo lo haga por segundo
         // Convertimos las fuerzas a unidades de píxeles por segundo
         Vector2D forceInPixels = force * METER_TO_PIXEL;
         Vector2D frictionInPixels = friction * METER_TO_PIXEL;
         Vector2D gravityInPixels = Vector2D(0, gravity) * METER_TO_PIXEL;
 
         // Calculamos la aceleración en unidades de píxeles por segundo cuadrado
-        acceleration = ( gravity == 0? forceInPixels : (forceInPixels + gravityInPixels - frictionInPixels )) / mass;
+        acceleration = (forceInPixels + gravityInPixels) - frictionInPixels;
 
         // Actualizamos la velocidad en unidades de píxeles por segundo
         velocity = acceleration * dt;
