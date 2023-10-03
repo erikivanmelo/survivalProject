@@ -5,6 +5,7 @@
 #include "../Animation/Animation.h"
 #include "../Physics/RigidBody.h"
 #include "../Physics/Collider.h"
+#include "../Collision/CollisionHandler.h"
 
 #define JUMP_TIME 20.0f
 #define JUMP_FORCE 5.0f
@@ -28,12 +29,35 @@ public:
         animation->draw( transform->x, transform->y );
     }
 
+    void checkCollision(float dt){
+        
+        rigidBody->update( dt );
+        lastSafePosition.x = transform->x;
+        transform->x += rigidBody->getPosition().x;
+        collider->setCoordenates(transform->x, transform->y);
+
+        if(CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox()))
+            transform->x = lastSafePosition.x;
+
+        rigidBody->update( dt );
+        lastSafePosition.y = transform->y;
+        transform->y += rigidBody->getPosition().y;
+        collider->setCoordenates(transform->x, transform->y);
+
+        if(CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())){
+            grounded = true;
+            transform->y = lastSafePosition.y;
+        }else{
+            grounded = false;
+        }
+    }
+
+
     void update( float dt )override{
-        rigidBody->update(dt);
-        transform->translateX( rigidBody->getPosition().x );
-        transform->translateY( rigidBody->getPosition().y );
+        checkCollision( dt );
 
         animation->update();
+        collider->draw();
     }
 
 

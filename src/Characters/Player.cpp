@@ -1,9 +1,21 @@
 #include "Player.h"
 #include "../Inputs/Input.h"
 #include "../Camera/Camera.h"
+#include "../Physics/Collider.h"
+
+#include <algorithm>
 
 Player::Player( int x, int y ) : Character(new Properties( "player_walk", x, y, 32, 32 ),"player")
 {
+    collider = new Collider();
+
+
+    collider->setBuffer(-10,-2,0,0);
+    //Tamaño de la colission box
+    collider->setCollisionBox(14,28);
+
+    rigidBody = new RigidBody();
+    //rigidBody->setGravity(3.0f);
     AnimationSeqList *animationSeqs = new AnimationSeqList();
     animationSeqs->insert( "player_stand", new AnimationSeq("player_walk" ,1,1,0,width,height) );
     animationSeqs->insert( "player_walk",  new AnimationSeq("player_walk" ,1,4,150,width,height) );

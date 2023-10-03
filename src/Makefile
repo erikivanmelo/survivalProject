@@ -9,7 +9,7 @@ CC = g++
 CFLAGS = -std=c++17 -I/usr/local/include
 
 # Rutas a las bibliotecas
-LDFLAGS = -L/usr/local/lib
+LDFLAGS = -L/usr/local/lib -g
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -ltinyxml
 OBJ_DIR = ./../bin
 
@@ -26,6 +26,7 @@ SOURCES = \
 	Map/TileLayer.cpp \
 	Camera/Camera.cpp \
 	Graphics/Text.cpp \
+	Collision/CollisionHandler.cpp \
 
 HEADERS = \
 	Core/Engine.h \
@@ -46,6 +47,8 @@ HEADERS = \
 	Physics/Point.h \
 	Camera/Camera.h \
 	Graphics/Text.h \
+	Physics/Collider.h \
+	Collision/CollisionHandler.h \
 
 
 # Objetos generados
