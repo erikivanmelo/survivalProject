@@ -3,6 +3,7 @@
 
 #include "Vector2D.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_stdinc.h>
 #include <cstdint>
 
 #define METER_TO_PIXEL 16 // 16 pixels = 1 meter
@@ -29,23 +30,23 @@ class RigidBody
 {
 public:
     RigidBody(){
-        gravity = GRAVITY;
-        friction = 0;
+        setGravity(GRAVITY);
+        applyFriction(0);
     }
 
 
     inline void setMass   ( float newMass    ){ mass = newMass;       }
-    inline void setGravity( float newGravity ){ gravity = newGravity; }
+    inline void setGravity( float newGravity ){ gravity = newGravity*METER_TO_PIXEL; }
 
     //Force
-    inline void ApplyForces( Vector2D f ){ force = f;             }
-    inline void ApplyForceX( float fx   ){ force.x = fx;          }
-    inline void ApplyForceY( float fy   ){ force.y = fy;          }
-    inline void unsetForce()             { force = Vector2D(0,0); }
+    inline void ApplyForces( Vector2D f ){ force   = f*METER_TO_PIXEL;  }
+    inline void ApplyForceX( float fx   ){ force.x = fx*METER_TO_PIXEL; }
+    inline void ApplyForceY( float fy   ){ force.y = fy*METER_TO_PIXEL; }
+    inline void unsetForce()             { force   = Vector2D(0,0);     }
 
     //Friction
-    inline void ApplyFriction(Vector2D fr) { friction = fr;             }
-    inline void unsetFriction()            { friction = Vector2D(0, 0); }
+    inline void applyFriction(Vector2D fr) { friction = fr*METER_TO_PIXEL;  }
+    inline void unsetFriction()            { friction = Vector2D(0, 0);     }
 
     //Update methods
     inline float    getMass        ()const{ return mass;        }
@@ -54,19 +55,12 @@ public:
     inline Vector2D getAcceleration()const{ return acceleration;}
 
     void update(float dt){
-        // Convertimos las fuerzas a unidades de píxeles por segundo
-        Vector2D forceInPixels = force * METER_TO_PIXEL;
-        Vector2D frictionInPixels = friction * METER_TO_PIXEL;
-        Vector2D gravityInPixels = Vector2D(0, gravity) * METER_TO_PIXEL;
 
         // Calculamos la aceleración en unidades de píxeles por segundo cuadrado
-        acceleration = (forceInPixels + gravityInPixels) - frictionInPixels;
+        acceleration = (force + Vector2D(0,gravity)) - friction;
 
         // Actualizamos la velocidad en unidades de píxeles por segundo
-        velocity = acceleration * dt;
-
-        // Actualizamos la posición en unidades de píxeles
-        position = velocity * dt;
+        position = velocity = acceleration * dt;
     }
 
 private:

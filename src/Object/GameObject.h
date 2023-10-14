@@ -44,6 +44,15 @@ class GameObject : public IObject
             delete origin;
         }
 
+        void updateViewPoint(){
+            origin->x = transform->x + (int)(width/2);
+            origin->y = transform->y + (int)(height/2);
+        }
+
+        void update(float dt){
+            updateViewPoint();
+        }
+
         inline Point *getOrigin(){return origin;}
 
 

@@ -33,7 +33,7 @@ public:
         
         rigidBody->update( dt );
         lastSafePosition.x = transform->x;
-        transform->x += rigidBody->getPosition().x;
+        transform->translateX(rigidBody->getPosition().x);
         collider->setCoordenates(transform->x, transform->y);
 
         if(CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox()))
@@ -41,7 +41,7 @@ public:
 
         rigidBody->update( dt );
         lastSafePosition.y = transform->y;
-        transform->y += rigidBody->getPosition().y;
+        transform->translateY(rigidBody->getPosition().y);
         collider->setCoordenates(transform->x, transform->y);
 
         if(CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())){
@@ -58,6 +58,7 @@ public:
 
         animation->update();
         collider->draw();
+        GameObject::update( dt );
     }
 
 

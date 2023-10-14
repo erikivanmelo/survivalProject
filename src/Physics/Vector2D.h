@@ -15,19 +15,19 @@ public:
 
 public:
     inline Vector2D operator+(const Vector2D& v2){
-        return Vector2D( x+v2.x, y+v2.y );
+        return Vector2D( this->x + v2.x, this->y + v2.y );
     }
 
     inline Vector2D operator-(const Vector2D& v2){
-        return Vector2D( x-v2.y, y-v2.y );
+        return Vector2D( this->x - v2.x, this->y - v2.y );
     }
 
     inline Vector2D operator*(const float scalar){
-        return Vector2D( x*scalar, y*scalar );
+        return Vector2D( this->x * scalar, this->y * scalar );
     }
 
     inline Vector2D operator/(const float scalar){
-        return Vector2D( x/scalar, y/scalar );
+        return Vector2D( this->x / scalar, this->y / scalar );
     }
 
 

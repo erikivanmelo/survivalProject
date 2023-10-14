@@ -18,7 +18,6 @@ public:
 
     void animationState();
 
-    void updateViewPoint();
     void checkInput();
     void update(float dt) override;
 

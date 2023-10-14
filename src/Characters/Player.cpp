@@ -22,10 +22,6 @@ Player::Player( int x, int y ) : Character(new Properties( "player_walk", x, y, 
     animation = new Animation(animationSeqs,"player_stand");
 }
 
-void Player::updateViewPoint(){
-    origin->x = transform->x + (int)(width/2);
-    origin->y = transform->y + (int)(height/2);
-}
 
 void Player::checkInput(){
     if( INPUT_D )
@@ -51,7 +47,6 @@ void Player::update( float dt ){
     checkInput();
     Character::update( dt );
 
-    updateViewPoint();
     Camera::getInstance()->update();
 }
 

@@ -1,4 +1,5 @@
 #include "Timer.h"
+#include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_timer.h>
 
 Timer *Timer::instance = nullptr;
@@ -30,9 +31,4 @@ void Timer::tickUpdate()
         fpsTimer = 0.0;
     }
 
-    // Verificar si el deltaTime es menor que el objetivo de tiempo por cuadro
-    if (deltaTime < targetFrameTime) {
-        // Actualizar el deltaTime a targetFrameTime
-        deltaTime = targetFrameTime;
-    }
 }
