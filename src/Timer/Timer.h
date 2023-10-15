@@ -26,14 +26,7 @@ private:
     static Timer *instance;
     
     float deltaTime;
-    Uint64 lastTime;
-    Uint64 performanceFrequency;
-
-    int frameCount;
-    double fpsTimer;
     int currentFPS;
-
-    double targetFrameTime;
 
 };
 

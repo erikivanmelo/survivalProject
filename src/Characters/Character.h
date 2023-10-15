@@ -30,6 +30,7 @@ public:
     }
 
     void checkCollision(float dt){
+        Vector2D lastSafePosition;
         
         rigidBody->update( dt );
         lastSafePosition.x = transform->x;
@@ -112,7 +113,6 @@ protected:
 
     Collider *collider;
 
-    Vector2D lastSafePosition;
 
     int collisionZone;
 };

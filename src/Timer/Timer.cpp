@@ -4,25 +4,25 @@
 
 Timer *Timer::instance = nullptr;
 
-Timer::Timer()
-{       
-    deltaTime = 0;
-    performanceFrequency = SDL_GetPerformanceFrequency();
-    targetFrameTime = 1.0 / 60;
-
-    lastTime = SDL_GetPerformanceCounter();
-}
+Timer::Timer() : 
+    deltaTime(0.0), 
+    currentFPS(0)
+{}
 
 void Timer::tickUpdate()
 {
+    const double performanceFrequency = static_cast<double>(SDL_GetPerformanceFrequency());
+    static int frameCount = 0;
+    static double fpsTimer = 0.0;
+    static Uint64 lastTime = SDL_GetPerformanceCounter();
     Uint64 currentTime = SDL_GetPerformanceCounter();
-    deltaTime = static_cast<double>(currentTime - lastTime) / static_cast<double>(performanceFrequency);
-    lastTime = currentTime;
-    frameCount++;
-    fpsTimer += deltaTime;
 
+    deltaTime = static_cast<double>(currentTime - lastTime) / performanceFrequency;
+    lastTime = currentTime;
+
+    frameCount++;
     // Actualizar el contador de cuadros y el temporizador de FPS
-    if (fpsTimer >= 1.0) { // Si ha pasado 1 segundo
+    if ( (fpsTimer += deltaTime) >= 1.0 ) { // Si ha pasado 1 segundo
         // Calcular los FPS actuales
         currentFPS = static_cast<double>(frameCount) / fpsTimer;
 

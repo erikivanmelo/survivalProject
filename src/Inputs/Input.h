@@ -28,7 +28,6 @@ private:
     const Uint8* keyStates;
 
     double startTime = 0;
-    double endTime = 0;
     double intervalTime = 0;
     const double intervalPressed = 200;
     SDL_Scancode lastKeyPressed;

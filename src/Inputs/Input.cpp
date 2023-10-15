@@ -48,9 +48,8 @@ bool Input::getKeyPressed(SDL_Scancode key)
 
 void Input::keyUp(SDL_Scancode key)
 {
-    endTime = SDL_GetTicks();
     lastKeyPressed = key;
-    intervalTime = endTime - startTime;
+    intervalTime = SDL_GetTicks() - startTime;
 }
 
 void Input::keyDown(SDL_Scancode key)

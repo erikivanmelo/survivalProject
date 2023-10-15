@@ -21,7 +21,6 @@ Player* player = nullptr;
 
 void Engine::init(){
     //Initialize SDL
-    TTF_Init();
 
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
         throw "SDL could not initialize! SDL_Error: " + string(SDL_GetError());

@@ -8,8 +8,6 @@
 
 #define METER_TO_PIXEL 16 // 16 pixels = 1 meter
 
-#define UNIT_MASS 1.0f
-
 #define GRAVITY 9.81f // m/s^2
 
 namespace MoveDirection{
@@ -35,7 +33,6 @@ public:
     }
 
 
-    inline void setMass   ( float newMass    ){ mass = newMass;       }
     inline void setGravity( float newGravity ){ gravity = newGravity*METER_TO_PIXEL; }
 
     //Force
@@ -49,22 +46,18 @@ public:
     inline void unsetFriction()            { friction = Vector2D(0, 0);     }
 
     //Update methods
-    inline float    getMass        ()const{ return mass;        }
     inline Vector2D getPosition    ()const{ return position;    }
     inline Vector2D getVelocity    ()const{ return velocity;    }
-    inline Vector2D getAcceleration()const{ return acceleration;}
 
     void update(float dt){
-
         // Calculamos la aceleración en unidades de píxeles por segundo cuadrado
-        acceleration = (force + Vector2D(0,gravity)) - friction;
+        velocity = (force + Vector2D(0,gravity)) - friction;
 
         // Actualizamos la velocidad en unidades de píxeles por segundo
-        position = velocity = acceleration * dt;
+        position = velocity * dt;
     }
 
 private:
-    float mass;
     float gravity;
 
     Vector2D force;
@@ -72,7 +65,6 @@ private:
 
     Vector2D position;
     Vector2D velocity;
-    Vector2D acceleration;
 };
 
 #endif // RIGIDBODY_H
