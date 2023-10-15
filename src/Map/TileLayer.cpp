@@ -1,5 +1,5 @@
 #include "TileLayer.h"
-//#include "Camera/camera.h"
+#include "../Camera/Camera.h"
 
 #include "../Graphics/TextureManager.h"
 
@@ -13,8 +13,7 @@ TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, 
     tileMap(tilemap),
     tileset(tileset)
 {
-    if( !TextureManager::getInstance()->load(tileset.name,tileset.source,true) )
-        exit(1);
+    TextureManager::getInstance()->load(tileset.name,tileset.source,true);
 }
 
 void TileLayer::render()
@@ -23,12 +22,14 @@ void TileLayer::render()
     SDL_RendererFlip flip;
     int tileRow,tileCol;
 
-    //SDL_Rect box = Camera::getInstance()->getViewBox();
+    SDL_Rect box = Camera::getInstance()->getViewBox();
 
-    for(int row = 0 ; row < rowCount; row++){
-        for(int col = 0; col < colCount; col++){
+    
+    for( int row = 0 ; row < rowCount; row++ ){
+        for( int col = box.x / tileSize; col < (box.x+box.w) / tileSize; col++ ){
+            //Guarda el tile de la coordenada actual. En caso de sea menor que cero toma el ultimot bloque del mapa y en caso de que sea mayor que cero toma el primero
             // si el bloque es de aire se saltea el dibujado
-            if( ( tileId = tileMap[row][col] ) == 0)
+            if( ( tileId = tileMap[row][ ( col % colCount + colCount ) % colCount] ) == 0)
                 continue;
 
             determineRotation(tileId,flip);
@@ -36,12 +37,21 @@ void TileLayer::render()
             tileRow = tileId / tileset.colCount;
             tileCol = tileId - tileRow*tileset.colCount-1;
 
-            if(tileId % tileset.colCount == 0){
+            if( !(tileId % tileset.colCount) ){
                 tileRow--;
                 tileCol = tileset.colCount -1;
             }
 
-            TextureManager::getInstance()->drawTile(tileset.name, tileset.tileSize, col*tileset.tileSize, row*tileset.tileSize,tileRow,tileCol,flip);
+            TextureManager::getInstance()->drawTile(
+                tileset.name, 
+                tileset.tileSize, 
+                col * tileset.tileSize, 
+                row * tileset.tileSize,
+                tileRow,
+                tileCol,
+                flip
+            );
+
         }
     }
 }

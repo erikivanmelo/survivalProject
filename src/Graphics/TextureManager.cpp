@@ -11,7 +11,7 @@
 
 TextureManager* TextureManager::instance = nullptr;
 
-bool TextureManager::load( const string &id, const string &fileName, bool withTransparentMagenta ){
+void TextureManager::load( const string &id, const string &fileName, bool withTransparentMagenta ){
 	SDL_Surface* surface = IMG_Load( fileName.c_str() );
 	if( !surface )
 		throw "Failed to load image " + fileName + "! SDL_image Error: " + string(IMG_GetError());
@@ -27,8 +27,6 @@ bool TextureManager::load( const string &id, const string &fileName, bool withTr
 	SDL_FreeSurface(surface);
 	
 	textureMap[id] = texture;
-
-	return true;
 }
 
 void TextureManager::draw( const string &id, int x, int y, int width, int height, SDL_RendererFlip flip ){

@@ -5,6 +5,8 @@
 
 #include "../Physics/Transform.h"
 #include "../Physics/Point.h"
+#include "../Map/GameMap.h"
+#include "../Core/Engine.h"
 
 #include <SDL2/SDL_render.h>
 #include <string>
@@ -49,7 +51,14 @@ class GameObject : public IObject
             origin->y = transform->y + (int)(height/2);
         }
 
-        void update(float dt){
+        void update(float dt) override{
+            static const float widthMap = Engine::getInstance()->getMap()->getMapLayers()[GameMap::foreground]->getColCount() * GameMap::blockSize;
+
+            if (transform->x > widthMap) 
+                transform->x = fmod(transform->x, widthMap);
+            else if (transform->x < 0)
+                transform->x = widthMap + fmod(transform->x, widthMap);
+
             updateViewPoint();
         }
 

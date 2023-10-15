@@ -19,7 +19,7 @@ class TextureManager{
     static constexpr unsigned int TileV = 0x40000000;
     static constexpr unsigned int TileD = 0x20000000;
 
-		bool load( const string &id, const string &fileName, bool withTransparentMagenta = false );
+		void load( const string &id, const string &fileName, bool withTransparentMagenta = false );
 		void drop( const string &id );
 
 		void draw( const string &id, int x, int y, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE );
