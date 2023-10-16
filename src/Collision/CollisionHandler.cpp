@@ -23,12 +23,20 @@ bool CollisionHandler::checkColission(SDL_Rect a, SDL_Rect b)
 int8_t CollisionHandler::mapCollision(SDL_Rect a)
 {
     int x,y;
-    int leftTile    = std::clamp(   a.x        / tilesize, 0, colCount - 1);
-    int rightTile   = std::clamp(  (a.x + a.w) / tilesize, 0, colCount - 1);
+    int leftTile    = a.x / tilesize;
+    int rightTile   = (a.x + a.w) / tilesize;
+
+    if( leftTile >= colCount )
+        leftTile -= colCount;
+    if( rightTile >= colCount )
+        rightTile -= colCount;
+
     int topTile     = std::clamp(   a.y        / tilesize, 0, rowCount - 1);
     int bottomTile  = std::clamp(  (a.y + a.h) / tilesize, 0, rowCount - 1);
 
-    for( x = leftTile; x <= rightTile; x++ ){
+    for( x = leftTile; x != rightTile+1; x++ ){
+        if( x >= colCount)
+            x -= colCount; 
         for( y = topTile; y <= bottomTile; y++){
             if(collisionTileMap[y][x] > 0){
                 return true;
