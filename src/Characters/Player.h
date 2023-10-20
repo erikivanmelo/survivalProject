@@ -21,8 +21,6 @@ public:
     void checkInput();
     void update(float dt) override;
 
-    inline Transform *getTransform()const{return transform;}
-
 };
 
 #endif // PLAYER_H

@@ -46,8 +46,9 @@ public:
     inline void unsetFriction()            { friction = Vector2D(0, 0);     }
 
     //Update methods
-    inline Vector2D getPosition    ()const{ return position;    }
-    inline Vector2D getVelocity    ()const{ return velocity;    }
+    inline Vector2D getPosition()const{ return position; }
+    inline Vector2D getVelocity()const{ return velocity; }
+    inline Vector2D getForce   ()const{ return force; }
 
     void update(float dt){
         // Calculamos la aceleración en unidades de píxeles por segundo cuadrado

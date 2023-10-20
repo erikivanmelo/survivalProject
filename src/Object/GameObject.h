@@ -3,10 +3,11 @@
 
 #include "IObject.h"
 
-#include "../Physics/Transform.h"
 #include "../Physics/Point.h"
+#include "../Physics/Vector2D.h"
 #include "../Map/GameMap.h"
 #include "../Core/Engine.h"
+
 
 #include <SDL2/SDL_render.h>
 #include <string>
@@ -28,12 +29,12 @@ class GameObject : public IObject
 {
     public:
         GameObject( Properties *props ) : 
+            position( props->x, props->y ),
             width( props->width ),
             height( props->height ),
             textureId( props->textureId ),
             flip( props->flip )
         {
-            transform = new Transform( props->x, props->y );
 
             origin = new Point(
                 props->x + (int)(props->width/2),
@@ -42,22 +43,21 @@ class GameObject : public IObject
         }
 
         ~GameObject(){
-            delete transform;
             delete origin;
         }
 
         void updateViewPoint(){
-            origin->x = transform->x + (int)(width/2);
-            origin->y = transform->y + (int)(height/2);
+            origin->x = position.x + (int)(width/2);
+            origin->y = position.y + (int)(height/2);
         }
 
         void update(float dt) override{
             static const float widthMap = Engine::getInstance()->getMap()->getMapLayers()[GameMap::foreground]->getColCount() * GameMap::blockSize;
 
-            if (transform->x > widthMap) 
-                transform->x = fmod(transform->x, widthMap);
-            else if (transform->x < 0)
-                transform->x = widthMap + fmod(transform->x, widthMap);
+            if (position.x > widthMap) 
+                position.x = fmod(position.x, widthMap);
+            else if (position.x < 0)
+                position.x = widthMap + fmod(position.x, widthMap);
 
             updateViewPoint();
         }
@@ -67,7 +67,7 @@ class GameObject : public IObject
 
     protected:
         Point *origin;
-        Transform *transform;
+        Vector2D position;
         int width,height;
         std::string textureId;
         SDL_RendererFlip flip;

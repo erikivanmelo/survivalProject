@@ -12,7 +12,7 @@ Player::Player( int x, int y ) : Character(new Properties( "player_walk", x, y, 
 
     collider->setBuffer(-10,-2,0,0);
     //Tamaño de la colission box
-    collider->setCollisionBox(14,28);
+    collider->setCollisionBox(12,28);
 
     rigidBody = new RigidBody();
     //rigidBody->setGravity(3.0f);

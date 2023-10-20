@@ -74,13 +74,17 @@ void Engine::quit(){
 }
 
 void Engine::update(){
+    static const float updateTime = 1.0/50;
+    static float dt;
+    if( (dt += Timer::getInstance()->getDeltaTime()) < updateTime )
+        return;
     string fps = "FPS:"+to_string(Timer::getInstance()->getFPS())+"\n";
     string cam = "Camera:("+to_string(Camera::getInstance()->getPosition().x)+","+to_string(Camera::getInstance()->getPosition().y)+")\n";
-    float dt = Timer::getInstance()->getDeltaTime();
     map->update();
     player->update(dt);
 
     debugInfo->setText( fps + cam );
+    dt -= updateTime ;
 }
 
 void Engine::render(){

@@ -32,7 +32,6 @@ HEADERS = \
 	Core/Engine.h \
 	Graphics/TextureManager.h \
 	Physics/Vector2D.h \
-	Physics/Transform.h \
 	Object/IObject.h \
 	Object/GameObject.h \
 	Characters/Character.h \

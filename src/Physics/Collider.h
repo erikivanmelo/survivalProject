@@ -4,6 +4,7 @@
 #include <SDL2/SDL_rect.h>
 
 #include "../Camera/Camera.h"
+#include "Vector2D.h"
 
 class Collider
 {
@@ -23,13 +24,19 @@ public:
         box.y = y - buffer.y;
     }
 
+    inline void setCoordenates(Vector2D v){
+        box.x = v.x - buffer.x;
+        box.y = v.y - buffer.y;
+    }
+
     void draw(){
         Vector2D cam = Camera::getInstance()->getPosition();
-        box.x -= cam.x;
-        box.y -= cam.y;
+        SDL_Rect tmp = box;
+        tmp.x -= cam.x;
+        tmp.y -= cam.y;
         SDL_SetRenderDrawColor(Engine::getInstance()->getRenderer(),
                            255, 0, 0,255);
-        SDL_RenderDrawRect(Engine::getInstance()->getRenderer(), &box);
+        SDL_RenderDrawRect(Engine::getInstance()->getRenderer(), &tmp);
     }
 
 private:

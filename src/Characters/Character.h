@@ -6,6 +6,7 @@
 #include "../Physics/RigidBody.h"
 #include "../Physics/Collider.h"
 #include "../Collision/CollisionHandler.h"
+#include <cstdint>
 
 #define JUMP_TIME 20.0f
 #define JUMP_FORCE 5.0f
@@ -26,31 +27,23 @@ public:
 
 
     void draw()override{
-        animation->draw( transform->x, transform->y );
+        animation->draw( position.x, position.y );
+        collider->draw();
     }
 
     void checkCollision(float dt){
-        Vector2D lastSafePosition;
-        
         rigidBody->update( dt );
-        lastSafePosition.x = transform->x;
-        transform->translateX(rigidBody->getPosition().x);
-        collider->setCoordenates(transform->x, transform->y);
+        Vector2D lastSafePosition = position;
+        Vector2D trajectory = rigidBody->getPosition();
 
-        if(CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox()))
-            transform->x = lastSafePosition.x;
+        position += trajectory;
 
-        rigidBody->update( dt );
-        lastSafePosition.y = transform->y;
-        transform->translateY(rigidBody->getPosition().y);
-        collider->setCoordenates(transform->x, transform->y);
+        collider->setCoordenates(position);
+        int8_t collisionZone = 0;
 
-        if(CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())){
-            grounded = true;
-            transform->y = lastSafePosition.y;
-        }else{
-            grounded = false;
-        }
+        if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) )
+            position = CollisionHandler::getInstance()->mostPlausibleMove( lastSafePosition, position, collider, &collisionZone );
+        collider->setCoordenates(position);
     }
 
 
