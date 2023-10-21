@@ -103,34 +103,28 @@ Vector2D CollisionHandler::mostPlausibleMove(Vector2D lastSafePosition, Vector2D
 }
 
 Vector2D CollisionHandler::getFirstCollision(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone) {
-
-    float t = 0;
     Vector2D difference = newPosition - lastSafePosition;
     Vector2D direction = difference.normalize();
     if( direction.x == 0 && direction.y == 0 )
         return newPosition;
 
-    Vector2D rayPosition = lastSafePosition;
     float distance = difference.length();
+    Vector2D rayPosition = lastSafePosition;
+    int t = 0, step = ( abs(difference.x) > tilesize && abs(difference.y) > tilesize )? tilesize : 1;
 
-    if( abs(difference.x) > tilesize && abs(difference.y) > tilesize ){
-        for (t = 0; t <= distance; t += tilesize) {
-            rayPosition = lastSafePosition + (direction * t);
-            collider->setCoordenates( rayPosition.x, rayPosition.y );
-            if( (*collisionZone = mapCollision( collider->getCollisionBox() )) ){
-                t -= tilesize;
-                break;
-            }
-        }
-    }
-
-    for (t = t != 0? t: 0; t <= distance; ++t) {
-        rayPosition = lastSafePosition + (direction * t);
-
+    while( t <= distance ){
         collider->setCoordenates( rayPosition.x, rayPosition.y );
         if( (*collisionZone = mapCollision( collider->getCollisionBox() )) ){
-            return rayPosition - direction;
+            if( step == 1)
+                return rayPosition - direction;
+            else{
+                rayPosition -= direction;
+                t -= step;
+                step = 1;
+            }
         }
+        t += step;
+        rayPosition += direction;
     }
 
     return newPosition;
