@@ -51,7 +51,7 @@ void Engine::init(){
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 
-    debugInfo = new Text(" ", 0, 0, 20, {255,255,255,255}, Assets::fonts+"arial.ttf");
+    debugInfo = new Text(" ", 0, 0, 25, {255,255,255,255}, Assets::fonts + "small_pixel.ttf");
 
     running = true;
 }
@@ -79,12 +79,12 @@ void Engine::update(){
     static float dt;
     if( (dt += Timer::getInstance()->getDeltaTime()) < updateTime )
         return;
-    string fps = "FPS:"+to_string(Timer::getInstance()->getFPS())+"\n";
-    string cam = "Camera:("+to_string(Camera::getInstance()->getPosition().x)+","+to_string(Camera::getInstance()->getPosition().y)+")\n";
+    string fps = "FPS:"+to_string(Timer::getInstance()->getFPS());
+    string position = " X="+to_string((int)player->getPosition().x)+" Y="+to_string((int)player->getPosition().y)+")";
     map->update();
     player->update(dt);
 
-    debugInfo->setText( fps + cam );
+    debugInfo->setText( fps + position );
     dt -= updateTime ;
 }
 

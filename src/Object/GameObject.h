@@ -64,6 +64,7 @@ class GameObject : public IObject
 
         inline Point *getOrigin(){return origin;}
 
+        inline Vector2D getPosition()const{ return position; }
 
     protected:
         Point *origin;
