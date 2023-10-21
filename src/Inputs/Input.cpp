@@ -1,5 +1,7 @@
 #include "Input.h"
 #include "../Core/Engine.h"
+#include "../Camera/Camera.h"
+#include <SDL2/SDL_events.h>
 
 Input *Input::instance = nullptr;
 
@@ -27,6 +29,13 @@ void Input::listen()
 
             case SDL_KEYUP:
                 keyUp(event.key.keysym.scancode); break;
+            
+            case SDL_WINDOWEVENT:
+                if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+                    Camera::getInstance()->setViewBoxSize(
+                            event.window.data1, 
+                            event.window.data2
+                    );
         }
     }
 }

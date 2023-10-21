@@ -6,8 +6,8 @@ void Camera::update()
 {
     if(target != nullptr){
 
-        viewBox.x = target->x - (int)(SCREEN_WIDTH / 2);
-        viewBox.y = target->y - (int)(SCREEN_HEIGHT / 2);
+        viewBox.x = target->x - (int)(viewBox.w / 2);
+        viewBox.y = target->y - (int)(viewBox.h / 2);
 
         if(viewBox.y < 0){
             viewBox.y = 0;

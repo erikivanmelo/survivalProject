@@ -32,7 +32,7 @@ void Engine::init(){
         throw "TTF could not initialize! SDL_Error: " + string(TTF_GetError());
 
     //Create window
-    if( !(window = SDL_CreateWindow("survivalProject2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0)) )
+    if( !(window = SDL_CreateWindow("survivalProject2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE)) )
         throw "Window could not be created! SDL_Error: " + string(SDL_GetError());
 
     //Create renderer
@@ -47,6 +47,7 @@ void Engine::init(){
     TextureManager::getInstance()->load( "player_walk", Assets::sprites+"player_walk.tga", true );
     player = new Player( 0, 0 );
 
+    SDL_RenderSetScale(renderer,SCREEN_SCALE,SCREEN_SCALE);
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 

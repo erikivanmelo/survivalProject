@@ -19,6 +19,11 @@ public:
     inline Vector2D getPosition()const{return position;}
     inline void setTarget(Point *target){this->target = target;}
 
+    inline void setViewBoxSize(int width, int height){
+       viewBox.w = static_cast<int>(width/scala.w);
+       viewBox.h = static_cast<int>(height/scala.h);
+    }
+
     void update();
 
     ~Camera(){}
@@ -27,8 +32,8 @@ private:
         viewBox = {
             0,
             0,
-            SCREEN_WIDTH,
-            SCREEN_HEIGHT
+            static_cast<int>(SCREEN_WIDTH/SCREEN_SCALE),
+            static_cast<int>(SCREEN_HEIGHT/SCREEN_SCALE)
         };
         target = nullptr;
 
