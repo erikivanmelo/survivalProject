@@ -9,6 +9,7 @@
 
 namespace CollisionZone{
     enum{
+        none = 0,
         top = 8,
         bottom = 16,
         left = 32,
@@ -31,7 +32,6 @@ public:
 private:
 
     CollisionHandler();
-    Vector2D normalizePosition( Vector2D position, int8_t *collisionZone, Vector2D direction);
 
     TileMap collisionTileMap;
     static CollisionHandler *instance;

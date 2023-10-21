@@ -46,6 +46,10 @@ public:
         return ( this->x != v2.x && this->y != v2.y);
     }
 
+    bool operator==(const Vector2D& v2){
+        return ( this->x == v2.x && this->y == v2.y);
+    }
+
     bool operator<(const int& v2){
         return ( this->x < v2 && this->y < v2);
     }

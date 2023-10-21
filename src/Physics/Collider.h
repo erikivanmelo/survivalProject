@@ -24,10 +24,7 @@ public:
         box.y = y - buffer.y;
     }
 
-    inline void setCoordenates(Vector2D v){
-        box.x = v.x - buffer.x;
-        box.y = v.y - buffer.y;
-    }
+    inline void setCoordenates(Vector2D v){ setCoordenates(v.x,v.y); }
 
     void draw(){
         Vector2D cam = Camera::getInstance()->getPosition();
