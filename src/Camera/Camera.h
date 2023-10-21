@@ -20,8 +20,8 @@ public:
     inline void setTarget(Point *target){this->target = target;}
 
     inline void setViewBoxSize(int width, int height){
-       viewBox.w = static_cast<int>(width/scala.w);
-       viewBox.h = static_cast<int>(height/scala.h);
+       viewBox.w = static_cast<int>(width/SCREEN_SCALE);
+       viewBox.h = static_cast<int>(height/SCREEN_SCALE);
     }
 
     void update();
