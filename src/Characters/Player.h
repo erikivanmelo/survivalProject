@@ -4,11 +4,12 @@
 #include "Character.h"
 #include <SDL2/SDL_rect.h>
 
-#define INPUT_D Input::getInstance()->getKeyDown(SDL_SCANCODE_D)
-#define INPUT_A Input::getInstance()->getKeyDown(SDL_SCANCODE_A)
-#define INPUT_W Input::getInstance()->getKeyDown(SDL_SCANCODE_W)
-#define INPUT_S Input::getInstance()->getKeyDown(SDL_SCANCODE_S)
-#define INPUT_G Input::getInstance()->getKeyPressed(SDL_SCANCODE_G)
+#define INPUT_RIGHT     Input::getInstance()->getKeyDown(SDL_SCANCODE_D)
+#define INPUT_LEFT      Input::getInstance()->getKeyDown(SDL_SCANCODE_A)
+#define INPUT_UP        Input::getInstance()->getKeyDown(SDL_SCANCODE_W)
+#define INPUT_DOWN      Input::getInstance()->getKeyDown(SDL_SCANCODE_S)
+#define INPUT_JUMP      Input::getInstance()->getKeyDown(SDL_SCANCODE_SPACE)
+#define INPUT_FLYMODE   Input::getInstance()->getKeyPressed(SDL_SCANCODE_G)
 
 class Player : public Character
 {
@@ -18,7 +19,7 @@ public:
 
     void animationState();
 
-    void checkInput();
+    void checkInput( float dt );
     void update(float dt) override;
 
 };

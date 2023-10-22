@@ -8,18 +8,25 @@
 #include "../Collision/CollisionHandler.h"
 #include <cstdint>
 
-#define JUMP_TIME 20.0f
-#define JUMP_FORCE 5.0f
-
 class Character: public GameObject
 {
 public:
-    Character(Properties *props, const string &name) : GameObject(props), name(name){
+    Character(Properties *props, const string &name) : 
+        GameObject(props), 
+        name(name), 
+        collisionZone(CollisionZone::none)
+    {
         animation = nullptr;
+        collider = new Collider();
         rigidBody = new RigidBody();
+
+        jumpForce = 30.0;
+        jumpTime = 0.20;
+        jumpTimer = jumpTime;
         walkSpeed = 8;
         flySpeed = 16;
     }
+
     ~Character(){
         delete animation;
         delete rigidBody;
@@ -31,23 +38,10 @@ public:
         collider->draw();
     }
 
-    void checkCollision(float dt){
-        rigidBody->update( dt );
-        Vector2D lastSafePosition = position;
-        Vector2D trajectory = rigidBody->getPosition();
-
-        position += trajectory;
-
-        collider->setCoordenates(position);
-        int8_t collisionZone = 0;
-
-        if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) )
-            position = CollisionHandler::getInstance()->mostPlausibleMove( lastSafePosition, position, collider, &collisionZone );
-        collider->setCoordenates(position);
-    }
-
 
     void update( float dt )override{
+        
+
         checkCollision( dt );
 
         animation->update();
@@ -62,7 +56,6 @@ protected:
         rigidBody->ApplyForceX( toRight ? walkSpeed : walkSpeed*-1 );
         animation->setCurrentSeq( name + "_walk", toRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
         lookingRight = toRight;
-        walking = true;
     }
 
     void fly( MoveOption direction ){
@@ -87,19 +80,50 @@ protected:
                 lookingRight = true;
                 break;
         }
-        flying = true;
     }
 
+    void setFlyMode( bool flyMode ){
+        this->flyMode = flyMode;
+        rigidBody->setGravity( flyMode? 0 : GRAVITY );
+    }
+
+    void jump(){
+        if( grounded ){
+            jumping = true;
+            rigidBody->ApplyForceY( MoveDirection::UP * jumpForce ); 
+        }
+
+    }
+
+    void checkCollision(float dt){
+        rigidBody->update( dt );
+        Vector2D lastSafePosition = position;
+        Vector2D trajectory = rigidBody->getPosition();
+
+        position += trajectory;
+
+        collider->setCoordenates(position);
+
+        if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) )
+            position = CollisionHandler::getInstance()->mostPlausibleMove( lastSafePosition, position, collider, &collisionZone );
+        collider->setCoordenates(position);
+
+        grounded = collisionZone & CollisionZone::bottom;
+        if( collisionZone & CollisionZone::top ){
+           jumping = false; 
+        }
+    }
 
     std::string name;
     Animation *animation;
     RigidBody *rigidBody;
     
     float walkSpeed, flySpeed;
-    bool walking = false, flying = false, jumping = false, grounded = false;
+    bool jumping = false, grounded = false;
     bool flyMode = false;
 
     float jumpTime;
+    float jumpTimer;
     float jumpForce;
 
     bool lookingRight = true;
@@ -107,7 +131,7 @@ protected:
     Collider *collider;
 
 
-    int collisionZone;
+    int8_t collisionZone;
 };
 
 #endif // CHARACTER_H
