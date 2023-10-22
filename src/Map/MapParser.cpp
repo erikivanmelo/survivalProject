@@ -93,13 +93,7 @@ Tileset MapParser::parseTileSet(TiXmlElement *xmlTileset)
 
 TileLayer *MapParser::parseTileLayer(TiXmlElement *xmlLayer, Tileset tileset, int tilesize, int rowcount, int colcount)
 {
-    TiXmlElement *data = nullptr;
-    for(TiXmlElement *e = xmlLayer->FirstChildElement(); e != nullptr; e=e->NextSiblingElement()){
-        if(e->Value() == std::string("data")){
-            data = e;
-            break;
-        }
-    }
+    TiXmlElement* data = xmlLayer->FirstChildElement("data");
 
     std::string matrix(data->GetText());
     std::stringstream iss(matrix);
