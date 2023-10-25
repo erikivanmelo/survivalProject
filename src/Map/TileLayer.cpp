@@ -2,6 +2,7 @@
 #include "../Camera/Camera.h"
 
 #include "../Graphics/TextureManager.h"
+#include "../Assets/AssetsManager.h"
 
 
 TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, Tileset tileset):
@@ -13,7 +14,7 @@ TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, 
     tileMap(tilemap),
     tileset(tileset)
 {
-    TextureManager::getInstance()->load(tileset.name,tileset.source,true);
+    AssetsManager::getInstance()->loadTexture(tileset.name,tileset.source,true);
 }
 
 void TileLayer::render()
@@ -42,7 +43,7 @@ void TileLayer::render()
                 tileCol = tileset.colCount -1;
             }
 
-            TextureManager::getInstance()->drawTile(
+            TextureManager::drawTile(
                 tileset.name, 
                 tileset.tileSize, 
                 col * tileset.tileSize, 

@@ -1,6 +1,5 @@
 #include "MapParser.h"
-#include "../Core/Engine.h"
-
+#include "../Assets/AssetsManager.h"
 MapParser *MapParser::instance = nullptr;
 
 const std::string MapParser::worldName = "overworld";

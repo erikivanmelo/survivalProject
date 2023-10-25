@@ -1,5 +1,5 @@
 #include "Engine.h"
-#include "../Graphics/TextureManager.h"
+#include "../Assets/AssetsManager.h"
 #include "../Characters/Player.h"
 #include "../Inputs/Input.h"
 #include "../Timer/Timer.h"
@@ -44,7 +44,8 @@ void Engine::init(){
 
     map = MapParser::getInstance()->getMap("overworld");
 
-    TextureManager::getInstance()->load( "player_walk", Assets::sprites+"player_walk.tga", true );
+    
+    AssetsManager::getInstance()->load();
     player = new Player( 0, 0 );
 
     SDL_RenderSetScale(renderer,SCREEN_SCALE,SCREEN_SCALE);
@@ -58,7 +59,7 @@ void Engine::init(){
 
 Engine::~Engine(){
     delete debugInfo;
-    TextureManager::clean();
+    AssetsManager::clean();
     Timer::clean();
     Camera::clean();
     Input::clean();

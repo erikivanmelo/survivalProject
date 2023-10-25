@@ -10,13 +10,6 @@
 #define SCREEN_HEIGHT 300
 #define SCREEN_SCALE 1
 
-namespace Assets{
-	const string base			= "../assets/";
-	const string maps			= base+"maps/";
-	const string fonts		= base+"fonts/";
-	const string sprites	= base+"sprites/";
-}
-
 class Engine
 {
     public:

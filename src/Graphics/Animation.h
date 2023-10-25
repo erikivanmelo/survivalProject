@@ -1,6 +1,8 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_image.h>
 #include <iostream>
 using namespace std;
 
@@ -11,14 +13,14 @@ using namespace std;
 
 struct AnimationSeq{
     AnimationSeq(
-        const string &textureId,
+        SDL_Texture *texture,
         int spriteRow,
         int frameCount, 
         int animSpeed,
         int spriteWidth,
         int spriteHeight
     ):
-        textureId(textureId),
+        texture(texture),
         spriteRow(spriteRow),
         frameCount(frameCount),
         animSpeed(animSpeed),
@@ -26,7 +28,7 @@ struct AnimationSeq{
         spriteHeight(spriteHeight)
     {}
 
-    string textureId;
+    SDL_Texture *texture;
     int spriteRow;
     int frameCount;
     int animSpeed;

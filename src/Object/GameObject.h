@@ -7,18 +7,19 @@
 #include "../Physics/Vector2D.h"
 #include "../Map/GameMap.h"
 #include "../Core/Engine.h"
-
+#include "../Graphics/TextureManager.h"
 
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_image.h>
 #include <string>
 
 struct Properties{
 
 public:
-    Properties( const std::string &TextureId, int X, int Y, int Width, int Height,SDL_RendererFlip Flip = SDL_FLIP_NONE ): textureId(TextureId), x(X), y(Y), width(Width), height(Height), flip(Flip){
+    Properties( const std::string &textureId, int x, int y, int width, int height,SDL_RendererFlip flip = SDL_FLIP_NONE ): texture(AssetsManager::getInstance()->getTexture(textureId)), x(x), y(y), width(width), height(height), flip(flip){
     }
 
-    const std::string textureId;
+    SDL_Texture *texture;
     float x,y;
     int width,height;
     SDL_RendererFlip flip;
@@ -32,7 +33,7 @@ class GameObject : public IObject
             position( props->x, props->y ),
             width( props->width ),
             height( props->height ),
-            textureId( props->textureId ),
+            texture( props->texture ),
             flip( props->flip )
         {
 
@@ -70,12 +71,9 @@ class GameObject : public IObject
         Point *origin;
         Vector2D position;
         int width,height;
-        std::string textureId;
+        SDL_Texture *texture;
         SDL_RendererFlip flip;
 
 };
 
 #endif // GAMEOBJECT_H
-
-
-

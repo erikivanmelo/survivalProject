@@ -1,5 +1,5 @@
 #include "Animation.h"
-#include "../Graphics/TextureManager.h"
+#include "TextureManager.h"
 
 Animation::Animation( AnimationSeqList *list, const string &defaultSeq ):
     seqList(list)
@@ -26,8 +26,8 @@ void Animation::update()
 
 void Animation::draw( float x, float y )
 {
-    TextureManager::getInstance()->drawFrame(
-        currentSeq->textureId,
+    TextureManager::drawFrame(
+        currentSeq->texture,
         x, 
         y, 
         currentSeq->spriteWidth, 

@@ -6,7 +6,7 @@ USE_VALGRIND = 0
 CC = g++
 
 # Opciones de compilación
-CFLAGS = -std=c++17 -I/usr/local/include
+CFLAGS = -std=c++17 -I/usr/local/include -O2 -s
 
 # Rutas a las bibliotecas
 LDFLAGS = -L/usr/local/lib -g
@@ -19,7 +19,7 @@ SOURCES = \
 	Core/Engine.cpp \
 	Graphics/TextureManager.cpp \
 	Characters/Player.cpp \
-	Animation/Animation.cpp \
+	Graphics/Animation.cpp \
 	Inputs/Input.cpp \
 	Timer/Timer.cpp \
 	Map/MapParser.cpp \
@@ -27,6 +27,7 @@ SOURCES = \
 	Camera/Camera.cpp \
 	Graphics/Text.cpp \
 	Collision/CollisionHandler.cpp \
+	Assets/AssetsManager.cpp \
 
 HEADERS = \
 	Core/Engine.h \
@@ -36,7 +37,7 @@ HEADERS = \
 	Object/GameObject.h \
 	Characters/Character.h \
 	Characters/Player.h \
-	Animation/Animation.h \
+	Graphics/Animation.h \
 	Physics/RigidBody.h \
 	Inputs/Input.h \
 	Timer/Timer.h \
@@ -48,6 +49,7 @@ HEADERS = \
 	Graphics/Text.h \
 	Physics/Collider.h \
 	Collision/CollisionHandler.h \
+	Assets/AssetsManager.h \
 
 
 # Objetos generados

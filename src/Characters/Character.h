@@ -2,7 +2,7 @@
 #define CHARACTER_H
 
 #include "../Object/GameObject.h"
-#include "../Animation/Animation.h"
+#include "../Graphics/Animation.h"
 #include "../Physics/RigidBody.h"
 #include "../Physics/Collider.h"
 #include "../Collision/CollisionHandler.h"
@@ -35,7 +35,8 @@ public:
 
     void draw()override{
         animation->draw( position.x, position.y );
-        collider->draw();
+        if( collisionBoxView )
+            collider->draw();
     }
 
 
@@ -54,7 +55,7 @@ protected:
 
     void walk(bool toRight){
         rigidBody->ApplyForceX( toRight ? walkSpeed : walkSpeed*-1 );
-        animation->setCurrentSeq( name + "_walk", toRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
+        animation->setCurrentSeq( "walk", toRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
         lookingRight = toRight;
     }
 
@@ -71,12 +72,12 @@ protected:
                 break;
             case LEFT:
                 rigidBody->ApplyForceX( MoveDirection::LEFT * flySpeed );
-                animation->setCurrentSeq( name + "_stand", SDL_FLIP_HORIZONTAL );
+                animation->setCurrentSeq( "stand", SDL_FLIP_HORIZONTAL );
                 lookingRight = false;
                 break;
             case RIGHT:
                 rigidBody->ApplyForceX( MoveDirection::RIGHT * flySpeed );
-                animation->setCurrentSeq( name + "_stand", SDL_FLIP_NONE );
+                animation->setCurrentSeq( "stand" );
                 lookingRight = true;
                 break;
         }
@@ -121,6 +122,7 @@ protected:
     float walkSpeed, flySpeed;
     bool jumping = false, grounded = false;
     bool flyMode = false;
+    bool collisionBoxView = false;
 
     float jumpTime;
     float jumpTimer;
