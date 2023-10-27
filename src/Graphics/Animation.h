@@ -58,6 +58,11 @@ public:
     AnimationSeq* at( const string &key ){
         return list[key];
     }
+
+
+    bool exist(const string &id){
+        return list.count(id) > 0;
+    }
     
 private:
     unordered_map< string, AnimationSeq* > list;
@@ -70,7 +75,7 @@ typedef pair< string, AnimationSeq* > AnimationSeqPair;
 class Animation
 {
 public:
-    Animation( AnimationSeqList *list, const string &defaultSeq );
+    Animation( AnimationSeqList *list );
     ~Animation();
     void update();
     void draw( float x, float y );

@@ -1,5 +1,7 @@
 #include "AssetsManager.h"
+#include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_surface.h>
 
 AssetsManager* AssetsManager::instance = nullptr;
 
@@ -7,12 +9,14 @@ SDL_Texture *AssetsManager::loadTexture( const string &id, const string &fileNam
     SDL_Surface* surface = IMG_Load( fileName.c_str() );
     if( !surface )
         throw "Failed to load image " + fileName + "! SDL_image Error: " + string(IMG_GetError());
+    surface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STATIC);
 
     // Añade el color magenta a la lista de colores transparentes.
     if( withTransparentMagenta)
         SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(),surface);
+    ;
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), surface);
     if ( !texture )
         throw "Failed to create texture from " + fileName + "! SDL Error: " + string(SDL_GetError());
 
@@ -72,6 +76,8 @@ void AssetsManager::load(){
                     ) 
                 );
             }
+            if( !animationSeqs->exist("default")  )
+                animationSeqs->insert( "default", new AnimationSeq(texture, 1, 1, 0, width, height) );
             this->animationSeqMap[name] = animationSeqs;
         }
 

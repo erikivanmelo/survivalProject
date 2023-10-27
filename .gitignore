@@ -1,3 +1,4 @@
 bin/
 assets/tests
 src/.depend
+src/.ccls-cache/

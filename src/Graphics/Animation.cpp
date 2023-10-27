@@ -1,10 +1,10 @@
 #include "Animation.h"
 #include "TextureManager.h"
 
-Animation::Animation( AnimationSeqList *list, const string &defaultSeq ):
+Animation::Animation( AnimationSeqList *list ):
     seqList(list)
 {
-    currentSeq = list->at(defaultSeq);
+    currentSeq = list->at("default");
     forceAnimSpeed = -1;
     flip = SDL_FLIP_NONE;
     spriteFrame = 0;

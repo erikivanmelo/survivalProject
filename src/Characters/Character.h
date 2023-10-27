@@ -11,21 +11,23 @@
 class Character: public GameObject
 {
 public:
-    Character(Properties *props, const string &name) : 
-        GameObject(props), 
-        name(name), 
-        collisionZone(CollisionZone::none)
-    {
-        animation = nullptr;
-        collider = new Collider();
-        rigidBody = new RigidBody();
-
-        jumpForce = 30.0;
-        jumpTime = 0.20;
-        jumpTimer = jumpTime;
-        walkSpeed = 8;
-        flySpeed = 16;
-    }
+    Character( const string &textureId, Vector2D position, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE ) : 
+        GameObject( textureId, position, width, height, flip ),
+        animation( new Animation( AssetsManager::getInstance()->getAnimationSeqMap( textureId ) ) ),
+        rigidBody( new RigidBody() ),
+        walkSpeed( 8 ),
+        flySpeed( 16 ),
+        jumping( true ),
+        grounded( false ),
+        flyMode( false ),
+        collisionBoxView( false ),
+        jumpTime( 0.20 ),
+        jumpTimer( 0.20 ),
+        jumpForce( 30.0 ),
+        lookingRight( true ),
+        collider( new Collider() ),
+        collisionZone( CollisionZone::none )
+    {}
 
     ~Character(){
         delete animation;
@@ -72,12 +74,12 @@ protected:
                 break;
             case LEFT:
                 rigidBody->ApplyForceX( MoveDirection::LEFT * flySpeed );
-                animation->setCurrentSeq( "stand", SDL_FLIP_HORIZONTAL );
+                animation->setCurrentSeq( "default", SDL_FLIP_HORIZONTAL );
                 lookingRight = false;
                 break;
             case RIGHT:
                 rigidBody->ApplyForceX( MoveDirection::RIGHT * flySpeed );
-                animation->setCurrentSeq( "stand" );
+                animation->setCurrentSeq( "default" );
                 lookingRight = true;
                 break;
         }
@@ -115,7 +117,6 @@ protected:
         }
     }
 
-    std::string name;
     Animation *animation;
     RigidBody *rigidBody;
     

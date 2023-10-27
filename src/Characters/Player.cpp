@@ -2,23 +2,16 @@
 #include "../Inputs/Input.h"
 #include "../Camera/Camera.h"
 #include "../Physics/Collider.h"
-#include "../Assets/AssetsManager.h"
 
 #include <SDL2/SDL_log.h>
 #include <algorithm>
 
-Player::Player( int x, int y ) : Character(new Properties( "player", x, y, 32, 32 ),"player")
+Player::Player( Vector2D position ) : Character( "player", position, 32, 32 )
 {
-
     //Posicion de la colission box
     collider->setBuffer(-10,-2,0,0);
     //Tamaño de la colission box
     collider->setCollisionBox(12,28);
-
-    animation = new Animation( AssetsManager::getInstance()->getAnimationSeqMap( "player" ), "stand" );
-
-
-
 }
 
 
@@ -57,7 +50,7 @@ void Player::checkInput( float dt ){
 }
 
 void Player::update( float dt ){
-    animation->setCurrentSeq( "stand", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
+    animation->setCurrentSeq( "default", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
     rigidBody->unsetForce();
 
     checkInput( dt );

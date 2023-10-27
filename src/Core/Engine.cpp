@@ -46,7 +46,7 @@ void Engine::init(){
 
     
     AssetsManager::getInstance()->load();
-    player = new Player( 0, 0 );
+    player = new Player( Vector2D( 0, 0 ) );
 
     SDL_RenderSetScale(renderer,SCREEN_SCALE,SCREEN_SCALE);
 

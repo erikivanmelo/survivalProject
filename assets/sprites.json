@@ -10,13 +10,6 @@
 				"row":1,
 				"count":4,
 				"speed":150
-			},
-
-			"stand":{
-				"row":1,
-				"count":1,
-				"speed":0,
-				"default":true
 			}
 		}
 	}

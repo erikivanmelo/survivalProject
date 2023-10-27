@@ -16,7 +16,7 @@ class Player : public Character
 {
 
 public:
-    Player( int x = 0, int y = 0 );
+    explicit Player( Vector2D posiiton );
 
     void animationState();
 

@@ -13,35 +13,20 @@
 #include <SDL2/SDL_image.h>
 #include <string>
 
-struct Properties{
-
-public:
-    Properties( const std::string &textureId, int x, int y, int width, int height,SDL_RendererFlip flip = SDL_FLIP_NONE ): texture(AssetsManager::getInstance()->getTexture(textureId)), x(x), y(y), width(width), height(height), flip(flip){
-    }
-
-    SDL_Texture *texture;
-    float x,y;
-    int width,height;
-    SDL_RendererFlip flip;
-
-};
-
 class GameObject : public IObject
 {
     public:
-        GameObject( Properties *props ) : 
-            position( props->x, props->y ),
-            width( props->width ),
-            height( props->height ),
-            texture( props->texture ),
-            flip( props->flip )
-        {
-
-            origin = new Point(
-                props->x + (int)(props->width/2),
-                props->y + (int)(props->height/2)
-            );
-        }
+        GameObject( const string &textureId, Vector2D position, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE ):
+            position( position ),
+            width( width ),
+            height( height ),
+            texture( AssetsManager::getInstance()->getTexture(textureId) ),
+            flip( flip ),
+            origin(new Point(
+                position.x + (int)( width/2  ),
+                position.y + (int)( height/2 )
+            ))
+        {}
 
         ~GameObject(){
             delete origin;
@@ -68,11 +53,11 @@ class GameObject : public IObject
         inline Vector2D getPosition()const{ return position; }
 
     protected:
-        Point *origin;
         Vector2D position;
         int width,height;
         SDL_Texture *texture;
         SDL_RendererFlip flip;
+        Point *origin;
 
 };
 
