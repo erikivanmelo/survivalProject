@@ -6,6 +6,7 @@
 #include "../Physics/RigidBody.h"
 #include "../Physics/Collider.h"
 #include "../Collision/CollisionHandler.h"
+#include <cmath>
 #include <cstdint>
 
 class Character: public GameObject
@@ -17,13 +18,12 @@ public:
         rigidBody( new RigidBody() ),
         walkSpeed( 8 ),
         flySpeed( 16 ),
-        jumping( true ),
+        jumping( false ),
         grounded( false ),
         flyMode( false ),
         collisionBoxView( false ),
-        jumpTime( 0.20 ),
-        jumpTimer( 0.20 ),
-        jumpForce( 30.0 ),
+        jumpForce( 50.0 ),
+        //jumpForce( 28.0 ),
         lookingRight( true ),
         collider( new Collider() ),
         collisionZone( CollisionZone::none )
@@ -50,6 +50,7 @@ public:
         animation->update();
         collider->draw();
         GameObject::update( dt );
+        rigidBody->unsetForce();
     }
 
 
@@ -93,6 +94,9 @@ protected:
     void jump(){
         if( grounded ){
             jumping = true;
+            grounded = false;
+            rigidBody->ApplyForceY( MoveDirection::UP * jumpForce ); 
+        }else if( jumping ){
             rigidBody->ApplyForceY( MoveDirection::UP * jumpForce ); 
         }
 
@@ -100,21 +104,29 @@ protected:
 
     void checkCollision(float dt){
         rigidBody->update( dt );
-        Vector2D lastSafePosition = position;
+        Vector2D lastSafePosition = this->position;
         Vector2D trajectory = rigidBody->getPosition();
 
-        position += trajectory;
+        this->position += trajectory;
 
-        collider->setCoordenates(position);
+        collider->setCoordenates(this->position);
 
-        if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) )
-            position = CollisionHandler::getInstance()->mostPlausibleMove( lastSafePosition, position, collider, &collisionZone );
-        collider->setCoordenates(position);
-
-        grounded = collisionZone & CollisionZone::bottom;
-        if( collisionZone & CollisionZone::top ){
-           jumping = false; 
+        if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) ){
+            this->position = CollisionHandler::getInstance()->mostPlausibleMove( lastSafePosition, this->position, collider, &collisionZone );
+            if( collisionZone & CollisionZone::left || collisionZone & CollisionZone::right )
+                rigidBody->unsetAccelerationX();
+            if( collisionZone & CollisionZone::bottom || collisionZone & CollisionZone::top ){
+                rigidBody->unsetAccelerationY();
+                jumping = false;
+            }
+            trajectory = this->position - lastSafePosition;
+            collider->setCoordenates( this->position );
         }
+        
+        grounded = collisionZone & CollisionZone::bottom;
+        if( grounded )
+            jumping = false;
+
     }
 
     Animation *animation;
@@ -125,8 +137,6 @@ protected:
     bool flyMode = false;
     bool collisionBoxView = false;
 
-    float jumpTime;
-    float jumpTimer;
     float jumpForce;
 
     bool lookingRight = true;

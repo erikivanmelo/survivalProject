@@ -8,7 +8,7 @@
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 300
-#define SCREEN_SCALE 1
+#define SCREEN_SCALE 2
 
 class Engine
 {
