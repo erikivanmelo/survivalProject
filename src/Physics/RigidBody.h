@@ -31,15 +31,14 @@ public:
     {
         setGravity(GRAVITY);
         friction = 0;
-        acceleration = 0;
+        movement = 0;
+        velocity = 0;
         if (withLastState)
             lastState = new RigidBody(false);
     }
 
     void update( const RigidBody *other ) {
         gravity = other->gravity;
-        acceleration = other->acceleration;
-        force = other->force;
         friction = other->friction;
         position = other->position;
         velocity = other->velocity;
@@ -53,19 +52,14 @@ public:
     inline void setGravity( float newGravity ){ gravity = METER_TO_PIXEL(newGravity); }
     inline float getGravity ()                 const{ return gravity; }
 
-    //Force
-    inline void ApplyForces( Vector2D f ){ force   = METER_TO_PIXEL(f);  }
-    inline void ApplyForceX( float fx   ){ force.x = METER_TO_PIXEL(fx); }
-    inline void ApplyForceY( float fy   ){ force.y = METER_TO_PIXEL(fy); }
+    //Velocity
+    inline void setVelocity ( Vector2D f ){ velocity = METER_TO_PIXEL(f);  }
+    inline void setVelocityX( float fx   ){ velocity.x = METER_TO_PIXEL(fx); }
+    inline void setVelocityY( float fy   ){ velocity.y = METER_TO_PIXEL(fy); }
 
-    inline void unsetAcceleration  () { acceleration   = 0; }
-    inline void unsetAccelerationX () { acceleration.x = 0; }
-    inline void unsetAccelerationY () { acceleration.y = 0; }
-    inline void setAccelerationY ( const float accelerationY ) { acceleration.y = accelerationY; }
-
-    inline void unsetForce () { force   = 0; }
-    inline void unsetForceY() { force.y = 0; }
-    inline void unsetForceX() { force.x = 0; }
+    inline void applyMovement ( Vector2D f ){ movement   = METER_TO_PIXEL(f);  }
+    inline void applyMovementX( float fx   ){ movement.x = METER_TO_PIXEL(fx); }
+    inline void applyMovementY( float fy   ){ movement.y = METER_TO_PIXEL(fy); }
 
     //Friction
     inline void applyFriction(Vector2D fr) { friction = METER_TO_PIXEL(fr);  }
@@ -74,31 +68,30 @@ public:
     //Update methods
     inline Vector2D getPosition     ()const{ return position;     }
     inline Vector2D getVelocity     ()const{ return velocity;     }
-    inline Vector2D getForce        ()const{ return force;        }
-    inline Vector2D getAcceleration ()const{ return acceleration; }
+
+    inline void unsetVelocity()            { velocity = Vector2D(0, 0);     }
+    inline void unsetVelocityX()           { velocity.x = 0;     }
+    inline void unsetVelocityY()           { velocity.y = 0;     }
 
     inline RigidBody *getLastState()const{ return lastState; }
 
     void update(float dt){
         lastState->update( this );
-        // Calculamos la aceleración en unidades de píxeles por segundo cuadrado
-        acceleration += Vector2D( 0, gravity );
-        velocity = (force + acceleration) - friction;
+        velocity += Vector2D( 0, gravity ) - friction;
 
         // Actualizamos la velocidad en unidades de píxeles por segundo
-        position = velocity * dt;
+        position = (velocity + movement) * dt;
+        movement = 0;
     }
 
 private:
     float gravity;
 
-    Vector2D acceleration;
-
-    Vector2D force;
     Vector2D friction;
 
     Vector2D position;
     Vector2D velocity;
+    Vector2D movement;
     RigidBody *lastState;
 
 };

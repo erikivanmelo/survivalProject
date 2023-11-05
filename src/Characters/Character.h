@@ -22,8 +22,7 @@ public:
         grounded( false ),
         flyMode( false ),
         collisionBoxView( false ),
-        jumpForce( 50.0 ),
-        //jumpForce( 28.0 ),
+        jumpVelocity( 30.0 ),
         lookingRight( true ),
         collider( new Collider() ),
         collisionZone( CollisionZone::none )
@@ -50,14 +49,13 @@ public:
         animation->update();
         collider->draw();
         GameObject::update( dt );
-        rigidBody->unsetForce();
     }
 
 
 protected:
 
     void walk(bool toRight){
-        rigidBody->ApplyForceX( toRight ? walkSpeed : walkSpeed*-1 );
+        rigidBody->applyMovementX( toRight ? walkSpeed : walkSpeed*-1 );
         animation->setCurrentSeq( "walk", toRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
         lookingRight = toRight;
     }
@@ -68,18 +66,18 @@ protected:
 
         switch (direction) {
             case UP:
-                rigidBody->ApplyForceY( MoveDirection::UP * flySpeed );
+                rigidBody->applyMovementY( MoveDirection::UP * flySpeed );
                 break;
             case DOWN:
-                rigidBody->ApplyForceY( MoveDirection::DOWN * flySpeed );
+                rigidBody->applyMovementY( MoveDirection::DOWN * flySpeed );
                 break;
             case LEFT:
-                rigidBody->ApplyForceX( MoveDirection::LEFT * flySpeed );
+                rigidBody->applyMovementX( MoveDirection::LEFT * flySpeed );
                 animation->setCurrentSeq( "default", SDL_FLIP_HORIZONTAL );
                 lookingRight = false;
                 break;
             case RIGHT:
-                rigidBody->ApplyForceX( MoveDirection::RIGHT * flySpeed );
+                rigidBody->applyMovementX( MoveDirection::RIGHT * flySpeed );
                 animation->setCurrentSeq( "default" );
                 lookingRight = true;
                 break;
@@ -92,14 +90,11 @@ protected:
     }
 
     void jump(){
-        if( grounded ){
+        if( grounded && !jumping ){
             jumping = true;
             grounded = false;
-            rigidBody->ApplyForceY( MoveDirection::UP * jumpForce ); 
-        }else if( jumping ){
-            rigidBody->ApplyForceY( MoveDirection::UP * jumpForce ); 
+            rigidBody->setVelocityY( MoveDirection::UP * jumpVelocity ); 
         }
-
     }
 
     void checkCollision(float dt){
@@ -114,18 +109,15 @@ protected:
         if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) ){
             this->position = CollisionHandler::getInstance()->mostPlausibleMove( lastSafePosition, this->position, collider, &collisionZone );
             if( collisionZone & CollisionZone::left || collisionZone & CollisionZone::right )
-                rigidBody->unsetAccelerationX();
+                rigidBody->unsetVelocityX();
             if( collisionZone & CollisionZone::bottom || collisionZone & CollisionZone::top ){
-                rigidBody->unsetAccelerationY();
+                rigidBody->unsetVelocityY();
                 jumping = false;
             }
-            trajectory = this->position - lastSafePosition;
             collider->setCoordenates( this->position );
         }
         
         grounded = collisionZone & CollisionZone::bottom;
-        if( grounded )
-            jumping = false;
 
     }
 
@@ -137,7 +129,7 @@ protected:
     bool flyMode = false;
     bool collisionBoxView = false;
 
-    float jumpForce;
+    float jumpVelocity;
 
     bool lookingRight = true;
 

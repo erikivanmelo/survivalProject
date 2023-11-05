@@ -36,6 +36,9 @@ void Player::checkInput( float dt ){
 
     if( INPUT_JUMP ){
         jump();
+    } else if ( this->rigidBody->getVelocity().y < 0 && this->jumping) {
+        this->rigidBody->unsetVelocityY();
+        this->jumping = false;
     }
 }
 
