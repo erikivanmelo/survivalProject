@@ -27,30 +27,16 @@ enum MoveOption{
 class RigidBody
 {
 public:
-    RigidBody(bool withLastState = true)
-    {
-        setGravity(GRAVITY);
-        friction = 0;
-        movement = 0;
-        velocity = 0;
-        if (withLastState)
-            lastState = new RigidBody(false);
-    }
+    RigidBody():
+        gravity(Vector2D( 0, METER_TO_PIXEL(GRAVITY))),
+        friction(0),
+        position(0),
+        velocity(0),
+        movement(0)
+    {}
 
-    void update( const RigidBody *other ) {
-        gravity = other->gravity;
-        friction = other->friction;
-        position = other->position;
-        velocity = other->velocity;
-    }
-
-    ~RigidBody(){
-        delete lastState;
-    }
-
-
-    inline void setGravity( float newGravity ){ gravity = METER_TO_PIXEL(newGravity); }
-    inline float getGravity ()                 const{ return gravity; }
+    inline void setGravity( float newGravity ){ gravity = Vector2D( 0, METER_TO_PIXEL(newGravity) ); }
+    inline float getGravity ()                 const{ return gravity.y; }
 
     //Velocity
     inline void setVelocity ( Vector2D f ){ velocity = METER_TO_PIXEL(f);  }
@@ -73,11 +59,10 @@ public:
     inline void unsetVelocityX()           { velocity.x = 0;     }
     inline void unsetVelocityY()           { velocity.y = 0;     }
 
-    inline RigidBody *getLastState()const{ return lastState; }
-
     void update(float dt){
-        lastState->update( this );
-        velocity += Vector2D( 0, gravity ) - friction;
+
+        velocity += gravity - friction;
+        //velocity.log("velocity");
 
         // Actualizamos la velocidad en unidades de píxeles por segundo
         position = (velocity + movement) * dt;
@@ -85,14 +70,13 @@ public:
     }
 
 private:
-    float gravity;
+    Vector2D gravity;
 
     Vector2D friction;
 
     Vector2D position;
     Vector2D velocity;
     Vector2D movement;
-    RigidBody *lastState;
 
 };
 

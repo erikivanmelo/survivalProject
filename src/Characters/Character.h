@@ -106,19 +106,16 @@ protected:
 
         collider->setCoordenates(this->position);
 
-        if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) ){
-            this->position = CollisionHandler::getInstance()->mostPlausibleMove( lastSafePosition, this->position, collider, &collisionZone );
-            if( collisionZone & CollisionZone::left || collisionZone & CollisionZone::right )
-                rigidBody->unsetVelocityX();
-            if( collisionZone & CollisionZone::bottom || collisionZone & CollisionZone::top ){
-                rigidBody->unsetVelocityY();
-                jumping = false;
-            }
-            collider->setCoordenates( this->position );
-        }
-        
-        grounded = collisionZone & CollisionZone::bottom;
+        if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) )
+            collider->setCoordenates( this->position = CollisionHandler::getInstance()->mostPlausiblePosition( lastSafePosition, this->position, collider, &collisionZone ) );
 
+        if( collisionZone & CollisionZone::left || collisionZone & CollisionZone::right )
+            rigidBody->unsetVelocityX();
+
+        if( collisionZone & CollisionZone::bottom || collisionZone & CollisionZone::top ){
+            rigidBody->unsetVelocityY();
+            jumping = false;
+        }        grounded = collisionZone & CollisionZone::bottom;
     }
 
     Animation *animation;
