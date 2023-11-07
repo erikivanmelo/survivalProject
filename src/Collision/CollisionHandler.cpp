@@ -27,39 +27,36 @@ bool CollisionHandler::checkColission(SDL_Rect a, SDL_Rect b)
 int8_t CollisionHandler::mapCollision(SDL_Rect a)
 {
     int x,y;
-    int leftTile    = a.x / tilesize;
-    int rightTile   = (a.x + (a.w-1)) / tilesize;
     int8_t collisionZone = CollisionZone::none;
+    const int leftTile    = wrapToRange(a.x / tilesize, colCount);
+    const int rightTile   = wrapToRange((a.x + (a.w-1)) / tilesize,colCount);
+    const int topTile     = std::clamp(   a.y            / tilesize, 0, rowCount - 1);
+    const int bottomTile  = std::clamp(  (a.y + (a.h-1)) / tilesize, 0, rowCount - 1);
 
-    if( leftTile >= colCount )
-        leftTile -= colCount;
-    if( rightTile >= colCount )
-        rightTile -= colCount;
-
-    int topTile     = std::clamp(   a.y            / tilesize, 0, rowCount - 1);
-    int bottomTile  = std::clamp(  (a.y + (a.h-1)) / tilesize, 0, rowCount - 1);
-
-    for( x = leftTile; x != rightTile+1; x++ ){
-        x = (x + colCount) % colCount; // Ajusta x dentro de los límites de colCount
-
+    x = leftTile;
+    do{
+        x = wrapToRange(x, colCount);
         for( y = topTile; y <= bottomTile; y++){
-            if(collisionTileMap[y][x] > 0){
-                if (y == topTile) 
-                    collisionZone |= CollisionZone::top;
-                if (y == bottomTile) 
-                    collisionZone |= CollisionZone::bottom;
-                if (x == leftTile) 
-                    collisionZone |= CollisionZone::left;
-                if (x == rightTile) 
-                    collisionZone |= CollisionZone::right;
-            }
+            if( !collisionTileMap[y][x] )
+                continue;
+
+            if (y == topTile) 
+                collisionZone |= CollisionZone::top;
+            else if (y == bottomTile) 
+                collisionZone |= CollisionZone::bottom;
+
+            if (x == leftTile) 
+                collisionZone |= CollisionZone::left;
+            else if (x == rightTile) 
+                collisionZone |= CollisionZone::right;
         }
-    }
+        x++;
+    }while(x != rightTile+1);
 
     return collisionZone;
 }
 
-Vector2D CollisionHandler::mostPlausibleMove(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone){
+Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone){
     Vector2D position = newPosition;
     Vector2D trajectory = newPosition - lastSafePosition;
     if( (newPosition - lastSafePosition) == 0.0 )
@@ -135,7 +132,7 @@ Vector2D CollisionHandler::getFirstCollision(Vector2D lastSafePosition, Vector2D
     Vector2D rayPosition = lastSafePosition;
     int t = 0, step = ( abs(difference.x) > tilesize && abs(difference.y) > tilesize )? tilesize : 1;
 
-    while( t <= distance ){
+    do{
         collider->setCoordenates( rayPosition.x, rayPosition.y );
         if( (*collisionZone = mapCollision( collider->getCollisionBox() )) ){
             if( step == 1)
@@ -148,7 +145,7 @@ Vector2D CollisionHandler::getFirstCollision(Vector2D lastSafePosition, Vector2D
         }
         t += step;
         rayPosition += direction;
-    }
+    }while( t <= distance );
 
     return newPosition;
 }

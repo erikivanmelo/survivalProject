@@ -20,16 +20,22 @@ namespace CollisionZone{
 class CollisionHandler
 {
 public:
+
+
     bool checkColission(SDL_Rect a, SDL_Rect b);
     int8_t mapCollision(SDL_Rect a);
     Vector2D getFirstCollision(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone);
-    Vector2D mostPlausibleMove(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone);
+    Vector2D mostPlausiblePosition(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone);
     Vector2D resolveCollision(Vector2D position, Vector2D trajectory, Collider *collider, int8_t *collisionZone, bool horizontal);
 
     inline static CollisionHandler* getInstance(){return instance = (instance == nullptr)? new CollisionHandler():instance;}
     ~CollisionHandler(){
     }
 private:
+
+    inline int wrapToRange(const int value, const int max){
+        return (value + max) % max;
+    }
 
     CollisionHandler();
 
