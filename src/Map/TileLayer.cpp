@@ -25,9 +25,14 @@ void TileLayer::render()
 
     SDL_Rect box = Camera::getInstance()->getViewBox();
 
+    const int startCol = box.x / tileSize;
+    const int endCol = (box.x+box.w) / tileSize;
+
+    const int startRow = 0;
+    const int endRow = rowCount;
     
-    for( int row = 0 ; row < rowCount; row++ ){
-        for( int col = box.x / tileSize; col < (box.x+box.w) / tileSize; col++ ){
+    for( int col = startCol; col < endCol; col++ ){
+        for( int row = startRow ; row < endRow; row++ ){
             //Guarda el tile de la coordenada actual. En caso de sea menor que cero toma el ultimot bloque del mapa y en caso de que sea mayor que cero toma el primero
             // si el bloque es de aire se saltea el dibujado
             if( ( tileId = tileMap[row][ ( col % colCount + colCount ) % colCount] ) == 0)
