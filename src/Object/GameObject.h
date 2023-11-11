@@ -38,7 +38,7 @@ class GameObject : public IObject
         }
 
         void update(float dt) override{
-            static const float widthMap = Engine::getInstance()->getMap()->getMapLayers()[GameMap::foreground]->getColCount() * GameMap::blockSize;
+            static const float widthMap = Engine::getInstance()->getMap()->getPixelWidth();
 
             if (position.x > widthMap) 
                 position.x = fmod(position.x, widthMap);

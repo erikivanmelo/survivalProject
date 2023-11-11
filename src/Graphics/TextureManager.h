@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <SDL2/SDL.h>
 #include "../Assets/AssetsManager.h"
+#include "../Map/Chunk.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ class TextureManager{
 
      static void drawFrame( SDL_Texture *texture,int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
-    static void drawTile( const string &tilesetId, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
+    static void drawTile( const Tile tile, int x, int y, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 };
 

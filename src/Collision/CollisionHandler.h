@@ -1,7 +1,6 @@
 #ifndef COLLISIONHANDLER_H
 #define COLLISIONHANDLER_H
 
-#include "../Map/TileLayer.h"
 #include "../Physics/Vector2D.h"
 #include "../Physics/Collider.h"
 #include <SDL2/SDL_rect.h>
@@ -39,7 +38,7 @@ private:
 
     CollisionHandler();
 
-    TileMap collisionTileMap;
+    GameMap *gameMap;
     static CollisionHandler *instance;
 
     int colCount;

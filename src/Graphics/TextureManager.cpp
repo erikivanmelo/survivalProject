@@ -37,16 +37,19 @@ void TextureManager::drawFrame( SDL_Texture *texture, int x, int y, int width, i
 	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), texture, &srcRect,&datRect,0,nullptr,flip);
 }
 
-void TextureManager::drawTile( const string &tilesetId, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip)
+void TextureManager::drawTile( const Tile tile, int x, int y, SDL_RendererFlip flip)
 {
-    Vector2D cam =  Camera::getInstance()->getPosition();
-		SDL_Rect srcRect = { tileSize*frame, tileSize*row, tileSize, tileSize};
-    SDL_Rect datRect = { (int)(x - cam.x), (int)(y - cam.y), tileSize, tileSize };
-    SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), 
-				AssetsManager::getInstance()->getTexture(tilesetId), 
-				&srcRect,
-				&datRect,
-				0,
-				nullptr,
-				flip);
+	if(!tile)
+		return;
+	static Tileset *tileset = AssetsManager::getInstance()->getTileset();
+
+	Vector2D cam =  Camera::getInstance()->getPosition();
+	SDL_Rect destRect = { (int)(x - cam.x), (int)(y - cam.y), tileset->tileSize, tileset->tileSize };
+	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), 
+			tileset->textures[tile-1],
+			&tileset->srcRect,
+			&destRect,
+			0,
+			nullptr,
+			flip);
 }

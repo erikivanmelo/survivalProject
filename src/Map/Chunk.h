@@ -1,33 +1,67 @@
+#ifndef CHUNK_H
+#define CHUNK_H
+
 #include <array>
 #include <cstdint>
+#include <SDL2/SDL.h>
+#include <iostream>
+#include "../Assets/AssetsManager.h"
+
+#define BACKGROUND 0
+#define FOREGROUND 1
+
+#define CHUNK_WIDTH 8
+#define CHUNK_HEIGHT 8
+#define CHUNK_DEPH 2
+
+typedef uint32_t Tile;
+typedef int16_t MapSize;
+typedef int8_t  ChunkSize;
+
 
 class Chunk {
 public:
-    static const int CHUNK_SIZE = 16; // Tamaño del chunk (ejemplo: 16x16 tiles)
+    //TODO para guardar la porfundida del mapa utliizar un booleano, o algo similar
     
-    Chunk(int x, int y);
-    ~Chunk();
+    Chunk(MapSize x, MapSize y):
+        xPosition(x), yPosition(y),tileset(AssetsManager::getInstance()->getTileset())
+    {
+        for( int x = 0; x < CHUNK_WIDTH; ++x ){
+            for( int y = 0 ; y < CHUNK_HEIGHT; ++y ){
+                tiles[x][y][FOREGROUND] = 0;
+                tiles[x][y][BACKGROUND] = 0;
+            }
+        }
+    }
+    ~Chunk(){}
     
     // Métodos para agregar, eliminar y obtener elementos en el chunk (por ejemplo, bloques).
-    inline void addTile( const int8_t x, const int8_t y, const int tileID){
-        this->tiles[x][y] = tileID;
+    inline void setTile( const ChunkSize x, const ChunkSize y, const ChunkSize z, const Tile tile){
+        this->tiles[x][y][z] = tile;
     }
 
-    inline void removeTile( const int8_t x, const int8_t y ){
-        this->tiles[x][y] = 0;
+    inline void dropTile( const ChunkSize x, const ChunkSize y, const ChunkSize z){
+        this->tiles[x][y][z] = 0;
     }
 
-    inline int getTile( const int8_t x, const int8_t y ) const{
-        return this->tiles[x][y];
+    inline int getTile( const ChunkSize x, const ChunkSize y, const ChunkSize z) const{
+        return this->tiles[x][y][z];
     };
     
     // Método para renderizar el chunk.
     void render();
-    
+
+
 private:
-    int chunkX; // Posición X del chunk en el mundo.
-    int chunkY; // Posición Y del chunk en el mundo.
+    const MapSize xPosition;
+    const MapSize yPosition;
+    Tileset *tileset;
     
-    // Almacenar información de los elementos en el chunk (puede ser una matriz o una estructura más eficiente).
-    std::array<std::array<int,8>,8> tiles; // Matriz de identificadores de tiles.
+    void determineRotation( Tile *tile, SDL_RendererFlip *flip);
+
+    std::array<std::array<std::array<Tile,CHUNK_DEPH>,CHUNK_HEIGHT>,CHUNK_WIDTH> tiles;
+
+    void drawTile(Tile tile, ChunkSize x, ChunkSize y);
 };
+
+#endif

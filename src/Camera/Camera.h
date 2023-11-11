@@ -7,7 +7,6 @@
 #include "../Core/Engine.h"
 #include "../Physics/Point.h"
 #include "../Physics/Vector2D.h"
-#include "../Map/TileLayer.h"
 
 class Camera
 {
@@ -37,7 +36,7 @@ private:
         };
         target = nullptr;
 
-        maxY = Engine::getInstance()->getMap()->getMapLayers()[GameMap::foreground]->getHeight();
+        maxY = Engine::getInstance()->getMap()->getPixelHeight();
     }
 
     SDL_Rect viewBox;

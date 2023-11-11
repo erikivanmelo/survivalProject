@@ -1,10 +1,11 @@
 #ifndef MAPPARSER_H
 #define MAPPARSER_H
 
+#include <cstdint>
 #include<tinyxml.h>
 
+#include "Chunk.h"
 #include "GameMap.h"
-#include "TileLayer.h"
 
 #include <map>
 #include <string>
@@ -24,8 +25,8 @@ public:
 
 private:
     bool parse(const std::string &id,const std::string &source);
-    Tileset parseTileSet( TiXmlElement* xmlTileset );
-    TileLayer *parseTileLayer( TiXmlElement* xmlLayer, Tileset tileset, int tilesize, int rowcount, int colcount );
+    Tileset *parseTileSet( TiXmlElement* xmlTileset );
+    void parseChunks( TiXmlElement* xmlLayer, GameMap *gameMap, const ChunkSize depth, const int colCount, const int rowCount );
 
     MapParser();
     ~MapParser();

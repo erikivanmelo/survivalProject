@@ -26,7 +26,7 @@ SOURCES = \
 	Inputs/Input.cpp \
 	Timer/Timer.cpp \
 	Map/MapParser.cpp \
-	Map/TileLayer.cpp \
+	Map/Chunk.cpp \
 	Camera/Camera.cpp \
 	Graphics/Text.cpp \
 	Collision/CollisionHandler.cpp \
@@ -46,7 +46,7 @@ HEADERS = \
 	Timer/Timer.h \
 	Map/GameMap.h \
 	Map/Layer.h \
-	Map/TileLayer.h \
+	Map/Chunk.h \
 	Physics/Point.h \
 	Camera/Camera.h \
 	Graphics/Text.h \

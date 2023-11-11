@@ -9,13 +9,12 @@
 
 CollisionHandler *CollisionHandler::instance = nullptr;
 
-CollisionHandler::CollisionHandler()
+CollisionHandler::CollisionHandler():
+    gameMap(Engine::getInstance()->getMap())
 {
-    const TileLayer *collisionLayer = Engine::getInstance()->getMap()->getMapLayers()[GameMap::foreground];
-    collisionTileMap = collisionLayer->getTileMap();
-    tilesize = collisionLayer->getTileSize();
-    rowCount = collisionLayer->getRowCount();
-    colCount = collisionLayer->getColCount();
+    tilesize = AssetsManager::getInstance()->getTileset()->tileSize;
+    rowCount = gameMap->getTileHeight();
+    colCount = gameMap->getTileWidth();
 }
 
 bool CollisionHandler::checkColission(SDL_Rect a, SDL_Rect b)
@@ -37,7 +36,7 @@ int8_t CollisionHandler::mapCollision(SDL_Rect a)
     do{
         x = wrapToRange(x, colCount);
         for( y = topTile; y <= bottomTile; y++){
-            if( !collisionTileMap[y][x] )
+            if( !gameMap->getTile(x,y) )
                 continue;
 
             if (y == topTile) 
