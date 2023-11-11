@@ -46,7 +46,7 @@ public:
     }
 
 
-    SDL_Texture *loadTexture( const string &id, const string &fileName, bool withTransparentMagenta, const bool saveIt = true, const int x = 0, const int y = 0, const int width = 0, const int height = 0);
+    SDL_Texture *loadTexture( const string &id, const string &fileName, const bool withTransparentMagenta, const bool saveIt = true, const SDL_Rect srcRect = {0,0,0,0} );
 
     void load();
 

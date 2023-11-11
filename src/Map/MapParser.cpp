@@ -72,8 +72,6 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
     const std::string source = Assets::maps+xmlTileset->Attribute("source");
     tileset->source = MapParser::blocksAsset;
 
-    int8_t tileRow;
-    int8_t tileCol;
 
     TiXmlDocument xml;
     xml.LoadFile(source);
@@ -93,18 +91,21 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
             e->Attribute("tilewidth",&tileset->tileSize);
             
             tileset->srcRect = { 0, 0, tileset->tileSize, tileset->tileSize};
-
-            int8_t tileSize = tileset->tileSize;
-            for (int tileId = 1; tileId <= tileset->tileCount; ++tileId) {
-                tileRow = tileId / tileset->colCount;
-                tileCol = tileId - tileRow*tileset->colCount-1;
-                if( !(tileId % tileset->colCount) ){
-                    tileRow--;
-                    tileCol = tileset->colCount -1;
-                }
-
-                tileset->textures.push_back(  AssetsManager::getInstance()->loadTexture(tileset->name,tileset->source, true,false, tileCol*tileSize, tileRow*tileSize, tileSize, tileSize) );
-
+            for (int tileId = 0; tileId < tileset->tileCount; ++tileId) {
+                tileset->textures.push_back( 
+                    AssetsManager::getInstance()->loadTexture(
+                        tileset->name,
+                        tileset->source,
+                        true,
+                        false, 
+                        {
+                            (tileId % tileset->colCount)*tileset->tileSize, 
+                            (tileId / tileset->colCount)*tileset->tileSize, 
+                            tileset->tileSize, 
+                            tileset->tileSize
+                        }
+                    )
+                );
             }
 
             return tileset;

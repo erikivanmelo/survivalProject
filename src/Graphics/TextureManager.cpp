@@ -43,13 +43,14 @@ void TextureManager::drawTile( const Tile tile, int x, int y, SDL_RendererFlip f
 		return;
 	static Tileset *tileset = AssetsManager::getInstance()->getTileset();
 
-	Vector2D cam =  Camera::getInstance()->getPosition();
+	Vector2D cam = Camera::getInstance()->getPosition();
 	SDL_Rect destRect = { (int)(x - cam.x), (int)(y - cam.y), tileset->tileSize, tileset->tileSize };
 	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), 
-			tileset->textures[tile-1],
-			&tileset->srcRect,
-			&destRect,
-			0,
-			nullptr,
-			flip);
+		tileset->textures[tile-1],
+		&tileset->srcRect,
+		&destRect,
+		0,
+		nullptr,
+		flip
+	);
 }

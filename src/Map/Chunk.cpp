@@ -5,15 +5,7 @@
 
 void Chunk::drawTile(Tile tile, ChunkSize x, ChunkSize y){
     SDL_RendererFlip flip;
-    //determineRotation(&tile,&flip);
-    
-    //cout << "chunkX:" << xPosition << " chunkY:" << yPosition << endl;
-    //cout << "tileX:" << xPosition*CHUNK_WIDTH+x <<" tileY:" << yPosition*CHUNK_HEIGHT+y << endl;
-    if( tile > tileset->tileCount ){
-        cout << "chunkX:" << xPosition << " chunkY:" << yPosition << endl;
-        cout << "tileX:" << xPosition*CHUNK_WIDTH+x <<" tileY:" << yPosition*CHUNK_HEIGHT+y << endl;
-        throw std::string("Wrong tileId:"+to_string(tile));
-    }
+    determineRotation(&tile,&flip);
 
     TextureManager::drawTile(
         tile, 
