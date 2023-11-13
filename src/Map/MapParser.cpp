@@ -91,6 +91,7 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
             e->Attribute("tilewidth",&tileset->tileSize);
             
             tileset->srcRect = { 0, 0, tileset->tileSize, tileset->tileSize};
+            tileset->textures.push_back(nullptr);
             for (int tileId = 0; tileId < tileset->tileCount; ++tileId) {
                 tileset->textures.push_back( 
                     AssetsManager::getInstance()->loadTexture(

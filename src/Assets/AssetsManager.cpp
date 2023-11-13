@@ -22,7 +22,7 @@ SDL_Texture *AssetsManager::loadTexture(
     SDL_Texture* texture    = nullptr;
     SDL_Surface* newSurface = nullptr;
 
-    surface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STATIC);
+    surface = SDL_ConvertSurfaceFormat(surface, Assets::pixelDepth, SDL_TEXTUREACCESS_STATIC);
 
     // Añade el color magenta a la lista de colores transparentes.
     if( withTransparentMagenta )

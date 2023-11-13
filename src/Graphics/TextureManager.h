@@ -23,7 +23,7 @@ class TextureManager{
 
     static void drawFrame( const string &id,int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
-     static void drawFrame( SDL_Texture *texture,int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
+     static void drawFrame( SDL_Texture *texture,int x, int y, int width, int height, int row = 1, int frame = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
     static void drawTile( const Tile tile, int x, int y, SDL_RendererFlip flip = SDL_FLIP_NONE);
 

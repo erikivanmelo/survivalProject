@@ -1,6 +1,8 @@
 #ifndef CHUNK_H
 #define CHUNK_H
 
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_surface.h>
 #include <array>
 #include <cstdint>
 #include <SDL2/SDL.h>
@@ -23,31 +25,27 @@ class Chunk {
 public:
     //TODO para guardar la porfundida del mapa utliizar un booleano, o algo similar
     
-    Chunk(MapSize x, MapSize y):
-        xPosition(x), yPosition(y),tileset(AssetsManager::getInstance()->getTileset())
-    {
-        for( int x = 0; x < CHUNK_WIDTH; ++x ){
-            for( int y = 0 ; y < CHUNK_HEIGHT; ++y ){
-                tiles[x][y][FOREGROUND] = 0;
-                tiles[x][y][BACKGROUND] = 0;
-            }
-        }
+    Chunk(MapSize x, MapSize y);
+
+    ~Chunk(){
+        SDL_DestroyTexture(buffer);
     }
-    ~Chunk(){}
     
     // Métodos para agregar, eliminar y obtener elementos en el chunk (por ejemplo, bloques).
     inline void setTile( const ChunkSize x, const ChunkSize y, const ChunkSize z, const Tile tile){
         this->tiles[x][y][z] = tile;
+        updateBuffer( x, y );
     }
 
     inline void dropTile( const ChunkSize x, const ChunkSize y, const ChunkSize z){
-        this->tiles[x][y][z] = 0;
+        setTile( x, y, z, 0);
     }
 
     inline int getTile( const ChunkSize x, const ChunkSize y, const ChunkSize z) const{
         return this->tiles[x][y][z];
     };
     
+    void updateBuffer( const ChunkSize x, const ChunkSize y );
     // Método para renderizar el chunk.
     void render();
 
@@ -55,13 +53,15 @@ public:
 private:
     const MapSize xPosition;
     const MapSize yPosition;
+    SDL_Rect rect;
     Tileset *tileset;
+    SDL_Texture *buffer;
     
     void determineRotation( Tile *tile, SDL_RendererFlip *flip);
 
     std::array<std::array<std::array<Tile,CHUNK_DEPH>,CHUNK_HEIGHT>,CHUNK_WIDTH> tiles;
 
-    void drawTile(Tile tile, ChunkSize x, ChunkSize y);
+    void drawBuffer(Tile tile, ChunkSize x, ChunkSize y);
 };
 
 #endif
