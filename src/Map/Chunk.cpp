@@ -2,6 +2,7 @@
 
 #include "../Graphics/TextureManager.h"
 #include "../Core/Engine.h"
+#include "../Camera/Camera.h"
 #include <SDL2/SDL_blendmode.h>
 #include <SDL2/SDL_render.h>
 #include <cstdint>
@@ -39,18 +40,13 @@ void Chunk::updateBuffer( const ChunkSize x, const ChunkSize y ){
 
     SDL_RenderCopyEx(renderer, tileset->textures[tile], &origenRect, &destinoRect, 0, nullptr, flip);
 
-    if(!buffer){
-        throw std::string("no se cargo :/");
-    }
-
     // Restaurar el destino original
     SDL_SetRenderTarget(renderer, nullptr);
 }
  
 void Chunk::render()
 {
-    if( buffer )
-        TextureManager::drawFrame( buffer, rect.x, rect.y, rect.w, rect.h);
+    TextureManager::drawChunk( buffer, &rect );
 }
 
 void Chunk::determineRotation(Tile *tile, SDL_RendererFlip *flip)

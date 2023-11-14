@@ -25,6 +25,7 @@ SOURCES = \
 	Graphics/Animation.cpp \
 	Inputs/Input.cpp \
 	Timer/Timer.cpp \
+	Map/GameMap.cpp \
 	Map/MapParser.cpp \
 	Map/Chunk.cpp \
 	Camera/Camera.cpp \

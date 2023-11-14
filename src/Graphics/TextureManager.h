@@ -1,6 +1,7 @@
 #ifndef TEXTUREMANAGER_H
 #define TEXTUREMANAGER_H
 
+#include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <iostream>
 #include <string>
@@ -25,6 +26,7 @@ class TextureManager{
 
      static void drawFrame( SDL_Texture *texture,int x, int y, int width, int height, int row = 1, int frame = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
+    static void drawChunk( SDL_Texture *texture, SDL_Rect *rect);
     static void drawTile( const Tile tile, int x, int y, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 };
