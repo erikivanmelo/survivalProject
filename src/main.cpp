@@ -6,12 +6,13 @@ int main()
 {
 
     try{
-        Engine::getInstance()->init();
-
-        while(Engine::getInstance()->isRunning()){
-            Engine::getInstance()->events();
-            Engine::getInstance()->update();
-            Engine::getInstance()->render();
+        Engine *engine = Engine::getInstance();
+        engine->init();
+        while(engine->isRunning()){
+            engine->events();
+            engine->update();
+            engine->render();
+            engine->printDebug();
             Timer::getInstance()->tickUpdate();
         }
     }catch(const string &e){
