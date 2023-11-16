@@ -52,13 +52,10 @@ void Engine::init(){
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 
-    debugInfo = new Text(" ", 0, 0, 25, {255,255,255,255}, Assets::fonts + "small_pixel.ttf");
-
     running = true;
 }
 
 Engine::~Engine(){
-    delete debugInfo;
     AssetsManager::clean();
     Timer::clean();
     Camera::clean();
@@ -75,17 +72,26 @@ void Engine::quit(){
     getInstance()->setRunning(false);
 }
 
+void Engine::printDebug(){
+    static const float updateTime = 1.0/10;
+    static float dt;
+    if( (dt += Timer::getInstance()->getDeltaTime()) < updateTime )
+        return;
+    std::cout << "FPS:" << Timer::getInstance()->getFPS() << endl;
+    player->getPosition().log("position");
+
+    cout << endl;
+    dt -= updateTime ;
+}
+
 void Engine::update(){
     static const float updateTime = 1.0/50;
     static float dt;
     if( (dt += Timer::getInstance()->getDeltaTime()) < updateTime )
         return;
-    string fps = "FPS:"+to_string(Timer::getInstance()->getFPS());
-    string position = " X="+to_string((int)player->getPosition().x)+" Y="+to_string((int)player->getPosition().y)+")";
     map->update();
     player->update(dt);
 
-    debugInfo->setText( fps + position );
     dt -= updateTime ;
 }
 
@@ -97,7 +103,6 @@ void Engine::render(){
 
     map->render();
     player->draw();
-    debugInfo->show();
     //Update the screen with the buffer
     SDL_RenderPresent(renderer);
 }
