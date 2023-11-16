@@ -1,28 +1,61 @@
 #include "AssetsManager.h"
 #include <SDL2/SDL_pixels.h>
+#include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_surface.h>
+#include "../Core/Engine.h"
 
 AssetsManager* AssetsManager::instance = nullptr;
 
-SDL_Texture *AssetsManager::loadTexture( const string &id, const string &fileName, bool withTransparentMagenta ){
+SDL_Texture *AssetsManager::loadTexture( 
+        const string &id,
+        const string &fileName, 
+        const bool withTransparentMagenta, 
+        const bool saveIt, 
+        const SDL_Rect srcRect
+    ){
+
     SDL_Surface* surface = IMG_Load( fileName.c_str() );
     if( !surface )
         throw "Failed to load image " + fileName + "! SDL_image Error: " + string(IMG_GetError());
-    surface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STATIC);
+
+    SDL_Texture* texture    = nullptr;
+    SDL_Surface* newSurface = nullptr;
+
+    surface = SDL_ConvertSurfaceFormat(surface, Assets::pixelDepth, SDL_TEXTUREACCESS_STATIC);
 
     // Añade el color magenta a la lista de colores transparentes.
-    if( withTransparentMagenta)
+    if( withTransparentMagenta )
         SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
 
-    ;
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), surface);
+    if( srcRect.w > 0 && srcRect.h > 0 ){
+        newSurface = SDL_CreateRGBSurface(
+            surface->flags,
+            srcRect.w, 
+            srcRect.h, 
+            surface->format->BitsPerPixel, 
+            surface->format->Rmask, 
+            surface->format->Gmask, 
+            surface->format->Bmask, 
+            surface->format->Amask
+        );
+
+        SDL_BlitSurface(surface, &srcRect, newSurface, NULL);
+        // Crea una textura a partir de la nueva superficie.
+        texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), newSurface);
+    }else{
+        texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), surface);
+    }
+    
     if ( !texture )
         throw "Failed to create texture from " + fileName + "! SDL Error: " + string(SDL_GetError());
 
     SDL_FreeSurface(surface);
+    if(newSurface)
+        SDL_FreeSurface(newSurface);
 
-    this->textureMap[id] = texture;
+    if( saveIt )
+        this->textureMap[id] = texture;
     return texture;
 }
 

@@ -4,11 +4,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../Map/GameMap.h"
-#include "../Graphics/Text.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 300
-#define SCREEN_SCALE 1
+#define SCREEN_SCALE 2
 
 class Engine
 {
@@ -24,6 +23,7 @@ class Engine
         void update();
         void render();
         void events();
+        void printDebug();
 
         inline bool isRunning()const{ return running; }
         inline SDL_Renderer* getRenderer()const{ return renderer; }
@@ -39,8 +39,6 @@ class Engine
         SDL_Renderer* renderer;
         static Engine* instance;
         GameMap *map;
-
-        Text *debugInfo;
 };
 
 #endif

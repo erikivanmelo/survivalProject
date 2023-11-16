@@ -6,6 +6,7 @@
 #include "../Physics/RigidBody.h"
 #include "../Physics/Collider.h"
 #include "../Collision/CollisionHandler.h"
+#include <cmath>
 #include <cstdint>
 
 class Character: public GameObject
@@ -17,13 +18,11 @@ public:
         rigidBody( new RigidBody() ),
         walkSpeed( 8 ),
         flySpeed( 16 ),
-        jumping( true ),
+        jumping( false ),
         grounded( false ),
         flyMode( false ),
         collisionBoxView( false ),
-        jumpTime( 0.20 ),
-        jumpTimer( 0.20 ),
-        jumpForce( 30.0 ),
+        jumpVelocity( 30.0 ),
         lookingRight( true ),
         collider( new Collider() ),
         collisionZone( CollisionZone::none )
@@ -56,7 +55,7 @@ public:
 protected:
 
     void walk(bool toRight){
-        rigidBody->ApplyForceX( toRight ? walkSpeed : walkSpeed*-1 );
+        rigidBody->applyMovementX( toRight ? walkSpeed : walkSpeed*-1 );
         animation->setCurrentSeq( "walk", toRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
         lookingRight = toRight;
     }
@@ -67,18 +66,18 @@ protected:
 
         switch (direction) {
             case UP:
-                rigidBody->ApplyForceY( MoveDirection::UP * flySpeed );
+                rigidBody->applyMovementY( MoveDirection::UP * flySpeed );
                 break;
             case DOWN:
-                rigidBody->ApplyForceY( MoveDirection::DOWN * flySpeed );
+                rigidBody->applyMovementY( MoveDirection::DOWN * flySpeed );
                 break;
             case LEFT:
-                rigidBody->ApplyForceX( MoveDirection::LEFT * flySpeed );
+                rigidBody->applyMovementX( MoveDirection::LEFT * flySpeed );
                 animation->setCurrentSeq( "default", SDL_FLIP_HORIZONTAL );
                 lookingRight = false;
                 break;
             case RIGHT:
-                rigidBody->ApplyForceX( MoveDirection::RIGHT * flySpeed );
+                rigidBody->applyMovementX( MoveDirection::RIGHT * flySpeed );
                 animation->setCurrentSeq( "default" );
                 lookingRight = true;
                 break;
@@ -91,30 +90,30 @@ protected:
     }
 
     void jump(){
-        if( grounded ){
+        if( grounded && !jumping ){
             jumping = true;
-            rigidBody->ApplyForceY( MoveDirection::UP * jumpForce ); 
+            grounded = false;
+            rigidBody->setVelocityY( MoveDirection::UP * jumpVelocity ); 
         }
-
     }
 
     void checkCollision(float dt){
         rigidBody->update( dt );
-        Vector2D lastSafePosition = position;
-        Vector2D trajectory = rigidBody->getPosition();
+        Vector2D lastSafePosition = this->position;
+        this->position += rigidBody->getPosition();
 
-        position += trajectory;
-
-        collider->setCoordenates(position);
+        collider->setCoordenates(this->position);
 
         if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) )
-            position = CollisionHandler::getInstance()->mostPlausibleMove( lastSafePosition, position, collider, &collisionZone );
-        collider->setCoordenates(position);
+            collider->setCoordenates( this->position = CollisionHandler::getInstance()->mostPlausiblePosition( lastSafePosition, this->position, collider, &collisionZone ) );
 
-        grounded = collisionZone & CollisionZone::bottom;
-        if( collisionZone & CollisionZone::top ){
-           jumping = false; 
-        }
+        if( collisionZone & CollisionZone::left || collisionZone & CollisionZone::right )
+            rigidBody->unsetVelocityX();
+
+        if( collisionZone & CollisionZone::bottom || collisionZone & CollisionZone::top ){
+            rigidBody->unsetVelocityY();
+            jumping = false;
+        }        grounded = collisionZone & CollisionZone::bottom;
     }
 
     Animation *animation;
@@ -125,9 +124,7 @@ protected:
     bool flyMode = false;
     bool collisionBoxView = false;
 
-    float jumpTime;
-    float jumpTimer;
-    float jumpForce;
+    float jumpVelocity;
 
     bool lookingRight = true;
 
