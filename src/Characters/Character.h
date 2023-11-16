@@ -100,9 +100,7 @@ protected:
     void checkCollision(float dt){
         rigidBody->update( dt );
         Vector2D lastSafePosition = this->position;
-        Vector2D trajectory = rigidBody->getPosition();
-
-        this->position += trajectory;
+        this->position += rigidBody->getPosition();
 
         collider->setCoordenates(this->position);
 

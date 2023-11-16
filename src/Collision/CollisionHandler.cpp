@@ -1,5 +1,6 @@
 #include "CollisionHandler.h"
 #include "../Core/Engine.h"
+#include "../Helper.h"
 #include <SDL2/SDL_log.h>
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_surface.h>
@@ -23,18 +24,18 @@ bool CollisionHandler::checkColission(SDL_Rect a, SDL_Rect b)
 }
 
 
-int8_t CollisionHandler::mapCollision(SDL_Rect a)
+int8_t CollisionHandler::mapCollision(SDL_Rect *a)
 {
     int x,y;
     int8_t collisionZone = CollisionZone::none;
-    const int leftTile    = wrapToRange(a.x / tilesize, colCount);
-    const int rightTile   = wrapToRange((a.x + (a.w-1)) / tilesize,colCount);
-    const int topTile     = std::clamp(   a.y            / tilesize, 0, rowCount - 1);
-    const int bottomTile  = std::clamp(  (a.y + (a.h-1)) / tilesize, 0, rowCount - 1);
+    const int leftTile    = Helper::wrapToRange(a->x / tilesize, colCount);
+    const int rightTile   = Helper::wrapToRange((a->x + (a->w-1)) / tilesize,colCount);
+    const int topTile     = std::clamp(   a->y            / tilesize, 0, rowCount - 1);
+    const int bottomTile  = std::clamp(  (a->y + (a->h-1)) / tilesize, 0, rowCount - 1);
 
     x = leftTile;
     do{
-        x = wrapToRange(x, colCount);
+        x = Helper::wrapToRange(x, colCount);
         for( y = topTile; y <= bottomTile; y++){
             if( !gameMap->getTile(x,y) )
                 continue;
@@ -60,11 +61,11 @@ Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vect
     Vector2D trajectory = newPosition - lastSafePosition;
     if( (newPosition - lastSafePosition) == 0.0 )
         return newPosition;
-    float newX, newY;
 
     position = getFirstCollision( lastSafePosition, newPosition, collider, collisionZone );
     Vector2D newtrajectory;
     if( (newtrajectory = newPosition - position) != 0 ){
+        float newX, newY;
         Vector2D newLastSafePosition = position;
         
         collider->setCoordenates( position.x + newtrajectory.x , position.y );

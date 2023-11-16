@@ -22,7 +22,7 @@ public:
 
 
     bool checkColission(SDL_Rect a, SDL_Rect b);
-    int8_t mapCollision(SDL_Rect a);
+    int8_t mapCollision(SDL_Rect *a);
     Vector2D getFirstCollision(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone);
     Vector2D mostPlausiblePosition(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone);
     Vector2D resolveCollision(Vector2D position, Vector2D trajectory, Collider *collider, int8_t *collisionZone, bool horizontal);
@@ -31,10 +31,6 @@ public:
     ~CollisionHandler(){
     }
 private:
-
-    inline int wrapToRange(const int value, const int max){
-        return (value + max) % max;
-    }
 
     CollisionHandler();
 
