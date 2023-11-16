@@ -41,12 +41,12 @@ GameMap::~GameMap(){
 }
 
 void GameMap::render(){
-    SDL_Rect box = Camera::getInstance()->getViewBox();
+    static SDL_Rect *box = Camera::getInstance()->getViewBox();
     int startX,endX,startY,endY,x,y;
-    startX = Helper::wrapToRange((box.x/tileset->tileSize)/CHUNK_WIDTH,chunkWidth);
+    startX = Helper::wrapToRange((box->x/tileset->tileSize)/CHUNK_WIDTH,chunkWidth);
     //startY = std::clamp((box.y/tileset->tileSize)/CHUNK_HEIGHT, 0, chunkHeight-1);
     startY = 0;
-    endX = Helper::wrapToRange(((box.x+box.w)/tileset->tileSize)/CHUNK_WIDTH-1,chunkWidth);
+    endX = Helper::wrapToRange(((box->x+box->w)/tileset->tileSize)/CHUNK_WIDTH-1,chunkWidth);
     //endY = std::clamp(((box.y+box.h)/tileset->tileSize)/CHUNK_HEIGHT,0,chunkHeight-1);
     endY = chunkHeight;
 

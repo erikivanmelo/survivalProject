@@ -27,10 +27,10 @@ public:
     inline void setCoordenates(Vector2D v){ setCoordenates(v.x,v.y); }
 
     void draw(){
-        Vector2D cam = Camera::getInstance()->getPosition();
+        static Vector2D *cam = Camera::getInstance()->getPosition();
         SDL_Rect tmp = box;
-        tmp.x -= cam.x;
-        tmp.y -= cam.y;
+        tmp.x -= cam->x;
+        tmp.y -= cam->y;
         SDL_SetRenderDrawColor(Engine::getInstance()->getRenderer(),
                            255, 0, 0,255);
         SDL_RenderDrawRect(Engine::getInstance()->getRenderer(), &tmp);

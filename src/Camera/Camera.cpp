@@ -6,17 +6,19 @@ void Camera::update()
 {
     if(target != nullptr){
 
-        viewBox.x = target->x - (int)(viewBox.w / 2);
-        viewBox.y = target->y - (int)(viewBox.h / 2);
+        viewBox->x = target->x - (int)(viewBox->w / 2);
+        viewBox->y = target->y - (int)(viewBox->h / 2);
 
-        if(viewBox.y < 0){
-            viewBox.y = 0;
+        if(viewBox->y < 0){
+            viewBox->y = 0;
         }
 
-        if(viewBox.y > (maxY - viewBox.h) ){
-            viewBox.y = (maxY - viewBox.h);
+        if(viewBox->y > (maxY - viewBox->h) ){
+            viewBox->y = (maxY - viewBox->h);
         }
 
-        position  = Vector2D(viewBox.x, viewBox.y);
+        position->x = viewBox->x;
+        position->y = viewBox->y;
+
     }
 }
