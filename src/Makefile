@@ -21,6 +21,7 @@ SOURCES = \
 	main.cpp \
 	Core/Engine.cpp \
 	Graphics/TextureManager.cpp \
+	Object/GameObject.cpp \
 	Characters/Player.cpp \
 	Graphics/Animation.cpp \
 	Inputs/Input.cpp \
@@ -30,13 +31,14 @@ SOURCES = \
 	Map/Chunk.cpp \
 	Camera/Camera.cpp \
 	Graphics/Text.cpp \
-	Collision/CollisionHandler.cpp \
+	Physics/Collider.cpp \
+	Physics/CollisionHandler.cpp \
 	Assets/AssetsManager.cpp \
 
 HEADERS = \
+	Physics/Vector2D.h \
 	Core/Engine.h \
 	Graphics/TextureManager.h \
-	Physics/Vector2D.h \
 	Object/IObject.h \
 	Object/GameObject.h \
 	Characters/Character.h \
@@ -46,13 +48,12 @@ HEADERS = \
 	Inputs/Input.h \
 	Timer/Timer.h \
 	Map/GameMap.h \
-	Map/Layer.h \
 	Map/Chunk.h \
 	Physics/Point.h \
 	Camera/Camera.h \
 	Graphics/Text.h \
 	Physics/Collider.h \
-	Collision/CollisionHandler.h \
+	Physics/CollisionHandler.h \
 	Assets/AssetsManager.h \
 
 

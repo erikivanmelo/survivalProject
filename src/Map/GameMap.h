@@ -29,6 +29,10 @@ public:
         chunks[ x / CHUNK_WIDTH ][ y / CHUNK_HEIGHT ]->setTile( x%CHUNK_WIDTH, y%CHUNK_HEIGHT, z, tile );
     }
 
+    inline void dropTile(int x, int y, int z){
+        chunks[ x / CHUNK_WIDTH ][ y / CHUNK_HEIGHT ]->dropTile( x%CHUNK_WIDTH, y%CHUNK_HEIGHT, z);
+    }
+
 
     //TODO re ver los nombres para retornar el tamaño del mapa en distintas unidades
     inline MapSize getChunkHeight() const{

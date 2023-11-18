@@ -1,10 +1,10 @@
 #include "Engine.h"
 #include "../Assets/AssetsManager.h"
-#include "../Characters/Player.h"
 #include "../Inputs/Input.h"
 #include "../Timer/Timer.h"
 #include "../Map/MapParser.h"
 #include "../Camera/Camera.h"
+#include "../Characters/Player.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -18,7 +18,6 @@ using namespace std;
 
 Engine* Engine::instance = nullptr;
 Player* player = nullptr;
-
 void Engine::init(){
     //Initialize SDL
 
@@ -77,9 +76,11 @@ void Engine::printDebug(){
     static float dt;
     if( (dt += Timer::getInstance()->getDeltaTime()) < updateTime )
         return;
+    int mouseX = Input::getInstance()->getMouseX(), mouseY = Input::getInstance()->getMouseY();
     std::cout << "FPS:" << Timer::getInstance()->getFPS() << endl;
     player->getPosition().log("position");
-
+    Camera::getInstance()->getPosition()->log("Camera");
+    cout << "mouse:" << mouseX << " - " <<  mouseY << endl;
     cout << endl;
     dt -= updateTime ;
 }

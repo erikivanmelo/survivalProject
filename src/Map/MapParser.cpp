@@ -41,7 +41,7 @@ bool MapParser::parse(const std::string &id, const std::string &source)
         throw "Failed to load: " + source + " Error(" + to_string(xml.ErrorId()) + "):";
 
     TiXmlElement *root = xml.RootElement();
-    int rowCount,colCount, depth = 0;
+    int rowCount,colCount;
     int tilesize = 0;
     root->Attribute("width",&colCount);
     root->Attribute("height",&rowCount);

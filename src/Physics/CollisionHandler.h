@@ -3,6 +3,7 @@
 
 #include "../Physics/Vector2D.h"
 #include "../Physics/Collider.h"
+#include "../Map/GameMap.h"
 #include <SDL2/SDL_rect.h>
 #include <cstdint>
 

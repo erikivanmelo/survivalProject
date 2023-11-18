@@ -5,7 +5,7 @@
 #include "../Graphics/Animation.h"
 #include "../Physics/RigidBody.h"
 #include "../Physics/Collider.h"
-#include "../Collision/CollisionHandler.h"
+#include "../Physics/CollisionHandler.h"
 #include <cmath>
 #include <cstdint>
 

@@ -14,7 +14,7 @@
 
 void TextureManager::draw( const string &id, int x, int y, int width, int height, SDL_RendererFlip flip ){
 
-  static Vector2D *cam = Camera::getInstance()->getPosition();
+  static const Vector2D *cam = Camera::getInstance()->getPosition();
 	SDL_Rect srcRect = { 0, 0, width, height };
 	SDL_Rect destRect = { (int)(x - cam->x), (int)(y - (cam->y/2)), width, height };
 	SDL_RenderCopyEx( Engine::getInstance()->getRenderer(), AssetsManager::getInstance()->getTexture(id), &srcRect, &destRect, 0, nullptr, flip );
@@ -37,9 +37,9 @@ void TextureManager::drawFrame( const string &id, int x, int y, int width, int h
 
 void TextureManager::drawFrame( SDL_Texture *texture, int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip)
 {
+  static const Vector2D *cam = Camera::getInstance()->getPosition();
 	if( !texture )
 		return;
-  static Vector2D *cam = Camera::getInstance()->getPosition();
 	//A row se le resta uno, porque en el sprite sheet la primera fila es la 0
 	SDL_Rect srcRect = { width*frame, height*(row-1), width, height};
 	SDL_Rect datRect = { Helper::wrapToRange(x - cam->x, Engine::getInstance()->getMap()->getPixelWidth()), (int)(y - cam->y), width, height };
@@ -62,11 +62,11 @@ void TextureManager::drawChunk( SDL_Texture *texture, SDL_Rect *rect )
 
 void TextureManager::drawTile( const Tile tile, int x, int y, SDL_RendererFlip flip)
 {
+	static const Vector2D *cam = Camera::getInstance()->getPosition();
 	if(!tile)
 		return;
 	static Tileset *tileset = AssetsManager::getInstance()->getTileset();
 
-	static Vector2D *cam = Camera::getInstance()->getPosition();
 	SDL_Rect destRect = { (int)(x - cam->x), (int)(y - cam->y), tileset->tileSize, tileset->tileSize };
 	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), 
 		tileset->textures[tile],

@@ -59,7 +59,7 @@ int8_t CollisionHandler::mapCollision(SDL_Rect *a)
 Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone){
     Vector2D position = newPosition;
     Vector2D trajectory = newPosition - lastSafePosition;
-    if( (newPosition - lastSafePosition) == 0.0 )
+    if( (newPosition - lastSafePosition) == 0 )
         return newPosition;
 
     position = getFirstCollision( lastSafePosition, newPosition, collider, collisionZone );

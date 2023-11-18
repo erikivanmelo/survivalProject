@@ -16,13 +16,12 @@ class Player : public Character
 {
 
 public:
-    explicit Player( Vector2D posiiton );
+    Player( Vector2D posiiton );
 
-    void animationState();
-
-    void checkInput( float dt );
     void update(float dt) override;
 
+private:
+    void checkInput( float dt );
 };
 
 #endif // PLAYER_H

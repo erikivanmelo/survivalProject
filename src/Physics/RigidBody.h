@@ -66,7 +66,7 @@ public:
 
         // Actualizamos la velocidad en unidades de píxeles por segundo
         position = (velocity + movement) * dt;
-        movement = 0;
+        movement = Vector2D(0,0);
     }
 
 private:

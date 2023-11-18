@@ -1,5 +1,6 @@
 #include "Core/Engine.h"
 #include "Timer/Timer.h"
+#include "Graphics/Debug.h"
 #include <SDL2/SDL_log.h>
 
 int main()

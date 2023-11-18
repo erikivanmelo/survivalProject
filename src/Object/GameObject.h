@@ -6,7 +6,6 @@
 #include "../Physics/Point.h"
 #include "../Physics/Vector2D.h"
 #include "../Map/GameMap.h"
-#include "../Core/Engine.h"
 #include "../Graphics/TextureManager.h"
 
 #include <SDL2/SDL_render.h>
@@ -32,21 +31,12 @@ class GameObject : public IObject
             delete origin;
         }
 
-        void updateViewPoint(){
+        inline void updateViewPoint(){
             origin->x = position.x + (int)(width/2);
             origin->y = position.y + (int)(height/2);
         }
 
-        void update(float dt) override{
-            static const float widthMap = Engine::getInstance()->getMap()->getPixelWidth();
-
-            if (position.x > widthMap) 
-                position.x = fmod(position.x, widthMap);
-            else if (position.x < 0)
-                position.x = widthMap + fmod(position.x, widthMap);
-
-            updateViewPoint();
-        }
+        void update(float dt) override;
 
         inline Point *getOrigin(){return origin;}
 
