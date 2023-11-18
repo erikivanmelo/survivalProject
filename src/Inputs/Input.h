@@ -14,8 +14,6 @@ public:
     }
     inline static void clean(){ delete instance; }
 
-    ~Input();
-
     void listen();
     bool getKeyDown(SDL_Scancode key);
     bool getKeyPressed(SDL_Scancode key);
@@ -37,7 +35,7 @@ private:
     static Input *instance;
 
     void keyUp(SDL_Scancode key);
-    void keyDown(SDL_Scancode key);
+    void keyDown();
 
     Uint32 mouseState;
     int mouseX, mouseY;

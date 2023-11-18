@@ -68,7 +68,7 @@ Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vect
         float newX, newY;
         Vector2D newLastSafePosition = position;
         
-        collider->setCoordenates( position.x + newtrajectory.x , position.y );
+        collider->setCoordinates( position.x + newtrajectory.x , position.y );
         if( mapCollision(collider->getCollisionBox()) )
             newX = CollisionHandler::getInstance()->getFirstCollision( 
                     newLastSafePosition, 
@@ -79,7 +79,7 @@ Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vect
         else
             newX = position.x + newtrajectory.x;
 
-        collider->setCoordenates( position.x , position.y + newtrajectory.y );
+        collider->setCoordinates( position.x , position.y + newtrajectory.y );
         if( mapCollision(collider->getCollisionBox()) )
             newY = CollisionHandler::getInstance()->getFirstCollision( 
                     newLastSafePosition, 
@@ -133,7 +133,7 @@ Vector2D CollisionHandler::getFirstCollision(Vector2D lastSafePosition, Vector2D
     int t = 0, step = ( abs(difference.x) > tilesize && abs(difference.y) > tilesize )? tilesize : 1;
 
     do{
-        collider->setCoordenates( rayPosition.x, rayPosition.y );
+        collider->setCoordinates( rayPosition.x, rayPosition.y );
         if( (*collisionZone = mapCollision( collider->getCollisionBox() )) ){
             if( step == 1)
                 return rayPosition - direction;

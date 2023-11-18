@@ -42,12 +42,9 @@ public:
 
 
     void update( float dt )override{
-        
-
         checkCollision( dt );
 
         animation->update();
-        collider->draw();
         GameObject::update( dt );
     }
 
@@ -102,10 +99,10 @@ protected:
         Vector2D lastSafePosition = this->position;
         this->position += rigidBody->getPosition();
 
-        collider->setCoordenates(this->position);
+        collider->setCoordinates(this->position);
 
         if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) )
-            collider->setCoordenates( this->position = CollisionHandler::getInstance()->mostPlausiblePosition( lastSafePosition, this->position, collider, &collisionZone ) );
+            collider->setCoordinates( this->position = CollisionHandler::getInstance()->mostPlausiblePosition( lastSafePosition, this->position, collider, &collisionZone ) );
 
         if( collisionZone & CollisionZone::left || collisionZone & CollisionZone::right )
             rigidBody->unsetVelocityX();
@@ -113,7 +110,9 @@ protected:
         if( collisionZone & CollisionZone::bottom || collisionZone & CollisionZone::top ){
             rigidBody->unsetVelocityY();
             jumping = false;
-        }        grounded = collisionZone & CollisionZone::bottom;
+        }
+        
+        grounded = collisionZone & CollisionZone::bottom;
     }
 
     Animation *animation;

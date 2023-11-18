@@ -49,7 +49,7 @@ void Player::checkInput( float dt ){
                 y,
                 FOREGROUND,
                 1
-                );
+        );
     }
 
 
