@@ -11,10 +11,6 @@ Input::Input()
     keyStates = SDL_GetKeyboardState(nullptr);
 }
 
-Input::~Input()
-{
-}
-
 void Input::listen()
 {
     SDL_Event event;
@@ -62,7 +58,7 @@ void Input::keyUp(SDL_Scancode key)
     intervalTime = SDL_GetTicks() - startTime;
 }
 
-void Input::keyDown(SDL_Scancode key)
+void Input::keyDown()
 {
     startTime = SDL_GetTicks();
     keyStates = SDL_GetKeyboardState(nullptr);

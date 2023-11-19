@@ -33,12 +33,12 @@ public:
         box->h = h - buffer->h;
     }
 
-    inline void setCoordenates(int x, int y){
+    inline void setCoordinates(int x, int y){
         box->x = x - buffer->x;
         box->y = y - buffer->y;
     }
 
-    inline void setCoordenates(Vector2D v){ setCoordenates(v.x,v.y); }
+    inline void setCoordinates(Vector2D v){ setCoordinates(v.x,v.y); }
 
     void draw();
 

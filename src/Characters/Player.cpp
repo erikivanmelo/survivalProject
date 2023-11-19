@@ -39,6 +39,21 @@ void Player::checkInput( float dt ){
     if( INPUT_FLYMODE )
         setFlyMode( !this->flyMode );
 
+    if( Input::getInstance()->getMouseState() == SDL_BUTTON_LEFT ){
+        int mouseX = Input::getInstance()->getMouseX(), mouseY = Input::getInstance()->getMouseY();
+        int x = Helper::wrapToRange((int)cam->getPosition()->x+(mouseX/SCREEN_SCALE),mapa->getPixelWidth()) /8;
+        int y = std::clamp((int)cam->getPosition()->y+(mouseY/SCREEN_SCALE),0,mapa->getPixelHeight()-1)/8;
+       
+        cout << "mapa:" << x << " - " << y << endl;
+
+
+        Engine::getInstance()->getMap()->setTile(
+                x,
+                y,
+                FOREGROUND,
+                1
+        );
+    }
 
 
     if( INPUT_COLLISIONBOXVIEW )
