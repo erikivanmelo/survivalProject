@@ -33,6 +33,8 @@ public:
     // Métodos para agregar, eliminar y obtener elementos en el chunk (por ejemplo, bloques).
     inline void setTile( const ChunkSize x, const ChunkSize y, const ChunkSize z, const Tile tile){
         this->tiles[x][y][z] = tile;
+        if( tile )
+            isOnlyAir = false;
     }
 
     inline void dropTile( const ChunkSize x, const ChunkSize y, const ChunkSize z){
@@ -52,6 +54,7 @@ private:
     const MapSize yPosition;
     SDL_Rect rect;
     Tileset *tileset;
+    bool isOnlyAir;
     
     void determineRotation( Tile *tile, SDL_RendererFlip *flip);
 

@@ -4,7 +4,7 @@
 #include <cstdint>
 
 Chunk::Chunk(MapSize x, MapSize y):
-    xPosition(x), yPosition(y),tileset(AssetsManager::getInstance()->getTileset())
+    xPosition(x), yPosition(y),tileset(AssetsManager::getInstance()->getTileset()),isOnlyAir(true)
 {
     std::fill(&tiles[0][0][0], &tiles[0][0][0] + CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPH, 0);
     rect = {
@@ -20,6 +20,9 @@ void Chunk::render()
     //TextureManager::drawChunk( buffer, &rect );
     Tile tile = 0;
     SDL_RendererFlip flip;
+    if( isOnlyAir )
+        return;
+    isOnlyAir = true;
     for(int x = 0; x < CHUNK_WIDTH; ++x){
         for(int y = 0; y < CHUNK_HEIGHT; ++y){
             tile = tiles[x][y][FOREGROUND] == 0? tiles[x][y][BACKGROUND] : tiles[x][y][FOREGROUND];
@@ -30,6 +33,8 @@ void Chunk::render()
                 rect.y+(y*tileset->tileSize),
                 flip
             );
+            if( tile )
+                isOnlyAir = false;
         }
     }
 }
