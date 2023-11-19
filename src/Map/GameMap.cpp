@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdint>
 #include "../Helper.h"
+#include "../Core/Engine.h"
 
 GameMap::GameMap( const MapSize width, const MapSize height ):
     chunkWidth(width), chunkHeight(height),
@@ -59,3 +60,10 @@ void GameMap::render(){
         x++;
     }while(x != endX+1);
 }
+
+void GameMap::displayToMapPosition(int *x, int *y){
+    static const Camera *cam  = Camera::getInstance();
+    *x = Helper::wrapToRange((int)cam->getPosition()->x+(*x/SCREEN_SCALE),pixelWidth)/8;
+    *y = std::clamp((int)cam->getPosition()->y+(*y/SCREEN_SCALE),0,pixelHeight-1)/8;
+}
+

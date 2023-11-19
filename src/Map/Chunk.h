@@ -28,13 +28,11 @@ public:
     Chunk(MapSize x, MapSize y);
 
     ~Chunk(){
-        SDL_DestroyTexture(buffer);
     }
     
     // Métodos para agregar, eliminar y obtener elementos en el chunk (por ejemplo, bloques).
     inline void setTile( const ChunkSize x, const ChunkSize y, const ChunkSize z, const Tile tile){
         this->tiles[x][y][z] = tile;
-        updateBuffer( x, y );
     }
 
     inline void dropTile( const ChunkSize x, const ChunkSize y, const ChunkSize z){
@@ -45,7 +43,6 @@ public:
         return this->tiles[x][y][z];
     };
     
-    void updateBuffer( const ChunkSize x, const ChunkSize y );
     // Método para renderizar el chunk.
     void render();
 
@@ -55,7 +52,6 @@ private:
     const MapSize yPosition;
     SDL_Rect rect;
     Tileset *tileset;
-    SDL_Texture *buffer;
     
     void determineRotation( Tile *tile, SDL_RendererFlip *flip);
 

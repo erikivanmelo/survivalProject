@@ -6,6 +6,7 @@
 #include "../Helper.h"
 
 #include <SDL2/SDL_log.h>
+#include <SDL2/SDL_mouse.h>
 #include <algorithm>
 
 Player::Player( Vector2D position ) : Character( "player", position, 32, 32 )
@@ -19,7 +20,11 @@ Player::Player( Vector2D position ) : Character( "player", position, 32, 32 )
 
 void Player::checkInput( float dt ){
     static const Camera *cam  = Camera::getInstance();
-    static const GameMap *mapa = Engine::getInstance()->getMap();
+    static GameMap *mapa = Engine::getInstance()->getMap();
+    const MouseState mouseState = Input::getInstance()->getMouseState();
+    static Tile tile = 1;
+
+
 
     if( INPUT_RIGHT )
         this->flyMode? fly( RIGHT ) : walk(true);
@@ -36,20 +41,27 @@ void Player::checkInput( float dt ){
     if( INPUT_FLYMODE )
         setFlyMode( !this->flyMode );
 
-    if( Input::getInstance()->getMouseState() == SDL_BUTTON_LEFT ){
-        int mouseX = Input::getInstance()->getMouseX(), mouseY = Input::getInstance()->getMouseY();
-        int x = Helper::wrapToRange((int)cam->getPosition()->x+(mouseX/SCREEN_SCALE),mapa->getPixelWidth()) /8;
-        int y = std::clamp((int)cam->getPosition()->y+(mouseY/SCREEN_SCALE),0,mapa->getPixelHeight()-1)/8;
-       
-        cout << "mapa:" << x << " - " << y << endl;
+    if( mouseState ){
+        int x = Input::getInstance()->getMouseX(),y = Input::getInstance()->getMouseY();
+        mapa->displayToMapPosition(&x,&y);
+        if( mouseState == SDL_BUTTON_MIDDLE){
+            tile = mapa->getTile(x,y,FOREGROUND);
+            if(!tile)
+                tile = mapa->getTile(x,y,BACKGROUND);
+        }
 
+        if( mouseState == SDL_BUTTON_LEFT ){
+            Engine::getInstance()->getMap()->setTile(x,y,
+                    FOREGROUND,
+                    tile
+                    );
+        }
 
-        Engine::getInstance()->getMap()->setTile(
-                x,
-                y,
-                FOREGROUND,
-                1
-                );
+        if( mouseState == SDL_BUTTON_RMASK ){
+            Engine::getInstance()->getMap()->dropTile(x,y,
+                    FOREGROUND
+                    );
+        }
     }
 
 

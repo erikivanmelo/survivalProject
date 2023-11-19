@@ -54,26 +54,21 @@ void TextureManager::drawChunk( SDL_Texture *texture, SDL_Rect *rect )
 		rect->x,
 		rect->y,
 		rect->w,
-		rect->h,
-		1,
-		0
+		rect->h
 	);
 }
 
 void TextureManager::drawTile( const Tile tile, int x, int y, SDL_RendererFlip flip)
 {
-	static const Vector2D *cam = Camera::getInstance()->getPosition();
 	if(!tile)
 		return;
 	static Tileset *tileset = AssetsManager::getInstance()->getTileset();
 
-	SDL_Rect destRect = { (int)(x - cam->x), (int)(y - cam->y), tileset->tileSize, tileset->tileSize };
-	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), 
-		tileset->textures[tile],
-		&tileset->srcRect,
-		&destRect,
-		0,
-		nullptr,
-		flip
+	drawFrame( 
+		tileset->textures[tile], 
+		x, 
+		y, 
+		tileset->tileSize, 
+		tileset->tileSize
 	);
 }

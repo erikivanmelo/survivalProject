@@ -5,6 +5,8 @@
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_stdinc.h>
 
+typedef Uint32 MouseState;
+
 class Input
 {
 public:
@@ -20,7 +22,7 @@ public:
     bool getKeyDown(SDL_Scancode key);
     bool getKeyPressed(SDL_Scancode key);
 
-    inline Uint32 getMouseState()const{
+    inline MouseState getMouseState()const{
         return mouseState;
     }
 
@@ -39,7 +41,7 @@ private:
     void keyUp(SDL_Scancode key);
     void keyDown(SDL_Scancode key);
 
-    Uint32 mouseState;
+    MouseState mouseState;
     int mouseX, mouseY;
 
 

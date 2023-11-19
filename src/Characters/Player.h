@@ -22,6 +22,8 @@ public:
 
 private:
     void checkInput( float dt );
+
+    Tile tileSelected;
 };
 
 #endif // PLAYER_H

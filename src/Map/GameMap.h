@@ -58,6 +58,9 @@ public:
     inline int getTileWidth()const{
         return tileWidth;
     }
+
+    void displayToMapPosition(int *x, int *y);
+    
     Tileset *tileset;
 
 private:
