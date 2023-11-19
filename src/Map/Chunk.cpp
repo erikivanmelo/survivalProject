@@ -17,27 +17,34 @@ Chunk::Chunk(MapSize x, MapSize y):
  
 void Chunk::render()
 {
+<<<<<<< HEAD
     if( isOnlyAir )
         return;
     isOnlyAir = true;
     Tile *tile = nullptr;
     Tile tmpTile = 0;
     SDL_RendererFlip flip;
+=======
+>>>>>>> 9893b9c (Haciendo que el arreglo de tiles guarde punteros en vez de variables)
     if( isOnlyAir )
         return;
     isOnlyAir = true;
-    for(int x = 0; x < CHUNK_WIDTH; ++x){
-        for(int y = 0; y < CHUNK_HEIGHT; ++y){
-            tile = tiles[x][y][FOREGROUND] == 0? tiles[x][y][BACKGROUND] : tiles[x][y][FOREGROUND];
-            determineRotation(&tile, &flip);
+    Tile *tile = nullptr;
+    Tile tmpTile = 0;
+    SDL_RendererFlip flip;
+    ChunkSize x,y;
+    for(x = 0; x < CHUNK_WIDTH; ++x){
+        for(y = 0; y < CHUNK_HEIGHT; ++y){
+            tile = tiles[x][y][FOREGROUND]? tiles[x][y][FOREGROUND] : tiles[x][y][BACKGROUND];
+            if( !(tmpTile = determineRotation(tile, &flip)) )
+                continue;
+            isOnlyAir = false;
             TextureManager::drawTile(
                 tmpTile,
                 rect.x+(x*tileset->tileSize), 
                 rect.y+(y*tileset->tileSize),
                 flip
             );
-            if( tile )
-                isOnlyAir = false;
         }
     }
 }

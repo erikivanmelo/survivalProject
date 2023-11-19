@@ -51,10 +51,10 @@ void GameMap::render(){
     static const SDL_FRect *box = Camera::getInstance()->getViewBox();
     int startX,endX,startY,endY,x,y;
     startX = Helper::wrapToRange((box->x/tileset->tileSize)/CHUNK_WIDTH-2,chunkWidth);
-    startY = std::clamp((int)(box->y/tileset->tileSize)/CHUNK_HEIGHT, 0, chunkHeight-1);
+    startY = std::clamp((box->y/tileset->tileSize)/CHUNK_HEIGHT, 0, (int)chunkHeight-1);
 
     endX = Helper::wrapToRange(((box->x+box->w)/tileset->tileSize)/CHUNK_WIDTH,chunkWidth);
-    endY = std::clamp((int)((box->y+box->h)/tileset->tileSize)/CHUNK_HEIGHT,0,chunkHeight-1);
+    endY = std::clamp(((box->y+box->h)/tileset->tileSize)/CHUNK_HEIGHT,0,(int)chunkHeight-1);
 
     x = startX;
     do {

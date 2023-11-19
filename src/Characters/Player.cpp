@@ -53,30 +53,28 @@ void Player::checkInput( float dt ){
 
 
     if( mouseState ){
-        Vector2D position = Input::getInstance()->getMousePosition();
-        mapa->displayToMapPosition(&position);
+        int x = Input::getInstance()->getMouseX(),y = Input::getInstance()->getMouseY();
+        mapa->displayToMapPosition(&x,&y);
         if( mouseState == SDL_BUTTON_RMASK ){
             Engine::getInstance()->getMap()->dropTile(
-                position.x,
-                position.y,
+                x,
+                y,
                 FOREGROUND
             );
         }
 
         static Tile *tile = nullptr;
         if( mouseState == SDL_BUTTON_MIDDLE){
-            tile = mapa->getTile(position.x,position.y,FOREGROUND);
+            tile = mapa->getTile(x,y,FOREGROUND);
             if(!tile)
-                tile = mapa->getTile(position.x,position.y,BACKGROUND);
+                tile = mapa->getTile(x,y,BACKGROUND);
         }
 
         if(!tile)
             return;
 
         if( mouseState == SDL_BUTTON_LEFT ){
-            Engine::getInstance()->getMap()->setTile(
-                position.x,
-                position.y,
+            Engine::getInstance()->getMap()->setTile(x,y,
                 FOREGROUND,
                 *tile
             );
