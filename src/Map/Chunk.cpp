@@ -6,7 +6,7 @@
 Chunk::Chunk(MapSize x, MapSize y):
     xPosition(x), yPosition(y),tileset(AssetsManager::getInstance()->getTileset()),isOnlyAir(true)
 {
-    std::fill(&tiles[0][0][0], &tiles[0][0][0] + CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPH, 0);
+    std::fill(&tiles[0][0][0], &tiles[0][0][0] + CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPH, nullptr);
     rect = {
         (xPosition*CHUNK_WIDTH)*tileset->tileSize,
         (yPosition*CHUNK_HEIGHT)*tileset->tileSize,
@@ -17,38 +17,41 @@ Chunk::Chunk(MapSize x, MapSize y):
  
 void Chunk::render()
 {
-    //TextureManager::drawChunk( buffer, &rect );
-    Tile tile = 0;
-    SDL_RendererFlip flip;
     if( isOnlyAir )
         return;
     isOnlyAir = true;
-    for(int x = 0; x < CHUNK_WIDTH; ++x){
-        for(int y = 0; y < CHUNK_HEIGHT; ++y){
-            tile = tiles[x][y][FOREGROUND] == 0? tiles[x][y][BACKGROUND] : tiles[x][y][FOREGROUND];
-            determineRotation(&tile, &flip);
+    Tile *tile = nullptr;
+    Tile tmpTile = 0;
+    SDL_RendererFlip flip;
+    ChunkSize x,y;
+    for(x = 0; x < CHUNK_WIDTH; ++x){
+        for(y = 0; y < CHUNK_HEIGHT; ++y){
+            tile = tiles[x][y][FOREGROUND]? tiles[x][y][FOREGROUND] : tiles[x][y][BACKGROUND];
+            if( !(tmpTile = determineRotation(tile, &flip)) )
+                continue;
+            isOnlyAir = false;
             TextureManager::drawTile(
-                tile,
+                tmpTile,
                 rect.x+(x*tileset->tileSize), 
                 rect.y+(y*tileset->tileSize),
                 flip
             );
-            if( tile )
-                isOnlyAir = false;
         }
     }
 }
 
-void Chunk::determineRotation(Tile *tile, SDL_RendererFlip *flip)
+Tile Chunk::determineRotation(Tile *tile, SDL_RendererFlip *flip)
 {
+    if( !tile )
+        return 0;
     *flip = SDL_FLIP_NONE;
-
+    Tile tmp = *tile;
     // Check flags
     bool flipH = (*tile & TextureManager::TileH);
     bool flipV = (*tile & TextureManager::TileV);
 
     // Clear flags
-    *tile &= ~(TextureManager::TileD | TextureManager::TileV | TextureManager::TileH | 0x10000000);
+    tmp &= ~(TextureManager::TileD | TextureManager::TileV | TextureManager::TileH | 0x10000000);
 
     // Determinar las transformaciones
     if (flipV && flipH)
@@ -57,4 +60,5 @@ void Chunk::determineRotation(Tile *tile, SDL_RendererFlip *flip)
         *flip = SDL_FLIP_HORIZONTAL;
     else if (flipV)
         *flip = SDL_FLIP_VERTICAL;
+    return tmp;
 }

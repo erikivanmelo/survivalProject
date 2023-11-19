@@ -39,22 +39,27 @@ GameMap::~GameMap(){
         chunks[x].clear();
     }
     chunks.clear();
+
+    auto it = tileList.begin();
+    while (it != tileList.end()) {
+        delete it->second;
+        it = tileList.erase(it);
+    }
 }
 
 void GameMap::render(){
     static const SDL_Rect *box = Camera::getInstance()->getViewBox();
     int startX,endX,startY,endY,x,y;
-    startX = Helper::wrapToRange((box->x/tileset->tileSize)/CHUNK_WIDTH,chunkWidth);
-    //startY = std::clamp((box.y/tileset->tileSize)/CHUNK_HEIGHT, 0, chunkHeight-1);
-    startY = 0;
-    endX = Helper::wrapToRange(((box->x+box->w)/tileset->tileSize)/CHUNK_WIDTH-1,chunkWidth);
-    //endY = std::clamp(((box.y+box.h)/tileset->tileSize)/CHUNK_HEIGHT,0,chunkHeight-1);
-    endY = chunkHeight;
+    startX = Helper::wrapToRange((box->x/tileset->tileSize)/CHUNK_WIDTH-2,chunkWidth);
+    startY = std::clamp((box->y/tileset->tileSize)/CHUNK_HEIGHT, 0, (int)chunkHeight-1);
+
+    endX = Helper::wrapToRange(((box->x+box->w)/tileset->tileSize)/CHUNK_WIDTH,chunkWidth);
+    endY = std::clamp(((box->y+box->h)/tileset->tileSize)/CHUNK_HEIGHT,0,(int)chunkHeight-1);
 
     x = startX;
     do {
         x = Helper::wrapToRange(x, chunkWidth);
-        for (y = startY; y < endY; ++y) {
+        for (y = startY; y <= endY; ++y) {
             chunks[x][y]->render();
         } 
         x++;

@@ -19,10 +19,8 @@ Player::Player( Vector2D position ) : Character( "player", position, 32, 32 )
 
 
 void Player::checkInput( float dt ){
-    static const Camera *cam  = Camera::getInstance();
     static GameMap *mapa = Engine::getInstance()->getMap();
     const MouseState mouseState = Input::getInstance()->getMouseState();
-    static Tile tile = 1;
 
 
 
@@ -41,28 +39,6 @@ void Player::checkInput( float dt ){
     if( INPUT_FLYMODE )
         setFlyMode( !this->flyMode );
 
-    if( mouseState ){
-        int x = Input::getInstance()->getMouseX(),y = Input::getInstance()->getMouseY();
-        mapa->displayToMapPosition(&x,&y);
-        if( mouseState == SDL_BUTTON_MIDDLE){
-            tile = mapa->getTile(x,y,FOREGROUND);
-            if(!tile)
-                tile = mapa->getTile(x,y,BACKGROUND);
-        }
-
-        if( mouseState == SDL_BUTTON_LEFT ){
-            Engine::getInstance()->getMap()->setTile(x,y,
-                    FOREGROUND,
-                    tile
-                    );
-        }
-
-        if( mouseState == SDL_BUTTON_RMASK ){
-            Engine::getInstance()->getMap()->dropTile(x,y,
-                    FOREGROUND
-                    );
-        }
-    }
 
 
     if( INPUT_COLLISIONBOXVIEW )
@@ -73,6 +49,36 @@ void Player::checkInput( float dt ){
     } else if ( this->rigidBody->getVelocity().y < 0 && this->jumping) {
         this->rigidBody->unsetVelocityY();
         this->jumping = false;
+    }
+
+
+    if( mouseState ){
+        int x = Input::getInstance()->getMouseX(),y = Input::getInstance()->getMouseY();
+        mapa->displayToMapPosition(&x,&y);
+        if( mouseState == SDL_BUTTON_RMASK ){
+            Engine::getInstance()->getMap()->dropTile(
+                x,
+                y,
+                FOREGROUND
+            );
+        }
+
+        static Tile *tile = nullptr;
+        if( mouseState == SDL_BUTTON_MIDDLE){
+            tile = mapa->getTile(x,y,FOREGROUND);
+            if(!tile)
+                tile = mapa->getTile(x,y,BACKGROUND);
+        }
+
+        if(!tile)
+            return;
+
+        if( mouseState == SDL_BUTTON_LEFT ){
+            Engine::getInstance()->getMap()->setTile(x,y,
+                FOREGROUND,
+                *tile
+            );
+        }
     }
 }
 
