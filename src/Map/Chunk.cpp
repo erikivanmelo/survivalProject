@@ -17,15 +17,6 @@ Chunk::Chunk(MapSize x, MapSize y):
  
 void Chunk::render()
 {
-<<<<<<< HEAD
-    if( isOnlyAir )
-        return;
-    isOnlyAir = true;
-    Tile *tile = nullptr;
-    Tile tmpTile = 0;
-    SDL_RendererFlip flip;
-=======
->>>>>>> 9893b9c (Haciendo que el arreglo de tiles guarde punteros en vez de variables)
     if( isOnlyAir )
         return;
     isOnlyAir = true;
