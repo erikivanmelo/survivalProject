@@ -21,10 +21,12 @@ void Input::listen()
             break;
 
             case SDL_EVENT_KEY_DOWN:
-                keyDown(event.key.keysym.scancode);break;
+                keyDown();
+            break;
 
             case SDL_EVENT_KEY_UP:
-                keyUp(event.key.keysym.scancode); break;
+                keyUp(event.key.keysym.scancode); 
+            break;
 
             case SDL_EVENT_WINDOW_RESIZED:
                 Camera::getInstance()->setViewBoxSize(

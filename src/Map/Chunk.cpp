@@ -8,10 +8,10 @@ Chunk::Chunk(MapSize x, MapSize y):
 {
     std::fill(&tiles[0][0][0], &tiles[0][0][0] + CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPH, nullptr);
     rect = {
-        (xPosition*CHUNK_WIDTH)*tileset->tileSize,
-        (yPosition*CHUNK_HEIGHT)*tileset->tileSize,
-        tileset->tileSize*CHUNK_WIDTH,
-        tileset->tileSize*CHUNK_HEIGHT
+        (float)(xPosition*CHUNK_WIDTH)*tileset->tileSize,
+        (float)(yPosition*CHUNK_HEIGHT)*tileset->tileSize,
+        (float)tileset->tileSize*CHUNK_WIDTH,
+        (float)tileset->tileSize*CHUNK_HEIGHT
     };
 }
  
