@@ -23,19 +23,21 @@ void Chunk::render()
     Tile *tile = nullptr;
     Tile tmpTile = 0;
     SDL_RendererFlip flip;
-    ChunkSize x,y;
-    for(x = 0; x < CHUNK_WIDTH; ++x){
-        for(y = 0; y < CHUNK_HEIGHT; ++y){
-            tile = tiles[x][y][FOREGROUND]? tiles[x][y][FOREGROUND] : tiles[x][y][BACKGROUND];
-            if( !(tmpTile = determineRotation(tile, &flip)) )
-                continue;
-            isOnlyAir = false;
+    if( isOnlyAir )
+        return;
+    isOnlyAir = true;
+    for(int x = 0; x < CHUNK_WIDTH; ++x){
+        for(int y = 0; y < CHUNK_HEIGHT; ++y){
+            tile = tiles[x][y][FOREGROUND] == 0? tiles[x][y][BACKGROUND] : tiles[x][y][FOREGROUND];
+            determineRotation(&tile, &flip);
             TextureManager::drawTile(
                 tmpTile,
                 rect.x+(x*tileset->tileSize), 
                 rect.y+(y*tileset->tileSize),
                 flip
             );
+            if( tile )
+                isOnlyAir = false;
         }
     }
 }
