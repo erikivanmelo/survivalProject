@@ -69,6 +69,9 @@ void TextureManager::drawTile( const Tile tile, int x, int y, SDL_RendererFlip f
 		x, 
 		y, 
 		tileset->tileSize, 
-		tileset->tileSize
+		tileset->tileSize,
+		1,
+		0,
+		flip
 	);
 }
