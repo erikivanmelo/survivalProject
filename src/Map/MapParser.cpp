@@ -3,14 +3,13 @@
 #include "../Core/Engine.h"
 #include "Chunk.h"
 #include "GameMap.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_render.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_render.h>
 MapParser *MapParser::instance = nullptr;
 
 const std::string MapParser::worldName = "overworld";
 const std::string MapParser::worldAsset = Assets::maps+worldName+".tmx";
-const std::string MapParser::blocksAsset = Assets::sprites+"blocks.tga";
+const std::string MapParser::blocksAsset = Assets::sprites+"blocks.bmp";
 
 MapParser::MapParser() {
     // Inicializa cualquier miembro necesario en el constructor
@@ -97,7 +96,7 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
                     AssetsManager::getInstance()->loadTexture(
                         tileset->name,
                         tileset->source,
-                        true,
+                        false,
                         false, 
                         {
                             (tileId % tileset->colCount)*tileset->tileSize, 

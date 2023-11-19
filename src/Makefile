@@ -13,7 +13,7 @@ CFLAGS_DEBUG = -std=c++17 -I/usr/local/include -O0 -g
 
 # Rutas a las bibliotecas
 LDFLAGS = -L/usr/local/lib
-LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -ltinyxml
+LIBS = -lSDL3 -ltinyxml
 OBJ_DIR = ./../bin
 
 # Fuentes y cabeceras
@@ -30,7 +30,6 @@ SOURCES = \
 	Map/MapParser.cpp \
 	Map/Chunk.cpp \
 	Camera/Camera.cpp \
-	Graphics/Text.cpp \
 	Physics/Collider.cpp \
 	Physics/CollisionHandler.cpp \
 	Assets/AssetsManager.cpp \
@@ -51,7 +50,6 @@ HEADERS = \
 	Map/Chunk.h \
 	Physics/Point.h \
 	Camera/Camera.h \
-	Graphics/Text.h \
 	Physics/Collider.h \
 	Physics/CollisionHandler.h \
 	Assets/AssetsManager.h \

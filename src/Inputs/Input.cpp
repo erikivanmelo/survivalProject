@@ -1,8 +1,8 @@
 #include "Input.h"
 #include "../Core/Engine.h"
 #include "../Camera/Camera.h"
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_mouse.h>
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_mouse.h>
 
 Input *Input::instance = nullptr;
 
@@ -20,25 +20,24 @@ void Input::listen()
     SDL_Event event;
     while(SDL_PollEvent(&event)){
         switch(event.type){
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 Engine::quit();
             break;
 
-            case SDL_KEYDOWN:
+            case SDL_EVENT_KEY_DOWN:
                 keyDown(event.key.keysym.scancode);break;
 
-            case SDL_KEYUP:
+            case SDL_EVENT_KEY_UP:
                 keyUp(event.key.keysym.scancode); break;
 
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-                    Camera::getInstance()->setViewBoxSize(
-                            event.window.data1, 
-                            event.window.data2
-                    );
+            case SDL_EVENT_WINDOW_RESIZED:
+                Camera::getInstance()->setViewBoxSize(
+                        event.window.data1, 
+                        event.window.data2
+                );
 
         }
-        mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+        mouseState = SDL_GetMouseState(&mousePosition.x, &mousePosition.y);
     }
 }
 

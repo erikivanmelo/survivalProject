@@ -1,9 +1,10 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mouse.h>
-#include <SDL2/SDL_stdinc.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_mouse.h>
+#include <SDL3/SDL_stdinc.h>
+#include "../Physics/Vector2D.h"
 
 typedef Uint32 MouseState;
 
@@ -26,13 +27,10 @@ public:
         return mouseState;
     }
 
-    inline int getMouseX()const{
-        return mouseX;
+    inline Vector2D getMousePosition()const{
+        return mousePosition;
     }
 
-    inline int getMouseY()const{
-        return mouseY;
-    }
 
 private:
     Input();
@@ -42,7 +40,7 @@ private:
     void keyDown(SDL_Scancode key);
 
     MouseState mouseState;
-    int mouseX, mouseY;
+    Vector2D mousePosition;
 
 
     const Uint8* keyStates;

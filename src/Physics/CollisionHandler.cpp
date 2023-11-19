@@ -1,9 +1,9 @@
 #include "CollisionHandler.h"
 #include "../Core/Engine.h"
 #include "../Helper.h"
-#include <SDL2/SDL_log.h>
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_surface.h>
+#include <SDL3/SDL_log.h>
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_surface.h>
 #include <cstdint>
 #include <iostream>
 #include <algorithm>
@@ -18,20 +18,20 @@ CollisionHandler::CollisionHandler():
     colCount = gameMap->getTileWidth();
 }
 
-bool CollisionHandler::checkColission(SDL_Rect a, SDL_Rect b)
+bool CollisionHandler::checkColission(SDL_FRect a, SDL_FRect b)
 {
-    return SDL_IntersectRect(&a, &b, nullptr);
+    return SDL_GetRectIntersectionFloat(&a, &b, nullptr);
 }
 
 
-int8_t CollisionHandler::mapCollision(SDL_Rect *a)
+int8_t CollisionHandler::mapCollision(SDL_FRect *a)
 {
     int x,y;
     int8_t collisionZone = CollisionZone::none;
     const int leftTile    = Helper::wrapToRange(a->x / tilesize, colCount);
     const int rightTile   = Helper::wrapToRange((a->x + (a->w-1)) / tilesize,colCount);
-    const int topTile     = std::clamp(   a->y            / tilesize, 0, rowCount - 1);
-    const int bottomTile  = std::clamp(  (a->y + (a->h-1)) / tilesize, 0, rowCount - 1);
+    const int topTile     = std::clamp((int)   a->y            / tilesize, 0, rowCount - 1);
+    const int bottomTile  = std::clamp((int)  (a->y + (a->h-1)) / tilesize, 0, rowCount - 1);
 
     x = leftTile;
     do{

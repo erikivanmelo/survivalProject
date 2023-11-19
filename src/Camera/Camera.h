@@ -3,7 +3,7 @@
 
 
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include "../Physics/Point.h"
 #include "../Physics/Vector2D.h"
 
@@ -13,7 +13,7 @@ public:
     inline static Camera *getInstance(){ return instance = (instance == nullptr)? new Camera() : instance; }
     inline static void clean(){ delete instance; }
 
-    inline const SDL_Rect *getViewBox()const{return &viewBox;}
+    inline const SDL_FRect *getViewBox()const{return &viewBox;}
     inline const Vector2D *getPosition()const{return &position;}
     inline void setTarget(Point *target){this->target = target;}
 
@@ -24,7 +24,7 @@ private:
     Camera();
 
 
-    SDL_Rect viewBox;
+    SDL_FRect viewBox;
     Point *target;
     Vector2D position;
     int maxY;

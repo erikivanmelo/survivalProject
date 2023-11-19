@@ -2,8 +2,8 @@
 #include "../Core/Engine.h"
 
 
-Text::Text(const string &text, int x, int y, int fontSize, SDL_Color color, const string &font):
-text(text),x(x),y(y),fontSize(fontSize),color(color),font(font){
+Text::Text(const string &text, float x, float y, float fontSize, SDL_Color color, const string &font):
+text(text),rect(x,y),fontSize(fontSize),color(color),font(font){
 
 	this->texture = nullptr;
 	this->fontType = TTF_OpenFont(font.c_str(), fontSize);
@@ -31,7 +31,7 @@ void Text::setFont(const string &font){
 }
 
 void Text::show(){
-	SDL_Rect rect = { this->x, this->y, this->w, this->h };
+	SDL_FRect rect = { this->x, this->y, this->w, this->h };
 	SDL_RenderCopy(Engine::getInstance()->getRenderer(), texture, NULL, &rect);
 }
 

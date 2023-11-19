@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include "Chunk.h"
+#include "../Physics/Vector2D.h"
 
 typedef std::vector<std::vector<Chunk*>> ChunkList;
 
@@ -68,7 +69,7 @@ public:
         return tileWidth;
     }
 
-    void displayToMapPosition(int *x, int *y);
+    void displayToMapPosition(Vector2D *position);
     
     Tileset *tileset;
 

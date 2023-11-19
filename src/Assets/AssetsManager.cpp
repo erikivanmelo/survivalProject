@@ -1,8 +1,9 @@
 #include "AssetsManager.h"
-#include <SDL2/SDL_pixels.h>
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_surface.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_pixels.h>
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_stdinc.h>
+#include <SDL3/SDL_surface.h>
 #include "../Core/Engine.h"
 
 AssetsManager* AssetsManager::instance = nullptr;
@@ -15,44 +16,39 @@ SDL_Texture *AssetsManager::loadTexture(
         const SDL_Rect srcRect
     ){
 
-    SDL_Surface* surface = IMG_Load( fileName.c_str() );
+    SDL_Surface* surface = SDL_LoadBMP( fileName.c_str() );
     if( !surface )
-        throw "Failed to load image " + fileName + "! SDL_image Error: " + string(IMG_GetError());
+        throw "Failed to load image " + fileName + "! SDL_image Error: " + string(SDL_GetError());
 
     SDL_Texture* texture    = nullptr;
     SDL_Surface* newSurface = nullptr;
 
-    surface = SDL_ConvertSurfaceFormat(surface, Assets::pixelDepth, SDL_TEXTUREACCESS_STATIC);
+    surface = SDL_ConvertSurfaceFormat(surface, Assets::pixelDepth);
 
     // Añade el color magenta a la lista de colores transparentes.
     if( withTransparentMagenta )
-        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
+        SDL_SetSurfaceColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
 
     if( srcRect.w > 0 && srcRect.h > 0 ){
-        newSurface = SDL_CreateRGBSurface(
-            surface->flags,
-            srcRect.w, 
-            srcRect.h, 
-            surface->format->BitsPerPixel, 
-            surface->format->Rmask, 
-            surface->format->Gmask, 
-            surface->format->Bmask, 
-            surface->format->Amask
-        );
-
-        SDL_BlitSurface(surface, &srcRect, newSurface, NULL);
+        newSurface = SDL_CreateSurface(srcRect.w, srcRect.h, Assets::pixelDepth);
+        if( !newSurface )
+            throw "Failed to load surface from" + fileName + "! SDL_image Error: " + string(SDL_GetError());
+        SDL_SetSurfaceColorKey(newSurface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
+        SDL_BlitSurface(surface, &srcRect, newSurface, nullptr);
         // Crea una textura a partir de la nueva superficie.
         texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), newSurface);
+        std::cout << "primero" << endl;
     }else{
         texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), surface);
+        std::cout << "segundo" << endl;
     }
     
     if ( !texture )
         throw "Failed to create texture from " + fileName + "! SDL Error: " + string(SDL_GetError());
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
     if(newSurface)
-        SDL_FreeSurface(newSurface);
+        SDL_DestroySurface(newSurface);
 
     if( saveIt )
         this->textureMap[id] = texture;

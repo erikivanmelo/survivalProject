@@ -1,14 +1,13 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_image.h>
+#include <SDL3/SDL_render.h>
 #include <iostream>
 using namespace std;
 
 #include <string>
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include <unordered_map>
 
 struct AnimationSeq{

@@ -1,5 +1,5 @@
 #include<iostream>
-#include<SDL2/SDL_rect.h>
+#include<SDL3/SDL_rect.h>
 
 namespace Helper{
 
@@ -7,7 +7,7 @@ namespace Helper{
         return (value + max) % max;
     }
 
-    inline void printRect( SDL_Rect rect , const std::string &nombre = "" ) {
+    inline void printRect( SDL_FRect rect , const std::string &nombre = "" ) {
         std ::cout << nombre << ": x:" << rect.x << " - y:" << rect.y << " - w:" << rect.w << " - h:" << rect.h << std::endl;
     }
 

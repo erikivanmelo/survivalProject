@@ -1,12 +1,12 @@
 #ifndef TEXTUREMANAGER_H
 #define TEXTUREMANAGER_H
 
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_render.h>
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 #include <iostream>
 #include <string>
 #include <unordered_map>
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include "../Assets/AssetsManager.h"
 #include "../Map/Chunk.h"
 
@@ -20,14 +20,14 @@ class TextureManager{
 
 
 
-		static void draw( const string &id, int x, int y, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE );
+		static void draw( const string &id, float x, float y, float width, float height, SDL_RendererFlip flip = SDL_FLIP_NONE );
 
-    static void drawFrame( const string &id,int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
+    static void drawFrame( const string &id,float x, float y, float width, float height, float row, float frame, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
-     static void drawFrame( SDL_Texture *texture,int x, int y, int width, int height, int row = 1, int frame = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
+     static void drawFrame( SDL_Texture *texture,float x, float y, float width, float height, float row = 1, float frame = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
-    static void drawChunk( SDL_Texture *texture, SDL_Rect *rect);
-    static void drawTile( const Tile tile, int x, int y, SDL_RendererFlip flip = SDL_FLIP_NONE);
+    static void drawChunk( SDL_Texture *texture, SDL_FRect *rect);
+    static void drawTile( const Tile tile, float x, float y, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 };
 

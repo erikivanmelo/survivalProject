@@ -6,13 +6,13 @@
 #include "../Camera/Camera.h"
 #include "../Characters/Player.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_log.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_video.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_init.h>
+#include <SDL3/SDL_log.h>
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_stdinc.h>
+#include <SDL3/SDL_video.h>
+#include <SDL3/SDL_render.h>
 #include <iostream>
 using namespace std;
 
@@ -24,18 +24,12 @@ void Engine::init(){
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
         throw "SDL could not initialize! SDL_Error: " + string(SDL_GetError());
 
-    if( IMG_Init( IMG_INIT_JPG | IMG_INIT_PNG ) < 0 )
-        throw "IMG could not initialize! SDL_Error: " + string(IMG_GetError());
-
-    if( TTF_Init() < 0 )
-        throw "TTF could not initialize! SDL_Error: " + string(TTF_GetError());
-
     //Create window
-    if( !(window = SDL_CreateWindow("survivalProject2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE)) )
-        throw "Window could not be created! SDL_Error: " + string(SDL_GetError());
+    if( !(window = SDL_CreateWindow("survivalProject2", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE) ) )
+        throw std::string("Window could not be created! SDL_Error: " + string(SDL_GetError()));
 
     //Create renderer
-    if( !(renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED )) )
+    if( !(renderer = SDL_CreateRenderer(window, nullptr, SDL_RENDERER_ACCELERATED )) )
         throw "Renderer could not be created! SDL_Error: " + string(SDL_GetError());
 
     if( !MapParser::getInstance()->load() )
@@ -47,7 +41,7 @@ void Engine::init(){
     AssetsManager::getInstance()->load();
     player = new Player( Vector2D( 0, 0 ) );
 
-    SDL_RenderSetScale(renderer,SCREEN_SCALE,SCREEN_SCALE);
+    SDL_SetRenderScale(renderer,SCREEN_SCALE,SCREEN_SCALE);
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 
@@ -62,8 +56,6 @@ Engine::~Engine(){
     MapParser::clean();
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
-    TTF_Quit();
-    IMG_Quit();
     SDL_Quit();
 }
 
@@ -76,11 +68,11 @@ void Engine::printDebug(){
     static float dt;
     if( (dt += Timer::getInstance()->getDeltaTime()) < updateTime )
         return;
-    int mouseX = Input::getInstance()->getMouseX(), mouseY = Input::getInstance()->getMouseY();
+    Vector2D mousePosition = Input::getInstance()->getMousePosition();
     std::cout << "FPS:" << Timer::getInstance()->getFPS() << endl;
     player->getPosition().log("position");
     Camera::getInstance()->getPosition()->log("Camera");
-    cout << "mouse:" << mouseX << " - " <<  mouseY << endl;
+    cout << "mouse:" << mousePosition.x << " - " <<  mousePosition.y << endl;
     cout << endl;
     dt -= updateTime ;
 }

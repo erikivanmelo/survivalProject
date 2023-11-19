@@ -5,8 +5,8 @@
 #include "../Core/Engine.h"
 #include "../Helper.h"
 
-#include <SDL2/SDL_log.h>
-#include <SDL2/SDL_mouse.h>
+#include <SDL3/SDL_log.h>
+#include <SDL3/SDL_mouse.h>
 #include <algorithm>
 
 Player::Player( Vector2D position ) : Character( "player", position, 32, 32 )
@@ -53,28 +53,30 @@ void Player::checkInput( float dt ){
 
 
     if( mouseState ){
-        int x = Input::getInstance()->getMouseX(),y = Input::getInstance()->getMouseY();
-        mapa->displayToMapPosition(&x,&y);
+        Vector2D position = Input::getInstance()->getMousePosition();
+        mapa->displayToMapPosition(&position);
         if( mouseState == SDL_BUTTON_RMASK ){
             Engine::getInstance()->getMap()->dropTile(
-                x,
-                y,
+                position.x,
+                position.y,
                 FOREGROUND
             );
         }
 
         static Tile *tile = nullptr;
         if( mouseState == SDL_BUTTON_MIDDLE){
-            tile = mapa->getTile(x,y,FOREGROUND);
+            tile = mapa->getTile(position.x,position.y,FOREGROUND);
             if(!tile)
-                tile = mapa->getTile(x,y,BACKGROUND);
+                tile = mapa->getTile(position.x,position.y,BACKGROUND);
         }
 
         if(!tile)
             return;
 
         if( mouseState == SDL_BUTTON_LEFT ){
-            Engine::getInstance()->getMap()->setTile(x,y,
+            Engine::getInstance()->getMap()->setTile(
+                position.x,
+                position.y,
                 FOREGROUND,
                 *tile
             );

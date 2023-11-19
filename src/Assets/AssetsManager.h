@@ -1,7 +1,7 @@
 #ifndef ASSETSMANAGER_H
 #define ASSETSMANAGER_H
 
-#include <SDL2/SDL_render.h>
+#include <SDL3/SDL_render.h>
 #include <iostream>
 #include "../Graphics/Animation.h"
 #include <unordered_map>
@@ -23,7 +23,7 @@ typedef struct{
     int tileCount, tileSize;
     std::string name, source;
     std::vector<SDL_Texture*> textures;
-    SDL_Rect srcRect;
+    SDL_FRect srcRect;
 }Tileset;
 
 class AssetsManager{

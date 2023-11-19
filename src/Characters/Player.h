@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "Character.h"
-#include <SDL2/SDL_rect.h>
+#include <SDL3/SDL_rect.h>
 
 #define INPUT_RIGHT             Input::getInstance()->getKeyDown(SDL_SCANCODE_D)
 #define INPUT_LEFT              Input::getInstance()->getKeyDown(SDL_SCANCODE_A)

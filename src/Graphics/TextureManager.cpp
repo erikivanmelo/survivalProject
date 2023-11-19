@@ -3,25 +3,25 @@
 #include "../Camera/Camera.h"
 #include "../Helper.h"
 
-#include <SDL2/SDL_log.h>
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_surface.h>
-#include <SDL2/SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_log.h>
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_stdinc.h>
+#include <SDL3/SDL_surface.h>
 
 
 
-void TextureManager::draw( const string &id, int x, int y, int width, int height, SDL_RendererFlip flip ){
+void TextureManager::draw( const string &id, float x, float y, float width, float height, SDL_RendererFlip flip ){
 
   static const Vector2D *cam = Camera::getInstance()->getPosition();
-	SDL_Rect srcRect = { 0, 0, width, height };
-	SDL_Rect destRect = { (int)(x - cam->x), (int)(y - (cam->y/2)), width, height };
-	SDL_RenderCopyEx( Engine::getInstance()->getRenderer(), AssetsManager::getInstance()->getTexture(id), &srcRect, &destRect, 0, nullptr, flip );
+	SDL_FRect srcRect = { 0, 0, width, height };
+	SDL_FRect destRect = { x - cam->x, y - (cam->y/2), width, height };
+	SDL_RenderTextureRotated( Engine::getInstance()->getRenderer(), AssetsManager::getInstance()->getTexture(id), &srcRect, &destRect, 0, nullptr, flip );
 
 }
 
-void TextureManager::drawFrame( const string &id, int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip)
+void TextureManager::drawFrame( const string &id, float x, float y, float width, float height, float row, float frame, SDL_RendererFlip flip)
 {
 	drawFrame(
 			AssetsManager::getInstance()->getTexture(id),
@@ -35,19 +35,19 @@ void TextureManager::drawFrame( const string &id, int x, int y, int width, int h
 		);
 }
 
-void TextureManager::drawFrame( SDL_Texture *texture, int x, int y, int width, int height, int row, int frame, SDL_RendererFlip flip)
+void TextureManager::drawFrame( SDL_Texture *texture, float x, float y, float width, float height, float row, float frame, SDL_RendererFlip flip)
 {
   static const Vector2D *cam = Camera::getInstance()->getPosition();
 	if( !texture )
 		return;
 	//A row se le resta uno, porque en el sprite sheet la primera fila es la 0
-	SDL_Rect srcRect = { width*frame, height*(row-1), width, height};
-	SDL_Rect datRect = { Helper::wrapToRange(x - cam->x, Engine::getInstance()->getMap()->getPixelWidth()), (int)(y - cam->y), width, height };
-	SDL_RenderCopyEx(Engine::getInstance()->getRenderer(), texture, &srcRect,&datRect,0,nullptr,flip);
+	SDL_FRect srcRect = { width*frame, height*(row-1), width, height};
+	SDL_FRect datRect = { (float)Helper::wrapToRange(x - cam->x, Engine::getInstance()->getMap()->getPixelWidth()), y - cam->y, width, height };
+	SDL_RenderTextureRotated(Engine::getInstance()->getRenderer(), texture, &srcRect,&datRect,0,nullptr,flip);
 }
 
 
-void TextureManager::drawChunk( SDL_Texture *texture, SDL_Rect *rect )
+void TextureManager::drawChunk( SDL_Texture *texture, SDL_FRect *rect )
 {
 	drawFrame(
 		texture,
@@ -58,7 +58,7 @@ void TextureManager::drawChunk( SDL_Texture *texture, SDL_Rect *rect )
 	);
 }
 
-void TextureManager::drawTile( const Tile tile, int x, int y, SDL_RendererFlip flip)
+void TextureManager::drawTile( const Tile tile, float x, float y, SDL_RendererFlip flip)
 {
 	if(!tile)
 		return;

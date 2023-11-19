@@ -1,11 +1,11 @@
 #ifndef CHUNK_H
 #define CHUNK_H
 
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_surface.h>
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_surface.h>
 #include <array>
 #include <cstdint>
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include <iostream>
 #include "../Assets/AssetsManager.h"
 
@@ -53,7 +53,7 @@ private:
 
     const MapSize xPosition;
     const MapSize yPosition;
-    SDL_Rect rect;
+    SDL_FRect rect;
     Tileset *tileset;
     bool isOnlyAir;
     

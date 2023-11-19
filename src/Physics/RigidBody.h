@@ -2,8 +2,8 @@
 #define RIGIDBODY_H
 
 #include "Vector2D.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_stdinc.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_stdinc.h>
 #include <cstdint>
 
 #define METER_TO_PIXEL(meter) meter*16 // 16 pixels = 1 meter

@@ -8,8 +8,7 @@
 #include "../Map/GameMap.h"
 #include "../Graphics/TextureManager.h"
 
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_image.h>
+#include <SDL3/SDL_render.h>
 #include <string>
 
 class GameObject : public IObject
