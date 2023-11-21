@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "../Core/Engine.h"
+#include <algorithm>
 
 Camera *Camera::instance = nullptr;
 
@@ -24,21 +25,8 @@ Camera::Camera(){
 
 void Camera::update()
 {
-    if(target != nullptr){
-
-        viewBox.x = target->x - (int)(viewBox.w / 2);
-        viewBox.y = target->y - (int)(viewBox.h / 2);
-
-        if(viewBox.y < 0){
-            viewBox.y = 0;
-        }
-
-        if(viewBox.y > (maxY - viewBox.h) ){
-            viewBox.y = (maxY - viewBox.h);
-        }
-
-        position.x = viewBox.x;
-        position.y = viewBox.y;
-
-    }
+    if( !target )
+        return;
+    position.x = viewBox.x = target->x - viewBox.w / 2;
+    position.y = viewBox.y = std::clamp((int)(target->y - viewBox.h / 2), 0, (int)(maxY - viewBox.h ));
 }
