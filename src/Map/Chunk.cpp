@@ -20,14 +20,12 @@ void Chunk::render()
     if( isOnlyAir )
         return;
     isOnlyAir = true;
-    Tile *tile = nullptr;
     Tile tmpTile = 0;
     SDL_RendererFlip flip;
     ChunkSize x,y;
     for(x = 0; x < CHUNK_WIDTH; ++x){
         for(y = 0; y < CHUNK_HEIGHT; ++y){
-            tile = tiles[x][y][FOREGROUND]? tiles[x][y][FOREGROUND] : tiles[x][y][BACKGROUND];
-            if( !(tmpTile = determineRotation(tile, &flip)) )
+            if( !(tmpTile = determineRotation(tiles[x][y][FOREGROUND]? tiles[x][y][FOREGROUND] : tiles[x][y][BACKGROUND], &flip)) )
                 continue;
             isOnlyAir = false;
             TextureManager::draw(

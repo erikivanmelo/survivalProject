@@ -9,7 +9,7 @@ void TextureManager::draw( SDL_Texture *texture,const float x, const float y, co
 	if( !texture )
 		return;
 	SDL_FRect datRect = { 
-		(float)Helper::wrapToRange(x - cam->x, Engine::getInstance()->getMap()->getPixelWidth()-1), 
+		(float)Helper::wrapToRange(x - cam->x, Engine::getInstance()->getMap()->getPixelWidth()-1, width), 
 		y - cam->y, 
 		width, 
 		height 

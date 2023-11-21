@@ -6,7 +6,6 @@
 #include <array>
 #include <cstdint>
 #include <SDL3/SDL.h>
-#include <iostream>
 #include "../Assets/AssetsManager.h"
 
 #define BACKGROUND 0
@@ -33,8 +32,7 @@ private:
     friend class GameMap;
     // Métodos para agregar, eliminar y obtener elementos en el chunk (por ejemplo, bloques).
     inline void setTile( const ChunkSize x, const ChunkSize y, const bool z, Tile *tile){
-        this->tiles[x][y][z] = tile;
-        if( tile )
+        if( (this->tiles[x][y][z] = tile) )
             isOnlyAir = false;
     }
 
@@ -59,8 +57,6 @@ private:
     Tile determineRotation( Tile *tile, SDL_RendererFlip *flip);
 
     std::array<std::array<std::array<Tile*,CHUNK_DEPH>,CHUNK_HEIGHT>,CHUNK_WIDTH> tiles;
-
-    void drawBuffer(Tile tile, ChunkSize x, ChunkSize y);
 };
 
 #endif

@@ -3,8 +3,8 @@
 
 namespace Helper{
 
-    inline int wrapToRange(const int value, const int max){
-        return (value + max) % max;
+    inline int wrapToRange(const int value, const int max, const int margin = 0){
+        return (value + max+margin) % max-margin;
     }
 
     inline void printRect( SDL_FRect rect , const std::string &nombre = "" ) {

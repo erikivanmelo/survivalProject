@@ -52,20 +52,18 @@ void GameMap::render(){
     static const SDL_FRect *box = Camera::getInstance()->getViewBox();
     int x,y;
     const int startX = ((box->x/tileset->tileSize)/CHUNK_WIDTH)-1;
-    const int startY = std::clamp((int)(box->y/tileset->tileSize)/CHUNK_HEIGHT, 0, chunkHeight-1);
+    const int startY = std::clamp((int)((box->y/tileset->tileSize)/CHUNK_HEIGHT)-1, 0, chunkHeight-1);
     const int endX = (((box->x+box->w)/tileset->tileSize)/CHUNK_WIDTH)+1;
-    const int endY = std::clamp((int)((box->y+box->h)/tileset->tileSize)/CHUNK_HEIGHT,0,chunkHeight-1);
+    const int endY = std::clamp((int)(((box->y+box->h)/tileset->tileSize)/CHUNK_HEIGHT)+1,0,chunkHeight-1);
 
-    for(x = startX; x < endX; ++x ){
-        for (y = startY; y <= endY; ++y) {
+    for(x = startX; x < endX; ++x )
+        for (y = startY; y < endY; ++y)
             chunks[Helper::wrapToRange(x, chunkWidth)][y]->render();
-        } 
-    }
 }
 
 void GameMap::displayToMapPosition(Vector2D *position){
     static const Camera *cam  = Camera::getInstance();
-    position->x = (float)Helper::wrapToRange((int)cam->getPosition()->x+(position->x/SCREEN_SCALE),pixelWidth)/8;
-    position->y = (float)std::clamp((int)(cam->getPosition()->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/8;
+    position->x = (float)Helper::wrapToRange((int)cam->getPosition()->x+(position->x/SCREEN_SCALE),pixelWidth)/tileset->tileSize;
+    position->y = (float)std::clamp((int)(cam->getPosition()->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/tileset->tileSize;
 }
 
