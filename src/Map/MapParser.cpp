@@ -67,7 +67,6 @@ bool MapParser::parse(const std::string &id, const std::string &source)
 Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
 {
     Tileset *tileset = new Tileset();
-    xmlTileset->Attribute("firstgid",&tileset->firstId);
     const std::string source = Assets::maps+xmlTileset->Attribute("source");
     tileset->source = MapParser::blocksAsset;
 
@@ -83,13 +82,14 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
 
             AssetsManager::getInstance()->loadTexture(tileset->name,tileset->source,true);
             e->Attribute("tilecount",&tileset->tileCount);
-            tileset->lastId = (tileset->firstId * tileset->tileCount) - 1;
 
             e->Attribute("columns",&tileset->colCount);
             tileset->rowCount = (tileset->tileCount/tileset->colCount);
             e->Attribute("tilewidth",&tileset->tileSize);
             
-            tileset->srcRect = { 0, 0, tileset->tileSize, tileset->tileSize};
+            tileset->srcRect = { 0, 0, (float)tileset->tileSize, (float)tileset->tileSize};
+
+            tileset->textures.reserve(tileset->tileCount);
             tileset->textures.push_back(nullptr);
             for (int tileId = 0; tileId < tileset->tileCount; ++tileId) {
                 tileset->textures.push_back( 

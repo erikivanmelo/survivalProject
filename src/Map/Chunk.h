@@ -23,7 +23,6 @@ typedef int_fast8_t  ChunkSize;
 class GameMap;
 class Chunk {
 public:
-    //TODO para guardar la porfundida del mapa utliizar un booleano, o algo similar
     
     Chunk(MapSize x, MapSize y);
 
@@ -33,17 +32,17 @@ public:
 private:
     friend class GameMap;
     // Métodos para agregar, eliminar y obtener elementos en el chunk (por ejemplo, bloques).
-    inline void setTile( const ChunkSize x, const ChunkSize y, const ChunkSize z, Tile *tile){
+    inline void setTile( const ChunkSize x, const ChunkSize y, const bool z, Tile *tile){
         this->tiles[x][y][z] = tile;
         if( tile )
             isOnlyAir = false;
     }
 
-    inline void dropTile( const ChunkSize x, const ChunkSize y, const ChunkSize z){
+    inline void dropTile( const ChunkSize x, const ChunkSize y, const bool z){
         setTile( x, y, z, nullptr);
     }
 
-    inline Tile *getTile( const ChunkSize x, const ChunkSize y, const ChunkSize z) const{
+    inline Tile *getTile( const ChunkSize x, const ChunkSize y, const bool z) const{
         return this->tiles[x][y][z];
     };
     

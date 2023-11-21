@@ -18,7 +18,6 @@ namespace Assets{
 }
 
 typedef struct{
-    int firstId, lastId;
     int rowCount,colCount;
     int tileCount, tileSize;
     std::string name, source;
@@ -40,8 +39,12 @@ public:
             SDL_DestroyTexture(it->second);
             it = textureMap.erase(it);
         }
-        //TODO Crear destructor de texturas de tileset
         delete tileset;
+
+        for(int i = 1; i < tileset->tileCount; ++i){
+            SDL_DestroyTexture(tileset->textures[i]);
+        }
+
         SDL_Log("TextureMap cleaned!");
     }
 
