@@ -37,10 +37,8 @@ SDL_Texture *AssetsManager::loadTexture(
         SDL_BlitSurface(surface, &srcRect, newSurface, nullptr);
         // Crea una textura a partir de la nueva superficie.
         texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), newSurface);
-        std::cout << "primero" << endl;
     }else{
         texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), surface);
-        std::cout << "segundo" << endl;
     }
     
     if ( !texture )
