@@ -42,7 +42,7 @@ void TextureManager::drawFrame( SDL_Texture *texture, float x, float y, float wi
 		return;
 	//A row se le resta uno, porque en el sprite sheet la primera fila es la 0
 	SDL_FRect srcRect = { width*frame, height*(row-1), width, height};
-	SDL_FRect datRect = { (float)Helper::wrapToRange(x - cam->x, Engine::getInstance()->getMap()->getPixelWidth()), y - cam->y, width, height };
+	SDL_FRect datRect = { (float)Helper::wrapToRange(x - cam->x, Engine::getInstance()->getMap()->getPixelWidth()-1), y - cam->y, width, height };
 	SDL_RenderTextureRotated(Engine::getInstance()->getRenderer(), texture, &srcRect,&datRect,0,nullptr,flip);
 }
 

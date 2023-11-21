@@ -43,32 +43,29 @@ GameMap::~GameMap(){
     auto it = tileList.begin();
     while (it != tileList.end()) {
         delete it->second;
+        it->second = nullptr;
         it = tileList.erase(it);
     }
 }
 
 void GameMap::render(){
     static const SDL_FRect *box = Camera::getInstance()->getViewBox();
-    int startX,endX,startY,endY,x,y;
-    startX = Helper::wrapToRange((box->x/tileset->tileSize)/CHUNK_WIDTH-2,chunkWidth);
-    startY = std::clamp((int)(box->y/tileset->tileSize)/CHUNK_HEIGHT, 0, chunkHeight-1);
+    int x,y;
+    const int startX = ((box->x/tileset->tileSize)/CHUNK_WIDTH)-1;
+    const int startY = std::clamp((int)(box->y/tileset->tileSize)/CHUNK_HEIGHT, 0, chunkHeight-1);
+    const int endX = (((box->x+box->w)/tileset->tileSize)/CHUNK_WIDTH)+1;
+    const int endY = std::clamp((int)((box->y+box->h)/tileset->tileSize)/CHUNK_HEIGHT,0,chunkHeight-1);
 
-    endX = Helper::wrapToRange(((box->x+box->w)/tileset->tileSize)/CHUNK_WIDTH,chunkWidth);
-    endY = std::clamp((int)((box->y+box->h)/tileset->tileSize)/CHUNK_HEIGHT,0,chunkHeight-1);
-
-    x = startX;
-    do {
-        x = Helper::wrapToRange(x, chunkWidth);
+    for(x = startX; x < endX; ++x ){
         for (y = startY; y <= endY; ++y) {
-            chunks[x][y]->render();
+            chunks[Helper::wrapToRange(x, chunkWidth)][y]->render();
         } 
-        x++;
-    }while(x != endX+1);
+    }
 }
 
 void GameMap::displayToMapPosition(Vector2D *position){
     static const Camera *cam  = Camera::getInstance();
-    position->x = Helper::wrapToRange((int)cam->getPosition()->x+(position->x/SCREEN_SCALE),pixelWidth)/8;
-    position->y = std::clamp((int)(cam->getPosition()->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/8;
+    position->x = (float)Helper::wrapToRange((int)cam->getPosition()->x+(position->x/SCREEN_SCALE),pixelWidth)/8;
+    position->y = (float)std::clamp((int)(cam->getPosition()->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/8;
 }
 
