@@ -30,10 +30,12 @@ void Chunk::render()
             if( !(tmpTile = determineRotation(tile, &flip)) )
                 continue;
             isOnlyAir = false;
-            TextureManager::drawTile(
-                tmpTile,
-                rect.x+(x*tileset->tileSize), 
+            TextureManager::draw(
+                tileset->textures[tmpTile],
+                rect.x+(x*tileset->tileSize),
                 rect.y+(y*tileset->tileSize),
+                tileset->tileSize,
+                tileset->tileSize,
                 flip
             );
         }
