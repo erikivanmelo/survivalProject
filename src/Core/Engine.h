@@ -29,6 +29,22 @@ class Engine
 
         inline GameMap* getMap()const{ return map; }
 
+        inline void setFps(const int fps){
+            this->fps = partPerSecond(fps);
+        }
+
+        inline void setUps(const int ups){
+            this->ups = partPerSecond(ups);
+        }
+
+        inline void setDps(const int dps){
+            this->dps = partPerSecond(dps);
+        }
+
+        inline float partPerSecond(const int pps)const{
+            return pps? 1.0/pps : 0;
+        }
+
         ~Engine();
     private:
         inline void setRunning( bool running ){ this->running = running; }
@@ -38,6 +54,9 @@ class Engine
         SDL_Renderer* renderer;
         static Engine* instance;
         GameMap *map;
+        int currentFps;
+        float fps, dps, ups;
+
 };
 
 #endif

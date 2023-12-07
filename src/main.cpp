@@ -15,7 +15,7 @@ int main()
             engine->update();
             engine->render();
             engine->printDebug();
-            Timer::getInstance()->tickUpdate();
+            Timer::tickUpdate();
         }
     }catch(const string &e){
         cerr << e << endl;

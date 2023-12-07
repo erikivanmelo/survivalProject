@@ -45,12 +45,14 @@ void Engine::init(){
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 
+    setFps(0);
+    setUps(50);
+    setDps(10);
     running = true;
 }
 
 Engine::~Engine(){
     AssetsManager::clean();
-    Timer::clean();
     Camera::clean();
     Input::clean();
     MapParser::clean();
@@ -64,45 +66,52 @@ void Engine::quit(){
 }
 
 void Engine::printDebug(){
-    static const float updateTime = 1.0/10;
-    static float dt;
-    if( (dt += Timer::getInstance()->getDeltaTime()) < updateTime )
-        return;
-    Vector2D mousePosition = Input::getInstance()->getMousePosition();
-    std::cout << "FPS:" << Timer::getInstance()->getFPS() << endl;
-    player->getPosition().log("position");
-    Camera::getInstance()->getPosition()->log("Camera");
-    cout << "mouse:" << mousePosition.x << " - " <<  mousePosition.y << endl;
-    cout << endl;
-    dt -= updateTime ;
+    startInLapse(dt,dps)
+        Vector2D mousePosition = Input::getInstance()->getMousePosition();
+        std::cout << "FPS:" << currentFps << endl;
+        player->getPosition().log("position");
+        Camera::getInstance()->getPosition()->log("Camera");
+        cout << "mouse:" << mousePosition.x << " - " <<  mousePosition.y << endl;
+        cout << endl;
+    endInLapse(dt,dps)
 }
 
 void Engine::update(){
-    static const float updateTime = 1.0/50;
-    static float dt;
-    if( (dt += Timer::getInstance()->getDeltaTime()) < updateTime )
-        return;
-    map->update();
-    player->update(dt);
-
-    dt -= updateTime ;
+    startInLapse(dt,ups)
+        player->update(dt);
+        map->update();
+    endInLapse(dt,ups)
 }
 
 void Engine::render(){
-    //set the drawing color to blue in the buffer
-    SDL_SetRenderDrawColor(renderer, 124, 218, 254, 255);
-    //Clear the buffer
-    SDL_RenderClear(renderer);
+    static int frameCount = 0;
+    static double fpsTimer = 0.0;
+    startInLapse(dt,fps)
+        frameCount++;
+        // Actualizar el contador de cuadros y el temporizador de FPS
+        if ( (fpsTimer += dt) >= 1.0 ) { // Si ha pasado 1 segundo
+            // Calcular los FPS actuales
+            currentFps = static_cast<double>(frameCount) / fpsTimer;
 
-    map->render();
-    player->draw();
-    //Update the screen with the buffer
-    SDL_RenderPresent(renderer);
+            // Reiniciar el contador de cuadros y el temporizador de FPS
+            frameCount = 0;
+            fpsTimer -= 1.0;
+        }
+
+        //set the drawing color to blue in the buffer
+        SDL_SetRenderDrawColor(renderer, 124, 218, 254, 255);
+        //Clear the buffer
+        SDL_RenderClear(renderer);
+
+        map->render();
+        player->draw();
+        //Update the screen with the buffer
+        SDL_RenderPresent(renderer);
+    endInLapse(dt,fps)
 }
 
 
 void Engine::events(){
     Input::getInstance()->listen();
 }
-
 
