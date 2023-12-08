@@ -4,10 +4,10 @@
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL.h>
 
-#define startInLapse(counter,lapse) static float counter = 0.0; \
-                                    counter += Timer::getDeltaTime(); \
+#define startInLapse(counter, lapse, dt) static float counter = 0.0; \
+                                    counter += dt; \
                                     if( lapse == 0.0 || counter >= lapse ){
-#define endInLapse(counter,lapse) counter = lapse? counter - lapse : 0; }
+#define endInLapse(counter,lapse) counter = lapse > 0? counter - lapse : 0; }
 
 class Timer
 {

@@ -42,6 +42,7 @@ void Engine::init(){
     player = new Player( Vector2D( 0, 0 ) );
 
     SDL_SetRenderScale(renderer,SCREEN_SCALE,SCREEN_SCALE);
+    SDL_SetRenderDrawColor(renderer, 124, 218, 254, 255);
 
     Camera::getInstance()->setTarget( player->getOrigin() );
 
@@ -66,46 +67,38 @@ void Engine::quit(){
 }
 
 void Engine::printDebug(){
-    startInLapse(dt,dps)
+    startInLapse(dt, dps, Timer::getDeltaTime())
         Vector2D mousePosition = Input::getInstance()->getMousePosition();
         std::cout << "FPS:" << currentFps << endl;
         player->getPosition().log("position");
         Camera::getInstance()->getPosition()->log("Camera");
         cout << "mouse:" << mousePosition.x << " - " <<  mousePosition.y << endl;
         cout << endl;
-    endInLapse(dt,dps)
+    endInLapse(dt, dps)
 }
 
 void Engine::update(){
-    startInLapse(dt,ups)
+    startInLapse(dt, ups, Timer::getDeltaTime())
         player->update(dt);
         map->update();
-    endInLapse(dt,ups)
+    endInLapse(dt, ups)
 }
 
 void Engine::render(){
     static int frameCount = 0;
-    static double fpsTimer = 0.0;
-    startInLapse(dt,fps)
+    startInLapse(dt,fps, Timer::getDeltaTime())
         frameCount++;
-        // Actualizar el contador de cuadros y el temporizador de FPS
-        if ( (fpsTimer += dt) >= 1.0 ) { // Si ha pasado 1 segundo
-            // Calcular los FPS actuales
+
+        startInLapse(fpsTimer, 1.0, dt)
             currentFps = static_cast<double>(frameCount) / fpsTimer;
-
-            // Reiniciar el contador de cuadros y el temporizador de FPS
             frameCount = 0;
-            fpsTimer -= 1.0;
-        }
+        endInLapse(fpsTimer, 1.0)
 
-        //set the drawing color to blue in the buffer
-        SDL_SetRenderDrawColor(renderer, 124, 218, 254, 255);
-        //Clear the buffer
         SDL_RenderClear(renderer);
 
         map->render();
         player->draw();
-        //Update the screen with the buffer
+
         SDL_RenderPresent(renderer);
     endInLapse(dt,fps)
 }
