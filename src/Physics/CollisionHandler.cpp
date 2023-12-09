@@ -26,17 +26,18 @@ bool CollisionHandler::checkColission(SDL_FRect a, SDL_FRect b)
 
 int8_t CollisionHandler::mapCollision(SDL_FRect *a)
 {
-    int x,y;
+    unsigned int x,y;
     int8_t collisionZone = CollisionZone::none;
-    const int leftTile    = Helper::wrapToRange(a->x / tilesize, colCount);
-    const int rightTile   = Helper::wrapToRange((a->x + (a->w-1)) / tilesize,colCount);
-    const int topTile     = std::clamp((int)   a->y            / tilesize, 0, rowCount - 1);
-    const int bottomTile  = std::clamp((int)  (a->y + (a->h-1)) / tilesize, 0, rowCount - 1);
+    const unsigned int leftTile    = Helper::wrapToRange(a->x / tilesize, colCount);
+    const unsigned int rightTile   = Helper::wrapToRange((a->x + (a->w-1)) / tilesize,colCount);
+    const unsigned int topTile     = std::clamp((int)   a->y            / tilesize, 0, rowCount - 1);
+    const unsigned int bottomTile  = std::clamp((int)  (a->y + (a->h-1)) / tilesize, 0, rowCount - 1);
+    const unsigned int xEnd = rightTile+1;
 
     x = leftTile;
     do{
         x = Helper::wrapToRange(x, colCount);
-        for( y = topTile; y <= bottomTile; y++){
+        for( y = topTile; y <= bottomTile; ++y){
             if( !gameMap->getTile(x,y) )
                 continue;
 
@@ -51,74 +52,65 @@ int8_t CollisionHandler::mapCollision(SDL_FRect *a)
                 collisionZone |= CollisionZone::right;
         }
         x++;
-    }while(x != rightTile+1);
+    }while(x != xEnd);
 
     return collisionZone;
 }
 
 Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone){
-    Vector2D position = newPosition;
     Vector2D trajectory = newPosition - lastSafePosition;
-    if( (newPosition - lastSafePosition) == 0 )
+    if( trajectory == 0 )
         return newPosition;
 
-    position = getFirstCollision( lastSafePosition, newPosition, collider, collisionZone );
-    Vector2D newtrajectory;
-    if( (newtrajectory = newPosition - position) != 0 ){
-        float newX, newY;
-        Vector2D newLastSafePosition = position;
-        
-        collider->setCoordinates( position.x + newtrajectory.x , position.y );
-        if( mapCollision(collider->getCollisionBox()) )
-            newX = CollisionHandler::getInstance()->getFirstCollision( 
-                    newLastSafePosition, 
-                    Vector2D(position.x + newtrajectory.x, position.y), 
-                    collider, 
-                    collisionZone 
-                    ).x;
-        else
-            newX = position.x + newtrajectory.x;
+    Vector2D position = getFirstCollision( lastSafePosition, newPosition, collider, collisionZone );
+    Vector2D newtrajectory = newPosition - position;
+    if( newtrajectory == 0 )
+        return position;
 
-        collider->setCoordinates( position.x , position.y + newtrajectory.y );
-        if( mapCollision(collider->getCollisionBox()) )
-            newY = CollisionHandler::getInstance()->getFirstCollision( 
-                    newLastSafePosition, 
-                    Vector2D(position.x, position.y + newtrajectory.y), 
-                    collider, 
-                    collisionZone 
-                    ).y;
-        else
-            newY = position.y + newtrajectory.y;
+    float newX, newY;
+    Vector2D newLastSafePosition = position;
+    
+    collider->setCoordinates( position.x + newtrajectory.x , position.y );
+    newX = mapCollision(collider->getCollisionBox())? 
+            CollisionHandler::getInstance()->getFirstCollision( 
+            newLastSafePosition, 
+            Vector2D(position.x + newtrajectory.x, position.y), 
+            collider, 
+            collisionZone 
+            ).x : position.x + newtrajectory.x;
 
-        float trajectoryX = newX - position.x;
-        float trajectoryY = newY - position.y;
+    collider->setCoordinates( position.x , position.y + newtrajectory.y );
+    newY = mapCollision(collider->getCollisionBox())?
+            CollisionHandler::getInstance()->getFirstCollision( 
+            newLastSafePosition, 
+            Vector2D(position.x, position.y + newtrajectory.y), 
+            collider, 
+            collisionZone 
+            ).y : position.y + newtrajectory.y;
 
-        
-        if( abs(trajectoryX) > abs(trajectoryY) ){
-            position.x = newX;
+    float trajectoryX = newX - position.x;
+    float trajectoryY = newY - position.y;
 
-            *collisionZone = CollisionZone::none;
-            if( trajectory.y > 0 )
-                *collisionZone |= CollisionZone::bottom;
-            else if( trajectory.y < 0 )
-                *collisionZone |= CollisionZone::top;
+    
+    if( abs(trajectoryX) > abs(trajectoryY) ){
+        position.x = newX;
 
-        }else if( abs(trajectoryX) < abs(trajectoryY) ){
-            position.y = newY;
-        
-            *collisionZone = CollisionZone::none;
-            if( trajectory.x > 0 )
-                *collisionZone |= CollisionZone::right;
-            else if( trajectory.x < 0 )
-                *collisionZone |= CollisionZone::left;
-        }
+        *collisionZone = CollisionZone::none;
+        if( trajectory.y > 0 )
+            *collisionZone |= CollisionZone::bottom;
+        else if( trajectory.y < 0 )
+            *collisionZone |= CollisionZone::top;
 
+    }else if( abs(trajectoryX) < abs(trajectoryY) ){
+        position.y = newY;
+    
+        *collisionZone = CollisionZone::none;
+        if( trajectory.x > 0 )
+            *collisionZone |= CollisionZone::right;
+        else if( trajectory.x < 0 )
+            *collisionZone |= CollisionZone::left;
     }
-    //SDL_Log("%c-%c-%c-%c",
-        //(*collisionZone & CollisionZone::top   )?'T':' ', 
-        //(*collisionZone & CollisionZone::bottom)?'B':' ',
-        //(*collisionZone & CollisionZone::left  )?'L':' ',
-        //(*collisionZone & CollisionZone::right )?'R':' ');
+
     return position;
 }
 
