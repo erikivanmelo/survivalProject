@@ -42,7 +42,25 @@ public:
 
 
     void update( float dt )override{
-        checkCollision( dt );
+        rigidBody->update(dt);
+
+        this->position = CollisionHandler::getInstance()->mostPlausiblePosition( 
+            this->position, 
+            this->position + rigidBody->getPosition(), 
+            collider, 
+            &collisionZone 
+        );
+        collider->setCoordinates(this->position);
+
+        if( collisionZone & CollisionZone::left || collisionZone & CollisionZone::right )
+            rigidBody->unsetVelocityX();
+
+        if( collisionZone & CollisionZone::bottom || collisionZone & CollisionZone::top ){
+            rigidBody->unsetVelocityY();
+            jumping = false;
+        }
+        
+        grounded = collisionZone & CollisionZone::bottom;
 
         animation->update();
         GameObject::update( dt );
@@ -92,27 +110,6 @@ protected:
             grounded = false;
             rigidBody->setVelocityY( MoveDirection::UP * jumpVelocity ); 
         }
-    }
-
-    void checkCollision(float dt){
-        rigidBody->update( dt );
-        Vector2D lastSafePosition = this->position;
-        this->position += rigidBody->getPosition();
-
-        collider->setCoordinates(this->position);
-
-        if( (collisionZone = CollisionHandler::getInstance()->mapCollision(collider->getCollisionBox())) )
-            collider->setCoordinates( this->position = CollisionHandler::getInstance()->mostPlausiblePosition( lastSafePosition, this->position, collider, &collisionZone ) );
-
-        if( collisionZone & CollisionZone::left || collisionZone & CollisionZone::right )
-            rigidBody->unsetVelocityX();
-
-        if( collisionZone & CollisionZone::bottom || collisionZone & CollisionZone::top ){
-            rigidBody->unsetVelocityY();
-            jumping = false;
-        }
-        
-        grounded = collisionZone & CollisionZone::bottom;
     }
 
     Animation *animation;

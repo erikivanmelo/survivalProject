@@ -62,27 +62,25 @@ Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vect
     if( trajectory == 0 )
         return newPosition;
 
+    collider->setCoordinates(newPosition);
     Vector2D position = getFirstCollision( lastSafePosition, newPosition, collider, collisionZone );
     Vector2D newtrajectory = newPosition - position;
     if( newtrajectory == 0 )
         return position;
 
-    float newX, newY;
-    Vector2D newLastSafePosition = position;
-    
     collider->setCoordinates( position.x + newtrajectory.x , position.y );
-    newX = mapCollision(collider->getCollisionBox())? 
+    float newX = mapCollision(collider->getCollisionBox())? 
             CollisionHandler::getInstance()->getFirstCollision( 
-            newLastSafePosition, 
+            position, 
             Vector2D(position.x + newtrajectory.x, position.y), 
             collider, 
             collisionZone 
             ).x : position.x + newtrajectory.x;
 
     collider->setCoordinates( position.x , position.y + newtrajectory.y );
-    newY = mapCollision(collider->getCollisionBox())?
+    float newY = mapCollision(collider->getCollisionBox())?
             CollisionHandler::getInstance()->getFirstCollision( 
-            newLastSafePosition, 
+            position, 
             Vector2D(position.x, position.y + newtrajectory.y), 
             collider, 
             collisionZone 
