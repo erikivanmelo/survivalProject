@@ -8,7 +8,7 @@
 
 #define METER_TO_PIXEL(meter) meter*16 // 16 pixels = 1 meter
 
-#define GRAVITY 9.81f/5 // m/s^2
+#define GRAVITY 9.81f // m/s^2
 
 namespace MoveDirection{
     constexpr int8_t UP = -1;
@@ -61,7 +61,7 @@ public:
 
     void update(float dt){
 
-        velocity += gravity - friction;
+        velocity += ((gravity*10) - friction)*dt;
         //velocity.log("velocity");
 
         // Actualizamos la velocidad en unidades de píxeles por segundo
