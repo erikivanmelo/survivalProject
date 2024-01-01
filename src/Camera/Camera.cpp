@@ -28,5 +28,5 @@ void Camera::update()
     if( !target )
         return;
     position.x = viewBox.x = target->x - viewBox.w / 2;
-    position.y = viewBox.y = std::clamp((int)(target->y - viewBox.h / 2), 0, (int)(maxY - viewBox.h ));
+    position.y = viewBox.y = std::clamp((int)(target->y - viewBox.h / 2), 0, (int)(maxY - viewBox.h - CHUNK_PIXEL_HEIGHT));
 }

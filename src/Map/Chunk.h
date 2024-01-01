@@ -15,6 +15,9 @@
 #define CHUNK_HEIGHT 8
 #define CHUNK_DEPH 2
 
+#define CHUNK_PIXEL_HEIGHT CHUNK_HEIGHT*AssetsManager::getInstance()->getTileset()->tileSize
+#define CHUNK_PIXEL_WIDTH  CHUNK_WIDTH*AssetsManager::getInstance()->getTileset()->tileSize
+
 typedef uint32_t Tile;
 typedef int16_t MapSize;
 typedef int_fast8_t  ChunkSize;
