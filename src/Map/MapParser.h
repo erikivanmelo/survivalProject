@@ -16,7 +16,7 @@ public:
 		static const std::string worldAsset;
 		static const std::string blocksAsset;
 
-    bool load();
+    void load();
 
 
     inline GameMap* getMap(std::string id){ return mapDict[id]; }
@@ -24,7 +24,7 @@ public:
     inline static void clean(){ delete instance; }
 
 private:
-    bool parse(const std::string &id,const std::string &source);
+    void parse(const std::string &id,const std::string &source);
     Tileset *parseTileSet( TiXmlElement* xmlTileset );
     void parseChunks( TiXmlElement* xmlLayer, GameMap *gameMap, const ChunkSize depth, const int colCount, const int rowCount );
 

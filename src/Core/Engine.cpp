@@ -32,20 +32,18 @@ void Engine::init(){
     if( !(renderer = SDL_CreateRenderer(window, nullptr, SDL_RENDERER_ACCELERATED )) )
         throw "Renderer could not be created! SDL_Error: " + string(SDL_GetError());
 
-    if( !MapParser::getInstance()->load() )
-        throw "Failed to load map";
-
-    map = MapParser::getInstance()->getMap("overworld");
-
-    
-    AssetsManager::getInstance()->load();
-    player = new Player( Vector2D( 0, 0 ) );
-
     SDL_SetRenderScale(renderer,SCREEN_SCALE,SCREEN_SCALE);
     SDL_SetRenderDrawColor(renderer, 124, 218, 254, 255);
 
+    AssetsManager::getInstance()->load();
+
+    MapParser::getInstance()->load();
+    map = MapParser::getInstance()->getMap("overworld");
+    
+    player = new Player();
     Camera::getInstance()->setTarget( player->getOrigin() );
 
+    // Set the frame rate, updates per second and debugPrint per second
     setFps(0);
     setUps(50);
     setDps(10);

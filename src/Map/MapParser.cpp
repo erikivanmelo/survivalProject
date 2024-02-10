@@ -26,12 +26,12 @@ MapParser::~MapParser()
     mapDict.clear();
 }
 
-bool MapParser::load()
+void MapParser::load()
 {
-    return parse(worldName,worldAsset);
+    parse(worldName,worldAsset);
 }
 
-bool MapParser::parse(const std::string &id, const std::string &source)
+void MapParser::parse(const std::string &id, const std::string &source)
 {
     TiXmlDocument xml;
     xml.LoadFile(source);
@@ -61,7 +61,6 @@ bool MapParser::parse(const std::string &id, const std::string &source)
     }
 
     mapDict[id] = gameMap;
-    return true;
 }
 
 Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)

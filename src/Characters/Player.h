@@ -16,7 +16,7 @@ class Player : public Character
 {
 
 public:
-    Player( Vector2D posiiton );
+    Player( Vector2D posiiton = Vector2D(0,0) );
 
     void update(float dt) override;
 

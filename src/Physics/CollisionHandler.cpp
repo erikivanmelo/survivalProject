@@ -112,18 +112,20 @@ Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vect
     return position;
 }
 
-Vector2D CollisionHandler::getFirstCollision(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone) {
-    Vector2D difference = newPosition - lastSafePosition;
+Vector2D CollisionHandler::getFirstCollision(Vector2D startPosition, Vector2D endPosition, Collider *collider, int8_t *collisionZone) {
+    Vector2D difference = endPosition - startPosition;
     Vector2D direction = difference.normalize();
+    // If the direction is 0, the start position is the same as the end position
     if( direction == 0 )
-        return newPosition;
+        return endPosition;
 
     float distance = difference.length();
-    Vector2D rayPosition = lastSafePosition;
-    int t = 0, step = ( abs(difference.x) > tilesize && abs(difference.y) > tilesize )? tilesize : 1;
+    Vector2D rayPosition = startPosition;
+    int journey = 0;
+    int step = ( abs(difference.x) > tilesize && abs(difference.y) > tilesize )? tilesize : 1;
 
     if (distance < step)
-        return lastSafePosition;
+        return startPosition;
 
     do{
         collider->setCoordinates( rayPosition.x, rayPosition.y );
@@ -132,14 +134,14 @@ Vector2D CollisionHandler::getFirstCollision(Vector2D lastSafePosition, Vector2D
                 return rayPosition - direction;
             else{
                 rayPosition -= direction;
-                t -= step;
+                journey -= step;
                 step = 1;
             }
         }
-        t += step;
+        journey += step;
         rayPosition += direction;
-    }while( t <= distance );
+    }while( journey <= distance );
 
-    return newPosition;
+    return endPosition;
 }
 
