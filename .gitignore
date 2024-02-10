@@ -1,5 +1,6 @@
-bin/
+obj/
 assets/tests
-src/.depend
+.depend
 src/.ccls-cache/
 .ccls-cache/
+survivalProject

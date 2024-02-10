@@ -10,7 +10,7 @@
 #include <nlohmann/json.hpp>
 
 namespace Assets{
-  const std::string base		= "../assets/";
+  const std::string base		= "assets/";
   const std::string maps		= base+"maps/";
   const std::string fonts		= base+"fonts/";
   const std::string sprites	= base+"sprites/";
