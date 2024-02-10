@@ -122,6 +122,9 @@ Vector2D CollisionHandler::getFirstCollision(Vector2D lastSafePosition, Vector2D
     Vector2D rayPosition = lastSafePosition;
     int t = 0, step = ( abs(difference.x) > tilesize && abs(difference.y) > tilesize )? tilesize : 1;
 
+    if (distance < step)
+        return lastSafePosition;
+
     do{
         collider->setCoordinates( rayPosition.x, rayPosition.y );
         if( (*collisionZone = mapCollision( collider->getCollisionBox() )) ){
