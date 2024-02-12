@@ -72,6 +72,8 @@ void Player::checkInput( float dt ){
             return;
 
         if( mouseState == SDL_BUTTON_LEFT ){
+            if (!mapa->areBlockAround(position.x, position.y, FOREGROUND))
+                return;
             Engine::getInstance()->getMap()->setTile(
                 position.x,
                 position.y,

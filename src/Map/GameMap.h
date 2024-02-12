@@ -69,6 +69,16 @@ public:
         return tileWidth;
     }
 
+    inline bool areBlockAround(int x, int y, bool z = FOREGROUND){
+        if (
+             getTile(x+1, y  , z) != 0 || 
+             getTile(x-1, y  , z) != 0 || 
+             getTile(x  , y+1, z) != 0 || 
+             getTile(x  , y-1, z) != 0
+            ) return true;
+        return false;
+    }
+
     void displayToMapPosition(Vector2D *position);
     
     Tileset *tileset;
