@@ -31,6 +31,18 @@ public:
     inline static CollisionHandler* getInstance(){return instance = (instance == nullptr)? new CollisionHandler():instance;}
     ~CollisionHandler(){
     }
+
+    inline bool isPlayerIn(int x, int y, SDL_FRect *playerBox) {
+    x *= tilesize;
+    y *= tilesize;
+    return  (
+                playerBox->x < x + tilesize         &&
+                playerBox->x     + playerBox->w > x &&
+                playerBox->y < y + tilesize         &&
+                playerBox->y     + playerBox->h > y
+            );
+    }
+
 private:
 
     CollisionHandler();

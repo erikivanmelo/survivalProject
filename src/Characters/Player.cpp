@@ -72,7 +72,7 @@ void Player::checkInput( float dt ){
             return;
 
         if( mouseState == SDL_BUTTON_LEFT ){
-            if (!mapa->areBlockAround(position.x, position.y, FOREGROUND))
+            if (!mapa->areBlockAround(position.x, position.y, FOREGROUND) || CollisionHandler::getInstance()->isPlayerIn(position.x, position.y, collider->getCollisionBox()))
                 return;
             Engine::getInstance()->getMap()->setTile(
                 position.x,
