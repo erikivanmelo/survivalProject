@@ -67,3 +67,14 @@ void GameMap::displayToMapPosition(Vector2D *position){
     position->y = (float)std::clamp((int)(cam->getPosition()->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/tileset->tileSize;
 }
 
+bool GameMap::areBlockAround(int x, int y, bool z){
+    return  (
+        getTile(Helper::wrapToRange(x + 1, tileWidth), y, z) != 0 || 
+        getTile(Helper::wrapToRange(x - 1, tileWidth), y, z) != 0 || 
+
+        getTile(x, std::clamp(y + 1, 0, tileWidth - 1), z) != 0 || 
+        getTile(x, std::clamp(y - 1, 0, tileWidth - 1), z) != 0
+    );
+}
+
+
