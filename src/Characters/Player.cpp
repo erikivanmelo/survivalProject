@@ -91,7 +91,7 @@ void Player::breakBlock(Vector2D position){
     mapa->dropTile(
         position.x,
         position.y,
-        mapa->getTile(position.x, position.y, FOREGROUND) 
+        FOREGROUND 
     );
 }
 
