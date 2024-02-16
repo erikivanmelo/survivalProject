@@ -33,3 +33,17 @@ void TextureManager::drawFrame( SDL_Texture *texture, const float x, const float
 	SDL_RenderTextureRotated(Engine::getInstance()->getRenderer(), texture, &srcRect,&datRect,0,nullptr,flip);
 }
 
+
+
+void TextureManager::drawRect( const float x, const float y, const float width, const float height, const SDL_Color &color )
+{
+	static const Vector2D *cam = Camera::getInstance()->getPosition();
+	SDL_FRect datRect = { 
+		(float)Helper::wrapToRange(x - cam->x, Engine::getInstance()->getMap()->getPixelWidth()-1), 
+		y - cam->y, 
+		width, 
+		height 
+	};
+	SDL_SetRenderDrawColor(Engine::getInstance()->getRenderer(), color.r, color.g, color.b, color.a);
+	SDL_RenderRect(Engine::getInstance()->getRenderer(), &datRect);
+}

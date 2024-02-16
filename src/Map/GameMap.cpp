@@ -6,6 +6,7 @@
 #include <cstdint>
 #include "../Helper.h"
 #include "../Core/Engine.h"
+#include "../Graphics/TextureManager.h"
 
 GameMap::GameMap( const MapSize width, const MapSize height ):
     chunkWidth(width), chunkHeight(height),
@@ -61,19 +62,40 @@ void GameMap::render(){
             chunks[Helper::wrapToRange(x, chunkWidth)][y]->render();
 }
 
-void GameMap::displayToMapPosition(Vector2D *position){
+void GameMap::displayPositionToMapPosition(Vector2D *position){
     static const Camera *cam  = Camera::getInstance();
     position->x = (float)Helper::wrapToRange((int)cam->getPosition()->x+(position->x/SCREEN_SCALE),pixelWidth)/tileset->tileSize;
     position->y = (float)std::clamp((int)(cam->getPosition()->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/tileset->tileSize;
 }
 
-bool GameMap::areBlockAround(int x, int y, bool z){
-    return  (
+void GameMap::mapPositionToDisplayPosition(Vector2D *position){
+    static const Camera *cam  = Camera::getInstance();
+    position->x = (float)Helper::wrapToRange((int)cam->getPosition()->x+(position->x*tileset->tileSize),pixelWidth-1);
+    position->y = (float)std::clamp((int)(cam->getPosition()->y+position->y*tileset->tileSize),0,pixelHeight-1);
+}
+
+bool GameMap::areBlockAround(int x, int y, bool z, bool inCenterToo){
+    return  
         getTile(Helper::wrapToRange(x + 1, tileWidth), y, z) != 0 || 
         getTile(Helper::wrapToRange(x - 1, tileWidth), y, z) != 0 || 
 
         getTile(x, std::clamp(y + 1, 0, tileWidth - 1), z) != 0 || 
-        getTile(x, std::clamp(y - 1, 0, tileWidth - 1), z) != 0
+        getTile(x, std::clamp(y - 1, 0, tileWidth - 1), z) != 0 ||
+
+        (inCenterToo && getTile(x, y, z) != 0);
+}
+
+void GameMap::focusBlock(Vector2D position){
+    if (!areBlockAround(position.x, position.y, FOREGROUND, true) && !getTile(position.x, position.y, BACKGROUND)) 
+        return;
+    position = snapToGrid(position);
+    int tileSize = tileset->tileSize;
+    TextureManager::drawRect(
+        position.x*tileSize, 
+        position.y*tileSize, 
+        tileSize, 
+        tileSize, 
+        {255, 0, 0,255} 
     );
 }
 

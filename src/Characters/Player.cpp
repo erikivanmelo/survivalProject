@@ -50,38 +50,56 @@ void Player::checkInput( float dt ){
     }
 
 
+    this->mousePosition = Input::getInstance()->getMousePosition();
+    mapa->displayPositionToMapPosition(&mousePosition);
     if( mouseState ){
-        Vector2D position = Input::getInstance()->getMousePosition();
-        mapa->displayToMapPosition(&position);
-        if( mouseState == SDL_BUTTON_RMASK ){
-            Engine::getInstance()->getMap()->dropTile(
-                position.x,
-                position.y,
-                FOREGROUND
-            );
-        }
-
-        static Tile *tile = nullptr;
-        if( mouseState == SDL_BUTTON_MIDDLE){
-            tile = mapa->getTile(position.x,position.y,FOREGROUND);
-            if(!tile)
-                tile = mapa->getTile(position.x,position.y,BACKGROUND);
-        }
-
-        if(!tile)
-            return;
-
-        if( mouseState == SDL_BUTTON_LEFT ){
-            if (!mapa->areBlockAround(position.x, position.y, FOREGROUND) || CollisionHandler::getInstance()->isPlayerIn(position.x, position.y, collider->getCollisionBox()))
-                return;
-            Engine::getInstance()->getMap()->setTile(
-                position.x,
-                position.y,
-                FOREGROUND,
-                *tile
-            );
+        switch (mouseState) {
+            case SDL_BUTTON_LEFT:
+                placeBlock(mousePosition);
+                break;
+            case SDL_BUTTON_MIDDLE:
+                selectBlock(mousePosition);
+                break;
+            case SDL_BUTTON_RMASK:
+                breakBlock(mousePosition);
+                break;
         }
     }
+}
+
+void Player::placeBlock(Vector2D position, Tile *tile){
+    static GameMap *mapa = Engine::getInstance()->getMap();
+
+    if (!tile)
+        tile = tileSelected;
+
+    if (!tile || 
+        (!mapa->areBlockAround(position.x, position.y, FOREGROUND) && !mapa->getTile(position.x, position.y, BACKGROUND)) || 
+        mapa->getTile(position.x, position.y, FOREGROUND) ||
+        CollisionHandler::getInstance()->isCharacterIn(position.x, position.y, collider->getCollisionBox())
+        ) return;
+    mapa->setTile(
+        position.x,
+        position.y,
+        FOREGROUND,
+        *tile
+    );
+}
+
+void Player::breakBlock(Vector2D position){
+    static GameMap *mapa = Engine::getInstance()->getMap();
+    mapa->dropTile(
+        position.x,
+        position.y,
+        mapa->getTile(position.x, position.y, FOREGROUND) 
+    );
+}
+
+void Player::selectBlock(Vector2D position){
+    static GameMap *mapa = Engine::getInstance()->getMap();
+    tileSelected = mapa->getTile(mousePosition.x,mousePosition.y,FOREGROUND);
+    if(!tileSelected)
+        tileSelected = mapa->getTile(mousePosition.x,mousePosition.y,BACKGROUND);
 }
 
 void Player::update( float dt ){
@@ -93,3 +111,8 @@ void Player::update( float dt ){
     Camera::getInstance()->update();
 }
 
+void Player::draw(){
+    static GameMap *mapa = Engine::getInstance()->getMap();
+    Character::draw();
+    mapa->focusBlock(mousePosition);
+}

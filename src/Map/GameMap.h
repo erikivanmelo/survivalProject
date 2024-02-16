@@ -69,13 +69,22 @@ public:
         return tileWidth;
     }
 
-    bool areBlockAround(int x, int y, bool z = FOREGROUND);
+    bool areBlockAround(int x, int y, bool z = FOREGROUND, bool inCenterToo = false);
 
-    void displayToMapPosition(Vector2D *position);
+    void displayPositionToMapPosition(Vector2D *position);
+    void mapPositionToDisplayPosition(Vector2D *position);
+
+    inline Vector2D snapToGrid(Vector2D position){
+        position.x = (int)((int)position.x * tileset->tileSize) / tileset->tileSize;
+        position.y = (int)((int)position.y * tileset->tileSize) / tileset->tileSize;
+        return position;
+    }
+
+    void focusBlock(Vector2D position);
     
-    Tileset *tileset;
 
 private:
+    Tileset *tileset;
     friend class MapParser;
     ChunkList chunks;
     unordered_map< Tile , Tile*> tileList;

@@ -32,7 +32,7 @@ public:
     ~CollisionHandler(){
     }
 
-    inline bool isPlayerIn(int x, int y, SDL_FRect *playerBox) {
+    inline bool isCharacterIn(int x, int y, SDL_FRect *playerBox) {
     x *= tilesize;
     y *= tilesize;
     return  (

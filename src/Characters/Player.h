@@ -20,10 +20,18 @@ public:
 
     void update(float dt) override;
 
+    void draw()override;
 private:
     void checkInput( float dt );
 
-    Tile tileSelected;
+    void placeBlock(Vector2D position, Tile *tile = nullptr);
+    void breakBlock(Vector2D position);
+    void selectBlock(Vector2D position);
+
+    Tile *tileSelected = nullptr;
+
+    Vector2D mousePosition;
+    
 };
 
 #endif // PLAYER_H

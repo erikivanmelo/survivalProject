@@ -86,6 +86,7 @@ void Engine::render(){
     static int frameCount = 0;
     startInLapse(dt,fps, Timer::getDeltaTime())
         frameCount++;
+        SDL_SetRenderDrawColor(renderer, 124, 218, 254, 255);
 
         startInLapse(fpsTimer, 1.0, dt)
             currentFps = static_cast<double>(frameCount) / fpsTimer;
