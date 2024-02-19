@@ -62,7 +62,6 @@ public:
     void update(float dt){
 
         velocity += ((gravity*10) - friction)*dt;
-        //velocity.log("velocity");
 
         // Actualizamos la velocidad en unidades de píxeles por segundo
         position = (velocity + movement) * dt;

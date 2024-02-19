@@ -71,23 +71,13 @@ void Character::fly( MoveOption direction ){
     if( !flyMode )
         return;
 
-    switch (direction) {
-        case UP:
-            rigidBody->applyMovementY( MoveDirection::UP * flySpeed );
-            break;
-        case DOWN:
-            rigidBody->applyMovementY( MoveDirection::DOWN * flySpeed );
-            break;
-        case LEFT:
-            rigidBody->applyMovementX( MoveDirection::LEFT * flySpeed );
-            animation->setCurrentSeq( "default", SDL_FLIP_HORIZONTAL );
-            lookingRight = false;
-            break;
-        case RIGHT:
-            rigidBody->applyMovementX( MoveDirection::RIGHT * flySpeed );
-            animation->setCurrentSeq( "default" );
-            lookingRight = true;
-            break;
+    if (direction == UP || direction == DOWN)
+        rigidBody->applyMovementY( direction * flySpeed );
+
+    if (direction == LEFT || direction == RIGHT){
+        rigidBody->applyMovementX(direction * flySpeed);
+        lookingRight = direction == RIGHT;
+        animation->setCurrentSeq( "default", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
     }
 }
 
