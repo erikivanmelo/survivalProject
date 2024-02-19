@@ -79,7 +79,7 @@ bool GameMap::areBlockAround(int x, int y, bool z, bool inCenterToo){
         (inCenterToo && getTile(x, y, z) != 0);
 }
 
-void GameMap::focusBlock(Vector2D position){
+void GameMap::focusBlock(Vector2D position, const SDL_Color &color){
     if (!areBlockAround(position.x, position.y, FOREGROUND, true) && !getTile(position.x, position.y, BACKGROUND)) 
         return;
     position = snapToGrid(position);
@@ -89,7 +89,7 @@ void GameMap::focusBlock(Vector2D position){
         position.y*tileSize, 
         tileSize, 
         tileSize, 
-        {255, 0, 0,255} 
+        color 
     );
 }
 

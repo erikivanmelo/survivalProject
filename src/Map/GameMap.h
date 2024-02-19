@@ -80,7 +80,7 @@ public:
         return position;
     }
 
-    void focusBlock(Vector2D position);
+    void focusBlock(Vector2D position, const SDL_Color &color = {0,0,0,0});
     
 
 private:

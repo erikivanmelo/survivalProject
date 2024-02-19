@@ -81,5 +81,5 @@ void Player::update( float dt ){
 void Player::draw(){
     static GameMap *mapa = Engine::getInstance()->getMap();
     Character::draw();
-    mapa->focusBlock(mousePosition);
+    mapa->focusBlock(mousePosition, isInteractionInRange(mousePosition)? SDL_Color{0, 255, 0,255} : SDL_Color{255, 0, 0,255});
 }
