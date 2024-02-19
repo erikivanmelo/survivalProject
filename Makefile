@@ -22,6 +22,7 @@ SOURCES = \
 	src/Core/Engine.cpp \
 	src/Graphics/TextureManager.cpp \
 	src/Object/GameObject.cpp \
+	src/Characters/Character.cpp \
 	src/Characters/Player.cpp \
 	src/Graphics/Animation.cpp \
 	src/Inputs/Input.cpp \

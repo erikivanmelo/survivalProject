@@ -64,14 +64,8 @@ void GameMap::render(){
 
 void GameMap::displayPositionToMapPosition(Vector2D *position){
     static const Camera *cam  = Camera::getInstance();
-    position->x = (float)Helper::wrapToRange((int)cam->getPosition()->x+(position->x/SCREEN_SCALE),pixelWidth)/tileset->tileSize;
-    position->y = (float)std::clamp((int)(cam->getPosition()->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/tileset->tileSize;
-}
-
-void GameMap::mapPositionToDisplayPosition(Vector2D *position){
-    static const Camera *cam  = Camera::getInstance();
-    position->x = (float)Helper::wrapToRange((int)cam->getPosition()->x+(position->x*tileset->tileSize),pixelWidth-1);
-    position->y = (float)std::clamp((int)(cam->getPosition()->y+position->y*tileset->tileSize),0,pixelHeight-1);
+    position->x = (int)Helper::wrapToRange((int)cam->getPosition()->x+(position->x/SCREEN_SCALE),pixelWidth)/tileset->tileSize;
+    position->y = (int)std::clamp((int)(cam->getPosition()->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/tileset->tileSize;
 }
 
 bool GameMap::areBlockAround(int x, int y, bool z, bool inCenterToo){

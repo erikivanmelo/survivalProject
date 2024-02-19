@@ -22,6 +22,7 @@ public:
         grounded( false ),
         flyMode( false ),
         collisionBoxView( false ),
+        interactionRange( 1 ),
         jumpVelocity( 30.0 ),
         lookingRight( true ),
         collider( new Collider() ),
@@ -69,48 +70,20 @@ public:
 
 protected:
 
-    void walk(bool toRight){
-        rigidBody->applyMovementX( toRight ? walkSpeed : walkSpeed*-1 );
-        animation->setCurrentSeq( "walk", toRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
-        lookingRight = toRight;
-    }
+    void walk(bool toRight);
 
-    void fly( MoveOption direction ){
-        if( !flyMode )
-            return;
+    void fly( MoveOption direction );
 
-        switch (direction) {
-            case UP:
-                rigidBody->applyMovementY( MoveDirection::UP * flySpeed );
-                break;
-            case DOWN:
-                rigidBody->applyMovementY( MoveDirection::DOWN * flySpeed );
-                break;
-            case LEFT:
-                rigidBody->applyMovementX( MoveDirection::LEFT * flySpeed );
-                animation->setCurrentSeq( "default", SDL_FLIP_HORIZONTAL );
-                lookingRight = false;
-                break;
-            case RIGHT:
-                rigidBody->applyMovementX( MoveDirection::RIGHT * flySpeed );
-                animation->setCurrentSeq( "default" );
-                lookingRight = true;
-                break;
-        }
-    }
+    void setFlyMode(bool flyMode);
+    void jump();
+    void placeBlock(Vector2D position, Tile *tile = nullptr);
+    void breakBlock(Vector2D position);
+    void selectBlock(Vector2D position);
 
-    void setFlyMode( bool flyMode ){
-        this->flyMode = flyMode;
-        rigidBody->setGravity( flyMode? 0 : GRAVITY );
-    }
+    bool isInteractionInRange(Vector2D position);
 
-    void jump(){
-        if( grounded && !jumping ){
-            jumping = true;
-            grounded = false;
-            rigidBody->setVelocityY( MoveDirection::UP * jumpVelocity ); 
-        }
-    }
+    Tile *tileSelected = nullptr;
+
 
     Animation *animation;
     RigidBody *rigidBody;
@@ -119,6 +92,8 @@ protected:
     bool jumping = false, grounded = false;
     bool flyMode = false;
     bool collisionBoxView = false;
+
+    int interactionRange;
 
     float jumpVelocity;
 

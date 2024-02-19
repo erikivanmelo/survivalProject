@@ -24,11 +24,6 @@ public:
 private:
     void checkInput( float dt );
 
-    void placeBlock(Vector2D position, Tile *tile = nullptr);
-    void breakBlock(Vector2D position);
-    void selectBlock(Vector2D position);
-
-    Tile *tileSelected = nullptr;
 
     Vector2D mousePosition;
     
