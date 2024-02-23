@@ -45,18 +45,16 @@ bool Character::isInteractionInRange(Vector2D position){
     int colCount = gameMap->getTileWidth();
     SDL_FRect *box = collider->getCollisionBox();
     
-    int leftTile    =  box->x / tilesize - interactionRange;
-    int rightTile   = (box->x + (box->w-1)) / tilesize + interactionRange;
-    int topTile     =  box->y / tilesize - interactionRange;
-    int bottomTile  = (box->y + (box->h-1)) / tilesize + interactionRange;
+    const int leftTile    =  box->x / tilesize - interactionRange;
+    const int rightTile   = (box->x + (box->w-1)) / tilesize + interactionRange;
+    const int topTile     =  box->y / tilesize - interactionRange;
+    const int bottomTile  = (box->y + (box->h-1)) / tilesize + interactionRange;
 
     if(rightTile > colCount && position.x < leftTile ) 
         position.x += colCount;
     
-    if (leftTile <= position.x && rightTile  >= position.x && 
-        topTile  <= position.y && bottomTile >= position.y)
-        return true;
-    return false;
+    return (leftTile <= position.x && rightTile  >= position.x && 
+            topTile  <= position.y && bottomTile >= position.y);
 }
 
 void Character::jump(){

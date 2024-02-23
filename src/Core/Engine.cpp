@@ -66,11 +66,10 @@ void Engine::quit(){
 
 void Engine::printDebug(){
     startInLapse(dt, dps, Timer::getDeltaTime())
-        Vector2D mousePosition = Input::getInstance()->getMousePosition();
         std::cout << "FPS:" << currentFps << endl;
         player->getPosition().log("position");
         Camera::getInstance()->getPosition()->log("Camera");
-        cout << "mouse:" << mousePosition.x << " - " <<  mousePosition.y << endl;
+        Input::getInstance()->getMousePosition().log("Mouse");
         cout << endl;
     endInLapse(dt, dps)
 }
