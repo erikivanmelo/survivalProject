@@ -19,10 +19,9 @@ public:
     static void tickUpdate()
     {
         static Uint64 lastTime = SDL_GetPerformanceCounter();
-        const double performanceFrequency = static_cast<double>(SDL_GetPerformanceFrequency());
         const Uint64 currentTime = SDL_GetPerformanceCounter();
 
-        Timer::deltaTime = static_cast<double>(currentTime - lastTime) / performanceFrequency;
+        Timer::deltaTime = static_cast<double>(currentTime - lastTime) / static_cast<double>(SDL_GetPerformanceFrequency());
         lastTime = currentTime;
     }
 private:
