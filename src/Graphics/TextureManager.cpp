@@ -3,7 +3,7 @@
 #include "../Camera/Camera.h"
 #include "../Helper.h"
 
-void TextureManager::draw( SDL_Texture *texture,const float x, const float y, const float width, const float height, const SDL_RendererFlip flip )
+void TextureManager::draw( SDL_Texture *texture,const float x, const float y, const float width, const float height, const SDL_RendererFlip flip, const Uint8 darknessLevel)
 {
   static const Vector2D *cam = Camera::getInstance()->getPosition();
 	if( !texture )
@@ -14,10 +14,15 @@ void TextureManager::draw( SDL_Texture *texture,const float x, const float y, co
 		width, 
 		height 
 	};
+  SDL_SetTextureColorMod(texture, 255 - darknessLevel, 255 - darknessLevel, 255 - darknessLevel);
+
 	SDL_RenderTextureRotated(Engine::getInstance()->getRenderer(), texture, nullptr,&datRect,0,nullptr,flip);
+
+	SDL_SetTextureColorMod(texture, 255, 255, 255);
+
 }
 
-void TextureManager::drawFrame( SDL_Texture *texture, const float x, const float y, const float width, const float height, const float row, const float frame, const SDL_RendererFlip flip )
+void TextureManager::drawFrame( SDL_Texture *texture, const float x, const float y, const float width, const float height, const float row, const float frame, const SDL_RendererFlip flip, const Uint8 darknessLevel)
 {
   static const Vector2D *cam = Camera::getInstance()->getPosition();
 	if( !texture )
@@ -30,12 +35,15 @@ void TextureManager::drawFrame( SDL_Texture *texture, const float x, const float
 		width, 
 		height 
 	};
+
+	SDL_SetTextureColorMod(texture, 255 - darknessLevel, 255 - darknessLevel, 255 - darknessLevel);
 	SDL_RenderTextureRotated(Engine::getInstance()->getRenderer(), texture, &srcRect,&datRect,0,nullptr,flip);
+	SDL_SetTextureColorMod(texture, 255, 255, 255);
 }
 
 
 
-void TextureManager::drawRect( const float x, const float y, const float width, const float height, const SDL_Color &color )
+void TextureManager::drawRect( const float x, const float y, const float width, const float height, const SDL_Color &color)
 {
 	static const Vector2D *cam = Camera::getInstance()->getPosition();
 	SDL_FRect datRect = { 

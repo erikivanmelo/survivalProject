@@ -3,6 +3,8 @@
 #include "../Graphics/TextureManager.h"
 #include <cstdint>
 
+#include <SDL3/SDL_render.h>
+
 Chunk::Chunk(MapSize x, MapSize y):
     xPosition(x), yPosition(y),tileset(AssetsManager::getInstance()->getTileset()),isOnlyAir(true)
 {
@@ -20,21 +22,24 @@ void Chunk::render()
     if( isOnlyAir )
         return;
     isOnlyAir = true;
-    Tile tmpTile = 0;
+    Tile backTile = 0, frontTile = 0;
     SDL_RendererFlip flip;
     ChunkSize x,y;
     for(x = 0; x < CHUNK_WIDTH; ++x){
         for(y = 0; y < CHUNK_HEIGHT; ++y){
-            if( !(tmpTile = determineRotation(tiles[x][y][FOREGROUND]? tiles[x][y][FOREGROUND] : tiles[x][y][BACKGROUND], &flip)) )
+            frontTile = tiles[x][y][FOREGROUND] ? determineRotation(tiles[x][y][FOREGROUND], &flip) : 0;
+            backTile  = !frontTile              ? determineRotation(tiles[x][y][BACKGROUND], &flip) : 0;
+            if( !frontTile && !backTile )
                 continue;
             isOnlyAir = false;
             TextureManager::draw(
-                tileset->textures[tmpTile],
+                tileset->textures[backTile? backTile : frontTile],
                 rect.x+(x*tileset->tileSize),
                 rect.y+(y*tileset->tileSize),
                 tileset->tileSize,
                 tileset->tileSize,
-                flip
+                flip,
+                backTile? 85 : 0
             );
         }
     }
