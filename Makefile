@@ -18,9 +18,9 @@ OBJ_DIR = ./obj
 
 # Fuentes y cabeceras
 SOURCES = \
+	src/Graphics/TextureManager.cpp \
 	src/main.cpp \
 	src/Core/Engine.cpp \
-	src/Graphics/TextureManager.cpp \
 	src/Object/GameObject.cpp \
 	src/Characters/Character.cpp \
 	src/Characters/Player.cpp \
@@ -35,9 +35,9 @@ SOURCES = \
 	src/Assets/AssetsManager.cpp \
 
 HEADERS = \
+	src/Graphics/TextureManager.h \
 	src/Physics/Vector2D.h \
 	src/Core/Engine.h \
-	src/Graphics/TextureManager.h \
 	src/Object/IObject.h \
 	src/Object/GameObject.h \
 	src/Characters/Character.h \

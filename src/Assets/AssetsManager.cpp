@@ -5,6 +5,7 @@
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_surface.h>
 #include "../Core/Engine.h"
+#include "../Graphics/TextureManager.h"
 
 AssetsManager* AssetsManager::instance = nullptr;
 
@@ -36,9 +37,9 @@ SDL_Texture *AssetsManager::loadTexture(
         SDL_SetSurfaceColorKey(newSurface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
         SDL_BlitSurface(surface, &srcRect, newSurface, nullptr);
         // Crea una textura a partir de la nueva superficie.
-        texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), newSurface);
+        texture = SDL_CreateTextureFromSurface(TextureManager::renderer, newSurface);
     }else{
-        texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), surface);
+        texture = SDL_CreateTextureFromSurface(TextureManager::renderer, surface);
     }
     
     if ( !texture )

@@ -38,6 +38,7 @@ void Chunk::render()
                 rect.y+(y*tileset->tileSize),
                 tileset->tileSize,
                 tileset->tileSize,
+                nullptr,
                 flip,
                 backTile? 85 : 0
             );

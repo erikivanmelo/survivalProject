@@ -25,7 +25,6 @@ class Engine
         void printDebug();
 
         inline bool isRunning()const{ return running; }
-        inline SDL_Renderer* getRenderer()const{ return renderer; }
 
         inline GameMap* getMap()const{ return map; }
 
@@ -51,7 +50,6 @@ class Engine
         Engine(){}
         bool running = false;
         SDL_Window* window;
-        SDL_Renderer* renderer;
         static Engine* instance;
         GameMap *map;
         int currentFps;

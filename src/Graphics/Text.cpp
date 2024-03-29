@@ -32,7 +32,7 @@ void Text::setFont(const string &font){
 
 void Text::show(){
 	SDL_FRect rect = { this->x, this->y, this->w, this->h };
-	SDL_RenderCopy(Engine::getInstance()->getRenderer(), texture, NULL, &rect);
+	SDL_RenderCopy(TextureManager::renderer, texture, NULL, &rect);
 }
 
 void Text::updateTexture(){
@@ -46,7 +46,7 @@ void Text::updateTexture(){
 	this->h = surface->h;
 	this->w = surface->w;
 
-	if( !(this->texture = SDL_CreateTextureFromSurface(Engine::getInstance()->getRenderer(), surface)) )
+	if( !(this->texture = SDL_CreateTextureFromSurface(TextureManager::renderer, surface)) )
 		throw "Failed to create texture from your text! SDL Error: " + string(SDL_GetError());
 	
 	SDL_FreeSurface(surface);

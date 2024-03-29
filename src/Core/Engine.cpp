@@ -5,6 +5,7 @@
 #include "../Map/MapParser.h"
 #include "../Camera/Camera.h"
 #include "../Characters/Player.h"
+#include "../Graphics/TextureManager.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_init.h>
@@ -29,11 +30,11 @@ void Engine::init(){
         throw std::string("Window could not be created! SDL_Error: " + string(SDL_GetError()));
 
     //Create renderer
-    if( !(renderer = SDL_CreateRenderer(window, nullptr, SDL_RENDERER_ACCELERATED )) )
+    if( !(TextureManager::renderer = SDL_CreateRenderer(window, nullptr, SDL_RENDERER_ACCELERATED )) )
         throw "Renderer could not be created! SDL_Error: " + string(SDL_GetError());
 
-    SDL_SetRenderScale(renderer,SCREEN_SCALE,SCREEN_SCALE);
-    SDL_SetRenderDrawColor(renderer, 124, 218, 254, 255);
+    SDL_SetRenderScale(TextureManager::renderer,SCREEN_SCALE,SCREEN_SCALE);
+    SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
 
     AssetsManager::getInstance()->load();
 
@@ -55,7 +56,7 @@ Engine::~Engine(){
     Camera::clean();
     Input::clean();
     MapParser::clean();
-    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyRenderer(TextureManager::renderer);
     SDL_DestroyWindow(this->window);
     SDL_Quit();
 }
@@ -85,19 +86,19 @@ void Engine::render(){
     static int frameCount = 0;
     startInLapse(dt,fps, Timer::getDeltaTime())
         frameCount++;
-        SDL_SetRenderDrawColor(renderer, 124, 218, 254, 255);
+        SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
 
         startInLapse(fpsTimer, 1.0, dt)
             currentFps = static_cast<double>(frameCount) / fpsTimer;
             frameCount = 0;
         endInLapse(fpsTimer, 1.0)
 
-        SDL_RenderClear(renderer);
+        SDL_RenderClear(TextureManager::renderer);
 
         map->render();
         player->draw();
 
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(TextureManager::renderer);
     endInLapse(dt,fps)
 }
 
