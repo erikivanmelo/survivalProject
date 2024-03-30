@@ -1,32 +1,43 @@
 #include "Camera.h"
-#include "../Core/Engine.h"
 #include <algorithm>
 
 Camera *Camera::instance = nullptr;
 
 
-void Camera::setViewBoxSize(int width, int height){
-   viewBox.w = static_cast<int>(width/SCREEN_SCALE);
-   viewBox.h = static_cast<int>(height/SCREEN_SCALE);
+void Camera::setViewBoxSize(float screenWidth, float screenHeight, float screenScale){
+    this->screenWidth = screenWidth;
+    this->screenHeight = screenHeight;
+    if (screenScale != -1)
+        this->screenScale = screenScale;
+    viewBox.w = roundf(screenWidth/this->screenScale);
+    viewBox.h = roundf(screenHeight/this->screenScale);
 }
 
-Camera::Camera(){
-    viewBox = {
-        0,
-        0,
-        static_cast<int>(SCREEN_WIDTH/SCREEN_SCALE),
-        static_cast<int>(SCREEN_HEIGHT/SCREEN_SCALE)
-    };
-    target = nullptr;
-    position = Vector2D(0,0);
-
-    maxY = Engine::getInstance()->getMap()->getPixelHeight();
-}
+Camera::Camera(
+    Point *target, 
+    const float maxY, 
+    const float screenWidth, 
+    const float screenHeight, 
+    const float screenScale, 
+    const int chunkPixelSquareSize) : 
+    target(target), 
+    maxY(maxY), 
+    screenWidth(screenWidth), 
+    screenHeight(screenHeight), 
+    screenScale(screenScale), 
+    chunkPixelSquareSize(chunkPixelSquareSize), 
+    position(Vector2D(0,0)),
+    viewBox({
+        0, 0,
+        roundf(screenWidth/screenScale),
+        roundf(screenHeight/screenScale)
+    })
+{}
 
 void Camera::update()
 {
     if( !target )
         return;
     position.x = viewBox.x = target->x - viewBox.w / 2;
-    position.y = viewBox.y = std::clamp((int)(target->y - viewBox.h / 2), 0, (int)(maxY - viewBox.h - CHUNK_PIXEL_HEIGHT));
+    position.y = viewBox.y = std::clamp((int)(target->y - viewBox.h / 2), 0, (int)(maxY - viewBox.h - chunkPixelSquareSize));
 }

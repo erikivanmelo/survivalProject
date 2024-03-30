@@ -6,6 +6,7 @@
 #include "../Camera/Camera.h"
 #include "../Characters/Player.h"
 #include "../Graphics/TextureManager.h"
+#include "../Camera/Camera.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_init.h>
@@ -42,7 +43,14 @@ void Engine::init(){
     map = MapParser::getInstance()->getMap("overworld");
     
     player = new Player();
-    Camera::getInstance()->setTarget( player->getOrigin() );
+    Camera::constructor(
+        player->getOrigin(), 
+        map->getPixelHeight(), 
+        SCREEN_WIDTH, 
+        SCREEN_HEIGHT, 
+        SCREEN_SCALE,
+        CHUNK_PIXEL_SQUARE_SIZE
+    );
 
     // Set the frame rate, updates per second and debugPrint per second
     setFps(0);
@@ -53,7 +61,6 @@ void Engine::init(){
 
 Engine::~Engine(){
     AssetsManager::clean();
-    Camera::clean();
     Input::clean();
     MapParser::clean();
     SDL_DestroyRenderer(TextureManager::renderer);
@@ -69,7 +76,7 @@ void Engine::printDebug(){
     startInLapse(dt, dps, Timer::getDeltaTime())
         std::cout << "FPS:" << currentFps << endl;
         player->getPosition().log("position");
-        Camera::getInstance()->getPosition()->log("Camera");
+        Camera::get()->getPosition()->log("Camera");
         Input::getInstance()->getMousePosition().log("Mouse");
         cout << endl;
     endInLapse(dt, dps)

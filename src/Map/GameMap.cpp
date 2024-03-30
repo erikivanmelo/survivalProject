@@ -10,10 +10,10 @@
 
 GameMap::GameMap( const MapSize width, const MapSize height ):
     chunkWidth(width), chunkHeight(height),
-    pixelWidth((width*CHUNK_WIDTH)*AssetsManager::getInstance()->getTileset()->tileSize),
-    pixelHeight((height*CHUNK_HEIGHT)*AssetsManager::getInstance()->getTileset()->tileSize),
-    tileWidth(width*CHUNK_WIDTH),
-    tileHeight(height*CHUNK_HEIGHT),
+    pixelWidth((width*CHUNK_SQUARE_SIZE)*AssetsManager::getInstance()->getTileset()->tileSize),
+    pixelHeight((height*CHUNK_SQUARE_SIZE)*AssetsManager::getInstance()->getTileset()->tileSize),
+    tileWidth(width*CHUNK_SQUARE_SIZE),
+    tileHeight(height*CHUNK_SQUARE_SIZE),
     tileset(AssetsManager::getInstance()->getTileset())
 {
 
@@ -50,12 +50,12 @@ GameMap::~GameMap(){
 }
 
 void GameMap::render(){
-    static const SDL_FRect *box = Camera::getInstance()->getViewBox();
+    static const SDL_FRect *box = Camera::get()->getViewBox();
     int x,y;
-    const int startX = ((box->x/tileset->tileSize)/CHUNK_WIDTH)-1;
-    const int startY = std::clamp((int)((box->y/tileset->tileSize)/CHUNK_HEIGHT)-1, 0, chunkHeight-1);
-    const int endX = (((box->x+box->w)/tileset->tileSize)/CHUNK_WIDTH)+1;
-    const int endY = std::clamp((int)(((box->y+box->h)/tileset->tileSize)/CHUNK_HEIGHT)+1,0,chunkHeight-1);
+    const int startX = ((box->x/tileset->tileSize)/CHUNK_SQUARE_SIZE)-1;
+    const int startY = std::clamp((int)((box->y/tileset->tileSize)/CHUNK_SQUARE_SIZE)-1, 0, chunkHeight-1);
+    const int endX = (((box->x+box->w)/tileset->tileSize)/CHUNK_SQUARE_SIZE)+1;
+    const int endY = std::clamp((int)(((box->y+box->h)/tileset->tileSize)/CHUNK_SQUARE_SIZE)+1,0,chunkHeight-1);
 
     for(x = startX; x < endX; ++x )
         for (y = startY; y < endY; ++y)
@@ -63,9 +63,9 @@ void GameMap::render(){
 }
 
 void GameMap::displayPositionToMapPosition(Vector2D *position){
-    static const Camera *cam  = Camera::getInstance();
-    position->x = (int)Helper::wrapToRange((int)cam->getPosition()->x+(position->x/SCREEN_SCALE),pixelWidth)/tileset->tileSize;
-    position->y = (int)std::clamp((int)(cam->getPosition()->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/tileset->tileSize;
+    static const Vector2D *cam  = Camera::get()->getPosition();
+    position->x = (int)Helper::wrapToRange((int)cam->x+(position->x/SCREEN_SCALE),pixelWidth)/tileset->tileSize;
+    position->y = (int)std::clamp((int)(cam->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/tileset->tileSize;
 }
 
 bool GameMap::areBlockAround(int x, int y, bool z, bool inCenterToo){

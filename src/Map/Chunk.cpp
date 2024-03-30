@@ -8,12 +8,12 @@
 Chunk::Chunk(MapSize x, MapSize y):
     xPosition(x), yPosition(y),tileset(AssetsManager::getInstance()->getTileset()),isOnlyAir(true)
 {
-    std::fill(&tiles[0][0][0], &tiles[0][0][0] + CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPH, nullptr);
+    std::fill(&tiles[0][0][0], &tiles[0][0][0] + CHUNK_SQUARE_SIZE * CHUNK_SQUARE_SIZE * CHUNK_DEPH, nullptr);
     rect = {
-        (float)(xPosition*CHUNK_WIDTH)*tileset->tileSize,
-        (float)(yPosition*CHUNK_HEIGHT)*tileset->tileSize,
-        (float)tileset->tileSize*CHUNK_WIDTH,
-        (float)tileset->tileSize*CHUNK_HEIGHT
+        (float)(xPosition*CHUNK_SQUARE_SIZE)*tileset->tileSize,
+        (float)(yPosition*CHUNK_SQUARE_SIZE)*tileset->tileSize,
+        (float)tileset->tileSize*CHUNK_SQUARE_SIZE,
+        (float)tileset->tileSize*CHUNK_SQUARE_SIZE
     };
 }
  
@@ -25,8 +25,8 @@ void Chunk::render()
     Tile backTile = 0, frontTile = 0;
     SDL_RendererFlip flip;
     ChunkSize x,y;
-    for(x = 0; x < CHUNK_WIDTH; ++x){
-        for(y = 0; y < CHUNK_HEIGHT; ++y){
+    for(x = 0; x < CHUNK_SQUARE_SIZE; ++x){
+        for(y = 0; y < CHUNK_SQUARE_SIZE; ++y){
             frontTile = tiles[x][y][FOREGROUND] ? determineRotation(tiles[x][y][FOREGROUND], &flip) : 0;
             backTile  = !frontTile              ? determineRotation(tiles[x][y][BACKGROUND], &flip) : 0;
             if( !frontTile && !backTile )

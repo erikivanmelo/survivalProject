@@ -6,7 +6,7 @@
 SDL_Renderer* TextureManager::renderer = nullptr; 
 
 SDL_FRect TextureManager::adaptRectCoordinate(SDL_FRect datRect){
-	static const Vector2D *cam = Camera::getInstance()->getPosition();
+	static const Vector2D *cam = Camera::get()->getPosition();
 	datRect.x = (float)Helper::wrapToRange(datRect.x - cam->x, Engine::getInstance()->getMap()->getPixelWidth()-1, datRect.w);
 	datRect.y -= cam->y;
 	return datRect;

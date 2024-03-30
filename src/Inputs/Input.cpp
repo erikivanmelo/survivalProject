@@ -29,7 +29,7 @@ void Input::listen()
             break;
 
             case SDL_EVENT_WINDOW_RESIZED:
-                Camera::getInstance()->setViewBoxSize(
+                Camera::get()->setViewBoxSize(
                         event.window.data1, 
                         event.window.data2
                 );

@@ -11,12 +11,10 @@
 #define BACKGROUND 0
 #define FOREGROUND 1
 
-#define CHUNK_WIDTH 8
-#define CHUNK_HEIGHT 8
+#define CHUNK_SQUARE_SIZE 8
 #define CHUNK_DEPH 2
 
-#define CHUNK_PIXEL_HEIGHT CHUNK_HEIGHT*AssetsManager::getInstance()->getTileset()->tileSize
-#define CHUNK_PIXEL_WIDTH  CHUNK_WIDTH*AssetsManager::getInstance()->getTileset()->tileSize
+#define CHUNK_PIXEL_SQUARE_SIZE CHUNK_SQUARE_SIZE*AssetsManager::getInstance()->getTileset()->tileSize
 
 typedef uint32_t Tile;
 typedef int16_t MapSize;
@@ -59,7 +57,7 @@ private:
     
     Tile determineRotation( Tile *tile, SDL_RendererFlip *flip);
 
-    std::array<std::array<std::array<Tile*,CHUNK_DEPH>,CHUNK_HEIGHT>,CHUNK_WIDTH> tiles;
+    std::array<std::array<std::array<Tile*,CHUNK_DEPH>,CHUNK_SQUARE_SIZE>,CHUNK_SQUARE_SIZE> tiles;
 };
 
 #endif

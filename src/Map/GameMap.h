@@ -26,21 +26,21 @@ public:
     }
 
     inline Tile *getTile(int x, int y, bool z = FOREGROUND)const{
-        return chunks[ x / CHUNK_WIDTH ][ y / CHUNK_HEIGHT ]->getTile( x%8, y%8, z);
+        return chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->getTile( x%8, y%8, z);
     }
 
     inline void setTile(int x, int y, bool z, Tile tile){
         if( !tile ){
-            chunks[ x / CHUNK_WIDTH ][ y / CHUNK_HEIGHT ]->setTile( x%CHUNK_WIDTH, y%CHUNK_HEIGHT, z, nullptr);
+            chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->setTile( x%CHUNK_SQUARE_SIZE, y%CHUNK_SQUARE_SIZE, z, nullptr);
             return;
         }
         std::unordered_map<Tile, Tile*>::iterator it = tileList.find(tile);
         Tile *tilePtr = (it != tileList.end())? tileList[tile] : tileList[tile] = new Tile(tile);
-        chunks[ x / CHUNK_WIDTH ][ y / CHUNK_HEIGHT ]->setTile( x%CHUNK_WIDTH, y%CHUNK_HEIGHT, z, tilePtr );
+        chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->setTile( x%CHUNK_SQUARE_SIZE, y%CHUNK_SQUARE_SIZE, z, tilePtr );
     }
 
     inline void dropTile(int x, int y, bool z){
-        chunks[ x / CHUNK_WIDTH ][ y / CHUNK_HEIGHT ]->dropTile( x%CHUNK_WIDTH, y%CHUNK_HEIGHT, z);
+        chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->dropTile( x%CHUNK_SQUARE_SIZE, y%CHUNK_SQUARE_SIZE, z);
     }
 
 

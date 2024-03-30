@@ -75,7 +75,7 @@ void Player::update( float dt ){
     checkInput( dt );
     Character::update( dt );
 
-    Camera::getInstance()->update();
+    Camera::get()->update();
 }
 
 void Player::draw(){
