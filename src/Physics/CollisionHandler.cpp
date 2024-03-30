@@ -11,9 +11,9 @@
 CollisionHandler *CollisionHandler::instance = nullptr;
 
 CollisionHandler::CollisionHandler():
-    gameMap(Engine::getInstance()->getMap())
+    gameMap(Engine::get()->getMap())
 {
-    tilesize = AssetsManager::getInstance()->getTileset()->tileSize;
+    tilesize = AssetsManager::get()->getTileset()->tileSize;
     rowCount = gameMap->getTileHeight();
     colCount = gameMap->getTileWidth();
 }
@@ -70,7 +70,7 @@ Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vect
 
     collider->setCoordinates( position.x + newtrajectory.x , position.y );
     float newX = mapCollision(collider->getCollisionBox())? 
-            CollisionHandler::getInstance()->getFirstCollision( 
+            CollisionHandler::get()->getFirstCollision( 
             position, 
             Vector2D(position.x + newtrajectory.x, position.y), 
             collider, 
@@ -79,7 +79,7 @@ Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vect
 
     collider->setCoordinates( position.x , position.y + newtrajectory.y );
     float newY = mapCollision(collider->getCollisionBox())?
-            CollisionHandler::getInstance()->getFirstCollision( 
+            CollisionHandler::get()->getFirstCollision( 
             position, 
             Vector2D(position.x, position.y + newtrajectory.y), 
             collider, 

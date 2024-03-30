@@ -8,7 +8,7 @@ int main()
 {
 
     try{
-        Engine *engine = Engine::getInstance();
+        Engine *engine = Engine::get();
         engine->init();
         while(engine->isRunning()){
             engine->events();

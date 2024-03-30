@@ -48,7 +48,7 @@ void MapParser::parse(const std::string &id, const std::string &source)
 
     for(TiXmlElement* e=root->FirstChildElement(); e != nullptr;e=e->NextSiblingElement()){
         if(e->Value() == std::string("tileset")){
-            AssetsManager::getInstance()->setTileset(parseTileSet(e));
+            AssetsManager::get()->setTileset(parseTileSet(e));
             break;
         }
     }
@@ -79,7 +79,7 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
         if(strcmp(e->Value(),"tileset") == 0){
             tileset->name = e->Attribute("name");
 
-            AssetsManager::getInstance()->loadTexture(tileset->name,tileset->source,true);
+            AssetsManager::get()->loadTexture(tileset->name,tileset->source,true);
             e->Attribute("tilecount",&tileset->tileCount);
 
             e->Attribute("columns",&tileset->colCount);
@@ -92,7 +92,7 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
             tileset->textures.push_back(nullptr);
             for (int tileId = 0; tileId < tileset->tileCount; ++tileId) {
                 tileset->textures.push_back( 
-                    AssetsManager::getInstance()->loadTexture(
+                    AssetsManager::get()->loadTexture(
                         tileset->name,
                         tileset->source,
                         false,

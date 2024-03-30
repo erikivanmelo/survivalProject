@@ -10,11 +10,11 @@
 
 GameMap::GameMap( const MapSize width, const MapSize height ):
     chunkWidth(width), chunkHeight(height),
-    pixelWidth((width*CHUNK_SQUARE_SIZE)*AssetsManager::getInstance()->getTileset()->tileSize),
-    pixelHeight((height*CHUNK_SQUARE_SIZE)*AssetsManager::getInstance()->getTileset()->tileSize),
+    pixelWidth((width*CHUNK_SQUARE_SIZE)*AssetsManager::get()->getTileset()->tileSize),
+    pixelHeight((height*CHUNK_SQUARE_SIZE)*AssetsManager::get()->getTileset()->tileSize),
     tileWidth(width*CHUNK_SQUARE_SIZE),
     tileHeight(height*CHUNK_SQUARE_SIZE),
-    tileset(AssetsManager::getInstance()->getTileset())
+    tileset(AssetsManager::get()->getTileset())
 {
 
     chunks.resize(width);

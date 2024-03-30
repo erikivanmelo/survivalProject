@@ -6,7 +6,7 @@
 #include <SDL3/SDL_render.h>
 
 Chunk::Chunk(MapSize x, MapSize y):
-    xPosition(x), yPosition(y),tileset(AssetsManager::getInstance()->getTileset()),isOnlyAir(true)
+    xPosition(x), yPosition(y),tileset(AssetsManager::get()->getTileset()),isOnlyAir(true)
 {
     std::fill(&tiles[0][0][0], &tiles[0][0][0] + CHUNK_SQUARE_SIZE * CHUNK_SQUARE_SIZE * CHUNK_DEPH, nullptr);
     rect = {

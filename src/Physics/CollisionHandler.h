@@ -28,7 +28,7 @@ public:
     Vector2D mostPlausiblePosition(Vector2D lastSafePosition, Vector2D newPosition, Collider *collider, int8_t *collisionZone);
     Vector2D resolveCollision(Vector2D position, Vector2D trajectory, Collider *collider, int8_t *collisionZone, bool horizontal);
 
-    inline static CollisionHandler* getInstance(){return instance = (instance == nullptr)? new CollisionHandler():instance;}
+    inline static CollisionHandler* get(){return instance = (instance == nullptr)? new CollisionHandler():instance;}
     ~CollisionHandler(){
     }
 

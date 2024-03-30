@@ -14,7 +14,7 @@ class Character: public GameObject
 public:
     Character( const string &textureId, Vector2D position, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE ) : 
         GameObject( textureId, position, width, height, flip ),
-        animation( new Animation( AssetsManager::getInstance()->getAnimationSeqMap( textureId ) ) ),
+        animation( new Animation( AssetsManager::get()->getAnimationSeqMap( textureId ) ) ),
         rigidBody( new RigidBody() ),
         walkSpeed( 8 ),
         flySpeed( 16 ),
@@ -45,7 +45,7 @@ public:
     void update( float dt )override{
         rigidBody->update(dt);
 
-        this->position = CollisionHandler::getInstance()->mostPlausiblePosition( 
+        this->position = CollisionHandler::get()->mostPlausiblePosition( 
             this->position, 
             this->position + rigidBody->getPosition(), 
             collider, 

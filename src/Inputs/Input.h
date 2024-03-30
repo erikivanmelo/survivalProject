@@ -12,7 +12,7 @@ class Input
 {
 public:
 
-    static Input *getInstance(){
+    static Input *get(){
         return instance = (instance != nullptr)? instance : new Input();
     }
     inline static void clean(){ delete instance; }

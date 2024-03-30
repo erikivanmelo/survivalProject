@@ -3,7 +3,7 @@
 class Debug{
 
 public:
-    inline static Debug *getInstance(){ return instance = (instance == nullptr)? new Debug() : instance; }
+    inline static Debug *get(){ return instance = (instance == nullptr)? new Debug() : instance; }
     
 
 private:

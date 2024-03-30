@@ -18,7 +18,7 @@ class GameObject : public IObject
             position( position ),
             width( width ),
             height( height ),
-            texture( AssetsManager::getInstance()->getTexture(textureId) ),
+            texture( AssetsManager::get()->getTexture(textureId) ),
             flip( flip ),
             origin(new Point(
                 position.x + (int)( width/2  ),

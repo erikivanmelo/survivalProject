@@ -14,7 +14,7 @@
 #define CHUNK_SQUARE_SIZE 8
 #define CHUNK_DEPH 2
 
-#define CHUNK_PIXEL_SQUARE_SIZE CHUNK_SQUARE_SIZE*AssetsManager::getInstance()->getTileset()->tileSize
+#define CHUNK_PIXEL_SQUARE_SIZE CHUNK_SQUARE_SIZE*AssetsManager::get()->getTileset()->tileSize
 
 typedef uint32_t Tile;
 typedef int16_t MapSize;

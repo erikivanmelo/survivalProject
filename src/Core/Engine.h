@@ -11,7 +11,7 @@
 class Engine
 {
     public:
-        static Engine* getInstance(){
+        static Engine* get(){
             return instance ? instance : ( instance = new Engine() );
         }
         inline static void clean(){ delete instance; }

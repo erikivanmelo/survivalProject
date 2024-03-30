@@ -20,7 +20,7 @@ public:
 
 
     inline GameMap* getMap(std::string id){ return mapDict[id]; }
-    inline static MapParser *getInstance(){ return instance = (instance == nullptr)? new MapParser() : instance; }
+    inline static MapParser *get(){ return instance = (instance == nullptr)? new MapParser() : instance; }
     inline static void clean(){ delete instance; }
 
 private:

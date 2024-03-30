@@ -21,8 +21,8 @@ Player::Player( Vector2D position ) : Character( "player", position, 32, 32 )
 
 
 void Player::checkInput( float dt ){
-    static GameMap *mapa = Engine::getInstance()->getMap();
-    const MouseState mouseState = Input::getInstance()->getMouseState();
+    static GameMap *mapa = Engine::get()->getMap();
+    const MouseState mouseState = Input::get()->getMouseState();
 
 
 
@@ -53,7 +53,7 @@ void Player::checkInput( float dt ){
     }
 
 
-    this->mousePosition = Input::getInstance()->getMousePosition();
+    this->mousePosition = Input::get()->getMousePosition();
     mapa->displayPositionToMapPosition(&mousePosition);
     switch (mouseState) {
         case SDL_BUTTON_LEFT:
@@ -79,7 +79,7 @@ void Player::update( float dt ){
 }
 
 void Player::draw(){
-    static GameMap *mapa = Engine::getInstance()->getMap();
+    static GameMap *mapa = Engine::get()->getMap();
     Character::draw();
     mapa->focusBlock(mousePosition, isInteractionInRange(mousePosition)? SDL_Color{0, 255, 0,255} : SDL_Color{255, 0, 0,255});
 }

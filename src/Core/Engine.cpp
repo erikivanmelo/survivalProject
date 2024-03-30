@@ -37,10 +37,10 @@ void Engine::init(){
     SDL_SetRenderScale(TextureManager::renderer,SCREEN_SCALE,SCREEN_SCALE);
     SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
 
-    AssetsManager::getInstance()->load();
+    AssetsManager::get()->load();
 
-    MapParser::getInstance()->load();
-    map = MapParser::getInstance()->getMap("overworld");
+    MapParser::get()->load();
+    map = MapParser::get()->getMap("overworld");
     
     player = new Player();
     Camera::constructor(
@@ -69,7 +69,7 @@ Engine::~Engine(){
 }
 
 void Engine::quit(){
-    getInstance()->setRunning(false);
+    get()->setRunning(false);
 }
 
 void Engine::printDebug(){
@@ -77,7 +77,7 @@ void Engine::printDebug(){
         std::cout << "FPS:" << currentFps << endl;
         player->getPosition().log("position");
         Camera::get()->getPosition()->log("Camera");
-        Input::getInstance()->getMousePosition().log("Mouse");
+        Input::get()->getMousePosition().log("Mouse");
         cout << endl;
     endInLapse(dt, dps)
 }
@@ -111,6 +111,6 @@ void Engine::render(){
 
 
 void Engine::events(){
-    Input::getInstance()->listen();
+    Input::get()->listen();
 }
 

@@ -29,7 +29,7 @@ class AssetsManager{
     
 public:
     
-		static AssetsManager* getInstance(){
+		static AssetsManager* get(){
 			return instance ? instance : ( instance = new AssetsManager() );
 		}
 
