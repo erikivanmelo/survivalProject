@@ -51,7 +51,7 @@ void Engine::init(){
 
     // Set the frame rate, updates per second and debugPrint per second
     setFps(0);
-    setUps(60);
+    setUps(50);
     setDps(10);
     running = true;
 }
@@ -81,6 +81,7 @@ void Engine::printDebug(){
 
 void Engine::update(){
     startInLapse(dt, ups, Timer::getDeltaTime())
+        Input::get()->listen();
         player->update(dt);
         map->update();
     endInLapse(dt, ups)
@@ -104,10 +105,5 @@ void Engine::render(){
 
         SDL_RenderPresent(TextureManager::renderer);
     endInLapse(dt,fps)
-}
-
-
-void Engine::events(){
-    Input::get()->listen();
 }
 

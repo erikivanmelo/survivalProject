@@ -11,7 +11,6 @@ int main()
         Engine *engine = Engine::get();
         engine->init();
         while(engine->isRunning()){
-            engine->events();
             engine->update();
             engine->render();
             engine->printDebug();

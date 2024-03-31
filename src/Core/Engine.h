@@ -19,7 +19,6 @@ class Engine
 
         void update();
         void render();
-        void events();
         void printDebug();
 
         inline bool isRunning()const{ return running; }
