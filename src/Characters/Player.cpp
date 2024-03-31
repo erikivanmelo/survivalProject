@@ -27,16 +27,16 @@ void Player::checkInput( float dt ){
 
 
     if( INPUT_RIGHT )
-        this->flyMode? fly( RIGHT ) : walk(true);
+        this->flyMode? fly(OPTION_RIGHT) : walk(true);
 
     if( INPUT_LEFT )
-        this->flyMode? fly( LEFT ) : walk(false);
+        this->flyMode? fly(OPTION_LEFT) : walk(false);
 
     if( INPUT_UP && this->flyMode )
-        fly( UP );
+        fly(OPTION_UP);
 
     if( INPUT_DOWN && this->flyMode )
-        fly( DOWN ); 
+        fly(OPTION_DOWN);
 
     if( INPUT_FLYMODE )
         setFlyMode( !this->flyMode );

@@ -7,6 +7,7 @@
 #include "../Characters/Player.h"
 #include "../Graphics/TextureManager.h"
 #include "../Camera/Camera.h"
+#include "../Helper.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_init.h>
@@ -27,14 +28,14 @@ void Engine::init(){
         throw "SDL could not initialize! SDL_Error: " + string(SDL_GetError());
 
     //Create window
-    if( !(window = SDL_CreateWindow("survivalProject2", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE) ) )
+    if( !(window = SDL_CreateWindow("survivalProject2", DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE) ) )
         throw std::string("Window could not be created! SDL_Error: " + string(SDL_GetError()));
 
     //Create renderer
     if( !(TextureManager::renderer = SDL_CreateRenderer(window, nullptr, SDL_RENDERER_ACCELERATED )) )
         throw "Renderer could not be created! SDL_Error: " + string(SDL_GetError());
 
-    SDL_SetRenderScale(TextureManager::renderer,SCREEN_SCALE,SCREEN_SCALE);
+    SDL_SetRenderScale(TextureManager::renderer,DEFAULT_SCREEN_SCALE,DEFAULT_SCREEN_SCALE);
     SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
 
     AssetsManager::get()->load();
@@ -45,16 +46,12 @@ void Engine::init(){
     player = new Player();
     Camera::constructor(
         player->getOrigin(), 
-        map->getPixelHeight(), 
-        SCREEN_WIDTH, 
-        SCREEN_HEIGHT, 
-        SCREEN_SCALE,
-        CHUNK_PIXEL_SQUARE_SIZE
+        map->getPixelHeight()
     );
 
     // Set the frame rate, updates per second and debugPrint per second
     setFps(0);
-    setUps(50);
+    setUps(60);
     setDps(10);
     running = true;
 }

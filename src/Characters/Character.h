@@ -26,7 +26,7 @@ public:
         jumpVelocity( 30.0 ),
         lookingRight( true ),
         collider( new Collider() ),
-        collisionZone( CollisionZone::none )
+        collisionZone( COLLISION_ZONE_NONE )
     {}
 
     ~Character(){
@@ -53,15 +53,15 @@ public:
         );
         collider->setCoordinates(this->position);
 
-        if( collisionZone & CollisionZone::left || collisionZone & CollisionZone::right )
+        if( collisionZone & COLLISION_ZONE_LEFT || collisionZone & COLLISION_ZONE_RIGHT )
             rigidBody->unsetVelocityX();
 
-        if( collisionZone & CollisionZone::bottom || collisionZone & CollisionZone::top ){
+        if( collisionZone & COLLISION_ZONE_BOTTOM || collisionZone & COLLISION_ZONE_TOP ){
             rigidBody->unsetVelocityY();
             jumping = false;
         }
         
-        grounded = collisionZone & CollisionZone::bottom;
+        grounded = collisionZone & COLLISION_ZONE_BOTTOM;
 
         animation->update();
         GameObject::update( dt );
@@ -72,7 +72,7 @@ protected:
 
     void walk(bool toRight);
 
-    void fly( MoveOption direction );
+    void fly( int8_t direction );
 
     void setFlyMode(bool flyMode);
     void jump();

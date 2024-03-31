@@ -10,10 +10,10 @@ Chunk::Chunk(MapSize x, MapSize y):
 {
     std::fill(&tiles[0][0][0], &tiles[0][0][0] + CHUNK_SQUARE_SIZE * CHUNK_SQUARE_SIZE * CHUNK_DEPH, nullptr);
     rect = {
-        (float)(xPosition*CHUNK_SQUARE_SIZE)*tileset->tileSize,
-        (float)(yPosition*CHUNK_SQUARE_SIZE)*tileset->tileSize,
-        (float)tileset->tileSize*CHUNK_SQUARE_SIZE,
-        (float)tileset->tileSize*CHUNK_SQUARE_SIZE
+        (float)(xPosition*CHUNK_SQUARE_SIZE)*TILE_SIZE,
+        (float)(yPosition*CHUNK_SQUARE_SIZE)*TILE_SIZE,
+        (float)TILE_SIZE*CHUNK_SQUARE_SIZE,
+        (float)TILE_SIZE*CHUNK_SQUARE_SIZE
     };
 }
  
@@ -34,10 +34,10 @@ void Chunk::render()
             isOnlyAir = false;
             TextureManager::draw(
                 tileset->textures[backTile? backTile : frontTile],
-                rect.x+(x*tileset->tileSize),
-                rect.y+(y*tileset->tileSize),
-                tileset->tileSize,
-                tileset->tileSize,
+                rect.x+(x*TILE_SIZE),
+                rect.y+(y*TILE_SIZE),
+                TILE_SIZE,
+                TILE_SIZE,
                 nullptr,
                 flip,
                 backTile? 85 : 0

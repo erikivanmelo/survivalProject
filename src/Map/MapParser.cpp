@@ -8,8 +8,8 @@
 MapParser *MapParser::instance = nullptr;
 
 const std::string MapParser::worldName = "overworld";
-const std::string MapParser::worldAsset = Assets::maps+worldName+".tmx";
-const std::string MapParser::blocksAsset = Assets::sprites+"blocks.bmp";
+const std::string MapParser::worldAsset = ASSETS_MAPS_PATH+worldName+".tmx";
+const std::string MapParser::blocksAsset = std::string(ASSETS_SPRITES_PATH)+"blocks.bmp";
 
 MapParser::MapParser() {
     // Inicializa cualquier miembro necesario en el constructor
@@ -66,7 +66,7 @@ void MapParser::parse(const std::string &id, const std::string &source)
 Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
 {
     Tileset *tileset = new Tileset();
-    const std::string source = Assets::maps+xmlTileset->Attribute("source");
+    const std::string source = std::string(ASSETS_MAPS_PATH)+xmlTileset->Attribute("source");
     tileset->source = MapParser::blocksAsset;
 
 
@@ -84,9 +84,8 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
 
             e->Attribute("columns",&tileset->colCount);
             tileset->rowCount = (tileset->tileCount/tileset->colCount);
-            e->Attribute("tilewidth",&tileset->tileSize);
             
-            tileset->srcRect = { 0, 0, (float)tileset->tileSize, (float)tileset->tileSize};
+            tileset->srcRect = { 0, 0, (float)TILE_SIZE, (float)TILE_SIZE};
 
             tileset->textures.reserve(tileset->tileCount);
             tileset->textures.push_back(nullptr);
@@ -98,10 +97,10 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
                         false,
                         false, 
                         {
-                            (tileId % tileset->colCount)*tileset->tileSize, 
-                            (tileId / tileset->colCount)*tileset->tileSize, 
-                            tileset->tileSize, 
-                            tileset->tileSize
+                            (tileId % tileset->colCount)*TILE_SIZE, 
+                            (tileId / tileset->colCount)*TILE_SIZE, 
+                            TILE_SIZE, 
+                            TILE_SIZE
                         }
                     )
                 );

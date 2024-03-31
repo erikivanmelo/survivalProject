@@ -11,12 +11,11 @@
 CollisionHandler *CollisionHandler::instance = nullptr;
 
 CollisionHandler::CollisionHandler():
-    gameMap(Engine::get()->getMap())
-{
-    tilesize = AssetsManager::get()->getTileset()->tileSize;
-    rowCount = gameMap->getTileHeight();
-    colCount = gameMap->getTileWidth();
-}
+    gameMap(Engine::get()->getMap()),
+    colCount(gameMap->getTileWidth()),
+    rowCount(gameMap->getTileHeight()),
+    tilesize(TILE_SIZE)
+{}
 
 bool CollisionHandler::checkColission(SDL_FRect a, SDL_FRect b)
 {
@@ -27,7 +26,7 @@ bool CollisionHandler::checkColission(SDL_FRect a, SDL_FRect b)
 int8_t CollisionHandler::mapCollision(SDL_FRect *a)
 {
     unsigned int x,y;
-    int8_t collisionZone = CollisionZone::none;
+    int8_t collisionZone = COLLISION_ZONE_NONE;
     const unsigned int leftTile    = Helper::wrapToRange(a->x / tilesize, colCount);
     const unsigned int rightTile   = Helper::wrapToRange((a->x + (a->w-1)) / tilesize,colCount);
     const unsigned int topTile     = std::clamp((int)   a->y            / tilesize, 0, rowCount - 1);
@@ -42,14 +41,14 @@ int8_t CollisionHandler::mapCollision(SDL_FRect *a)
                 continue;
 
             if (y == topTile) 
-                collisionZone |= CollisionZone::top;
+                collisionZone |= COLLISION_ZONE_TOP;
             else if (y == bottomTile) 
-                collisionZone |= CollisionZone::bottom;
+                collisionZone |= COLLISION_ZONE_BOTTOM;
 
             if (x == leftTile) 
-                collisionZone |= CollisionZone::left;
+                collisionZone |= COLLISION_ZONE_LEFT;
             else if (x == rightTile) 
-                collisionZone |= CollisionZone::right;
+                collisionZone |= COLLISION_ZONE_RIGHT;
         }
         x++;
     }while(x != xEnd);
@@ -93,20 +92,20 @@ Vector2D CollisionHandler::mostPlausiblePosition(Vector2D lastSafePosition, Vect
     if( abs(trajectoryX) > abs(trajectoryY) ){
         position.x = newX;
 
-        *collisionZone = CollisionZone::none;
+        *collisionZone = COLLISION_ZONE_NONE;
         if( trajectory.y > 0 )
-            *collisionZone |= CollisionZone::bottom;
+            *collisionZone |= COLLISION_ZONE_BOTTOM;
         else if( trajectory.y < 0 )
-            *collisionZone |= CollisionZone::top;
+            *collisionZone |= COLLISION_ZONE_TOP;
 
     }else if( abs(trajectoryX) < abs(trajectoryY) ){
         position.y = newY;
     
-        *collisionZone = CollisionZone::none;
+        *collisionZone = COLLISION_ZONE_NONE;
         if( trajectory.x > 0 )
-            *collisionZone |= CollisionZone::right;
+            *collisionZone |= COLLISION_ZONE_RIGHT;
         else if( trajectory.x < 0 )
-            *collisionZone |= CollisionZone::left;
+            *collisionZone |= COLLISION_ZONE_LEFT;
     }
 
     return position;

@@ -26,21 +26,21 @@ public:
     }
 
     inline Tile *getTile(int x, int y, bool z = FOREGROUND)const{
-        return chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->getTile( x%8, y%8, z);
+        return chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->getTile(x % CHUNK_SQUARE_SIZE, y % CHUNK_SQUARE_SIZE, z);
     }
 
     inline void setTile(int x, int y, bool z, Tile tile){
         if( !tile ){
-            chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->setTile( x%CHUNK_SQUARE_SIZE, y%CHUNK_SQUARE_SIZE, z, nullptr);
+            chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->setTile( x % CHUNK_SQUARE_SIZE, y % CHUNK_SQUARE_SIZE, z, nullptr);
             return;
         }
         std::unordered_map<Tile, Tile*>::iterator it = tileList.find(tile);
         Tile *tilePtr = (it != tileList.end())? tileList[tile] : tileList[tile] = new Tile(tile);
-        chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->setTile( x%CHUNK_SQUARE_SIZE, y%CHUNK_SQUARE_SIZE, z, tilePtr );
+        chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->setTile( x % CHUNK_SQUARE_SIZE, y % CHUNK_SQUARE_SIZE, z, tilePtr );
     }
 
     inline void dropTile(int x, int y, bool z){
-        chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->dropTile( x%CHUNK_SQUARE_SIZE, y%CHUNK_SQUARE_SIZE, z);
+        chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->dropTile( x % CHUNK_SQUARE_SIZE, y % CHUNK_SQUARE_SIZE, z);
     }
 
 
@@ -75,8 +75,8 @@ public:
     void mapPositionToDisplayPosition(Vector2D *position);
 
     inline Vector2D snapToGrid(Vector2D position){
-        position.x = (int)((int)position.x * tileset->tileSize) / tileset->tileSize;
-        position.y = (int)((int)position.y * tileset->tileSize) / tileset->tileSize;
+        position.x = roundf(roundf(position.x * TILE_SIZE) / TILE_SIZE);
+        position.y = roundf(roundf(position.y * TILE_SIZE) / TILE_SIZE);
         return position;
     }
 

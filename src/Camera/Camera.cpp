@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include <algorithm>
+#include "../Helper.h"
 
 Camera *Camera::instance = nullptr;
 
@@ -15,22 +16,17 @@ void Camera::setViewBoxSize(float screenWidth, float screenHeight, float screenS
 
 Camera::Camera(
     Point *target, 
-    const float maxY, 
-    const float screenWidth, 
-    const float screenHeight, 
-    const float screenScale, 
-    const int chunkPixelSquareSize) : 
+    const float maxY) : 
     target(target), 
     maxY(maxY), 
-    screenWidth(screenWidth), 
-    screenHeight(screenHeight), 
-    screenScale(screenScale), 
-    chunkPixelSquareSize(chunkPixelSquareSize), 
+    screenWidth(DEFAULT_SCREEN_WIDTH), 
+    screenHeight(DEFAULT_SCREEN_HEIGHT), 
+    screenScale(DEFAULT_SCREEN_SCALE), 
     position(Vector2D(0,0)),
     viewBox({
         0, 0,
-        roundf(screenWidth/screenScale),
-        roundf(screenHeight/screenScale)
+        (float) DEFAULT_SCREEN_WIDTH  / DEFAULT_SCREEN_SCALE,
+        (float) DEFAULT_SCREEN_HEIGHT / DEFAULT_SCREEN_SCALE
     })
 {}
 
@@ -39,5 +35,5 @@ void Camera::update()
     if( !target )
         return;
     position.x = viewBox.x = target->x - viewBox.w / 2;
-    position.y = viewBox.y = std::clamp((int)(target->y - viewBox.h / 2), 0, (int)(maxY - viewBox.h - chunkPixelSquareSize));
+    position.y = viewBox.y = std::clamp((int)(target->y - viewBox.h / 2), 0, (int)(maxY - viewBox.h - CHUNK_PIXEL_SQUARE_SIZE));
 }

@@ -46,7 +46,7 @@ bool Input::getKeyDown(SDL_Scancode key)
 
 bool Input::getKeyPressed(SDL_Scancode key)
 {
-    if (intervalTime > 0 && intervalTime < intervalPressed && lastKeyPressed == key)
+    if (intervalTime > 0 && intervalTime < INTERVAL_PERESSED && lastKeyPressed == key)
     {
         intervalTime = 0;
         return true;

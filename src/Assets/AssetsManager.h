@@ -9,17 +9,15 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
-namespace Assets{
-  const std::string base		= "assets/";
-  const std::string maps		= base+"maps/";
-  const std::string fonts		= base+"fonts/";
-  const std::string sprites	= base+"sprites/";
-  const int         pixelDepth = SDL_PIXELFORMAT_RGB565;
-}
+#define ASSETS_BASE_PATH    "assets/"
+#define ASSETS_MAPS_PATH    "assets/maps/"
+#define ASSETS_FONTS_PATH   "assets/fonts/"
+#define ASSETS_SPRITES_PATH "assets/sprites/"
+#define ASSETS_PIXEL_DEPTH SDL_PIXELFORMAT_RGB565
 
 typedef struct{
     int rowCount,colCount;
-    int tileCount, tileSize;
+    int tileCount;
     std::string name, source;
     std::vector<SDL_Texture*> textures;
     SDL_FRect srcRect;

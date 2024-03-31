@@ -7,14 +7,7 @@
 #include <cstdint>
 #include <SDL3/SDL.h>
 #include "../Assets/AssetsManager.h"
-
-#define BACKGROUND 0
-#define FOREGROUND 1
-
-#define CHUNK_SQUARE_SIZE 8
-#define CHUNK_DEPH 2
-
-#define CHUNK_PIXEL_SQUARE_SIZE CHUNK_SQUARE_SIZE*AssetsManager::get()->getTileset()->tileSize
+#include "../Helper.h"
 
 typedef uint32_t Tile;
 typedef int16_t MapSize;

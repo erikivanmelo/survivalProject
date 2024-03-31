@@ -41,7 +41,7 @@ void Character::selectBlock(Vector2D position){
 
 bool Character::isInteractionInRange(Vector2D position){
     GameMap *gameMap = Engine::get()->getMap();
-    int tilesize = AssetsManager::get()->getTileset()->tileSize;
+    int tilesize = TILE_SIZE;
     int colCount = gameMap->getTileWidth();
     SDL_FRect *box = collider->getCollisionBox();
     
@@ -61,20 +61,20 @@ void Character::jump(){
     if( grounded && !jumping ){
         jumping = true;
         grounded = false;
-        rigidBody->setVelocityY( MoveDirection::UP * jumpVelocity ); 
+        rigidBody->setVelocityY(DIRECTION_UP * jumpVelocity); 
     }
 }
 
-void Character::fly( MoveOption direction ){
+void Character::fly(int8_t direction) {
     if( !flyMode )
         return;
 
-    if (direction == UP || direction == DOWN)
+    if (direction == OPTION_UP || direction == OPTION_DOWN)
         rigidBody->applyMovementY( direction * flySpeed );
 
-    if (direction == LEFT || direction == RIGHT){
+    if (direction == OPTION_LEFT || direction == OPTION_RIGHT){
         rigidBody->applyMovementX(direction * flySpeed);
-        lookingRight = direction == RIGHT;
+        lookingRight = direction == OPTION_RIGHT;
         animation->setCurrentSeq( "default", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
     }
 }

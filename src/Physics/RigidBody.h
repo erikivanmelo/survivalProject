@@ -10,19 +10,11 @@
 
 #define GRAVITY 9.81f // m/s^2
 
-namespace MoveDirection{
-    constexpr int8_t UP = -1;
-    constexpr int8_t DOWN = 1;
-    constexpr int8_t LEFT = -1;
-    constexpr int8_t RIGHT = 1;
-}
 
-enum MoveOption{
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
+#define OPTION_UP 0
+#define OPTION_DOWN 1
+#define OPTION_LEFT 2
+#define OPTION_RIGHT 3
 
 class RigidBody
 {

@@ -5,6 +5,7 @@
 #include <SDL3/SDL_mouse.h>
 #include <SDL3/SDL_stdinc.h>
 #include "../Physics/Vector2D.h"
+#define INTERVAL_PERESSED 200  
 
 typedef Uint32 MouseState;
 
@@ -45,7 +46,6 @@ private:
 
     double startTime = 0;
     double intervalTime = 0;
-    const double intervalPressed = 200;
     SDL_Scancode lastKeyPressed;
 };
 

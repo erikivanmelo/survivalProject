@@ -7,15 +7,11 @@
 #include <SDL3/SDL_rect.h>
 #include <cstdint>
 
-namespace CollisionZone{
-    enum{
-        none = 0,
-        top = 8,
-        bottom = 16,
-        left = 32,
-        right = 64
-    };
-}
+#define COLLISION_ZONE_NONE    0
+#define COLLISION_ZONE_TOP     8
+#define COLLISION_ZONE_BOTTOM   16
+#define COLLISION_ZONE_LEFT     32
+#define COLLISION_ZONE_RIGHT    64
 
 class CollisionHandler
 {

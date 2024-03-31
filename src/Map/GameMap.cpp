@@ -10,8 +10,8 @@
 
 GameMap::GameMap( const MapSize width, const MapSize height ):
     chunkWidth(width), chunkHeight(height),
-    pixelWidth((width*CHUNK_SQUARE_SIZE)*AssetsManager::get()->getTileset()->tileSize),
-    pixelHeight((height*CHUNK_SQUARE_SIZE)*AssetsManager::get()->getTileset()->tileSize),
+    pixelWidth((width*CHUNK_SQUARE_SIZE)*TILE_SIZE),
+    pixelHeight((height*CHUNK_SQUARE_SIZE)*TILE_SIZE),
     tileWidth(width*CHUNK_SQUARE_SIZE),
     tileHeight(height*CHUNK_SQUARE_SIZE),
     tileset(AssetsManager::get()->getTileset())
@@ -52,10 +52,10 @@ GameMap::~GameMap(){
 void GameMap::render(){
     static const SDL_FRect *box = Camera::get()->getViewBox();
     int x,y;
-    const int startX = ((box->x/tileset->tileSize)/CHUNK_SQUARE_SIZE)-1;
-    const int startY = std::clamp((int)((box->y/tileset->tileSize)/CHUNK_SQUARE_SIZE)-1, 0, chunkHeight-1);
-    const int endX = (((box->x+box->w)/tileset->tileSize)/CHUNK_SQUARE_SIZE)+1;
-    const int endY = std::clamp((int)(((box->y+box->h)/tileset->tileSize)/CHUNK_SQUARE_SIZE)+1,0,chunkHeight-1);
+    const int startX = ((box->x/TILE_SIZE)/CHUNK_SQUARE_SIZE)-1;
+    const int startY = std::clamp((int)((box->y/TILE_SIZE)/CHUNK_SQUARE_SIZE)-1, 0, chunkHeight-1);
+    const int endX = (((box->x+box->w)/TILE_SIZE)/CHUNK_SQUARE_SIZE)+1;
+    const int endY = std::clamp((int)(((box->y+box->h)/TILE_SIZE)/CHUNK_SQUARE_SIZE)+1,0,chunkHeight-1);
 
     for(x = startX; x < endX; ++x )
         for (y = startY; y < endY; ++y)
@@ -63,18 +63,18 @@ void GameMap::render(){
 }
 
 void GameMap::displayPositionToMapPosition(Vector2D *position){
-    static const Vector2D *cam  = Camera::get()->getPosition();
-    position->x = (int)Helper::wrapToRange((int)cam->x+(position->x/SCREEN_SCALE),pixelWidth)/tileset->tileSize;
-    position->y = (int)std::clamp((int)(cam->y+position->y/SCREEN_SCALE),0,pixelHeight-1)/tileset->tileSize;
+    static const Camera *cam  = Camera::get();
+    position->x = (int)Helper::wrapToRange((int)cam->getPosition()->x+(position->x/cam->getScreenScale()),pixelWidth)/TILE_SIZE;
+    position->y = (int)std::clamp((int)(cam->getPosition()->y+position->y/cam->getScreenScale()),0,pixelHeight-1)/TILE_SIZE;
 }
 
 bool GameMap::areBlockAround(int x, int y, bool z, bool inCenterToo){
     return  
-        getTile(Helper::wrapToRange(x + 1, tileWidth), y, z) != 0 || 
-        getTile(Helper::wrapToRange(x - 1, tileWidth), y, z) != 0 || 
+        getTile(Helper::wrapToRange(x + DIRECTION_RIGHT, tileWidth), y, z) != 0 || 
+        getTile(Helper::wrapToRange(x + DIRECTION_LEFT, tileWidth), y, z) != 0 || 
 
-        getTile(x, std::clamp(y + 1, 0, tileWidth - 1), z) != 0 || 
-        getTile(x, std::clamp(y - 1, 0, tileWidth - 1), z) != 0 ||
+        getTile(x, std::clamp(y + DIRECTION_DOWN, 0, tileWidth - 1), z) != 0 || 
+        getTile(x, std::clamp(y + DIRECTION_UP, 0, tileWidth - 1), z) != 0 ||
 
         (inCenterToo && getTile(x, y, z) != 0);
 }
@@ -83,12 +83,11 @@ void GameMap::focusBlock(Vector2D position, const SDL_Color &color){
     if (!areBlockAround(position.x, position.y, FOREGROUND, true) && !getTile(position.x, position.y, BACKGROUND)) 
         return;
     position = snapToGrid(position);
-    int tileSize = tileset->tileSize;
     TextureManager::drawRect(
-        position.x*tileSize, 
-        position.y*tileSize, 
-        tileSize, 
-        tileSize, 
+        position.x*TILE_SIZE, 
+        position.y*TILE_SIZE, 
+        TILE_SIZE, 
+        TILE_SIZE, 
         color 
     );
 }

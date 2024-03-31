@@ -24,14 +24,14 @@ SDL_Texture *AssetsManager::loadTexture(
     SDL_Texture* texture    = nullptr;
     SDL_Surface* newSurface = nullptr;
 
-    surface = SDL_ConvertSurfaceFormat(surface, Assets::pixelDepth);
+    surface = SDL_ConvertSurfaceFormat(surface, ASSETS_PIXEL_DEPTH);
 
     // Añade el color magenta a la lista de colores transparentes.
     if( withTransparentMagenta )
         SDL_SetSurfaceColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
 
     if( srcRect.w > 0 && srcRect.h > 0 ){
-        newSurface = SDL_CreateSurface(srcRect.w, srcRect.h, Assets::pixelDepth);
+        newSurface = SDL_CreateSurface(srcRect.w, srcRect.h, ASSETS_PIXEL_DEPTH);
         if( !newSurface )
             throw "Failed to load surface from" + fileName + "! SDL_image Error: " + string(SDL_GetError());
         SDL_SetSurfaceColorKey(newSurface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255 ));
@@ -56,7 +56,7 @@ SDL_Texture *AssetsManager::loadTexture(
 
 void AssetsManager::load(){
     // Abrir el archivo JSON en modo lectura
-    std::ifstream file(Assets::base + "sprites.json");
+    std::ifstream file(std::string(ASSETS_BASE_PATH) + "sprites.json");
 
     // Comprobar si se pudo abrir el archivo
     if (!file.is_open()) 
@@ -81,7 +81,7 @@ void AssetsManager::load(){
 
         SDL_Texture *texture = this->loadTexture(
             name,
-            Assets::sprites + fileName,
+            ASSETS_SPRITES_PATH + fileName,
             spriteData["withTransparentMagenta"]
         );
 

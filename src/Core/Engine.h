@@ -4,9 +4,7 @@
 #include <SDL3/SDL.h>
 #include "../Map/GameMap.h"
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 300
-#define SCREEN_SCALE 2
+#define partPerSecond(__PPS) __PPS? 1.0/__PPS : 0
 
 class Engine
 {
@@ -38,10 +36,6 @@ class Engine
 
         inline void setDps(const int dps){
             this->dps = partPerSecond(dps);
-        }
-
-        inline float partPerSecond(const int pps)const{
-            return pps? 1.0/pps : 0;
         }
 
         ~Engine();
