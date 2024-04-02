@@ -13,11 +13,11 @@ using namespace std;
 struct AnimationSeq{
     AnimationSeq(
         SDL_Texture *texture,
-        int spriteRow,
-        int frameCount, 
-        int animSpeed,
-        int spriteWidth,
-        int spriteHeight
+        const uint8_t spriteRow,
+        const uint8_t frameCount, 
+        const uint8_t animSpeed,
+        const uint8_t spriteWidth,
+        const uint8_t spriteHeight
     ):
         texture(texture),
         spriteRow(spriteRow),
@@ -28,11 +28,11 @@ struct AnimationSeq{
     {}
 
     SDL_Texture *texture;
-    int spriteRow;
-    int frameCount;
-    int animSpeed;
-    int spriteWidth;
-    int spriteHeight;
+    const uint8_t spriteRow;
+    const uint8_t frameCount;
+    const uint8_t animSpeed;
+    const uint8_t spriteWidth;
+    const uint8_t spriteHeight;
 };
 
 class AnimationSeqList{
@@ -68,8 +68,7 @@ private:
 };
 
 typedef struct AnimationSeq AnimationSeq;
-//typedef unordered_map< string, AnimationSeq* > AnimationSeqList;
-typedef pair< string, AnimationSeq* > AnimationSeqPair;
+typedef pair<const string, AnimationSeq* > AnimationSeqPair;
 
 class Animation
 {
@@ -77,15 +76,15 @@ public:
     Animation( AnimationSeqList *list );
     ~Animation();
     void update();
-    void draw( float x, float y );
-    void setCurrentSeq( const string &seqId, SDL_RendererFlip flip = SDL_FLIP_NONE, int animSpeed = -1 );
+    void draw(const float x, const float y);
+    void setCurrentSeq( const string &seqId, SDL_RendererFlip flip = SDL_FLIP_NONE, const uint8_t animSpeed = 0);
 
 private:
     SDL_RendererFlip flip;
     AnimationSeqList *seqList;
     AnimationSeq* currentSeq;
-    int forceAnimSpeed;
-    int spriteFrame;
+    uint8_t forceAnimSpeed;
+    uint8_t spriteFrame;
 };
 
 #endif // ANIMATION_H

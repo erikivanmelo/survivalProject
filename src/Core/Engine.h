@@ -4,7 +4,10 @@
 #include <SDL3/SDL.h>
 #include "../Map/GameMap.h"
 
-#define partPerSecond(__PPS) __PPS? 1.0/__PPS : 0
+// Set the frame rate, updates per second and debugPrint per second
+#define FPS 0.0
+#define UPS 0.02 //1/50 ps
+#define DPS 0.1  //1/10 fps
 
 class Engine
 {
@@ -25,18 +28,6 @@ class Engine
 
         inline GameMap* getMap()const{ return map; }
 
-        inline void setFps(const int fps){
-            this->fps = partPerSecond(fps);
-        }
-
-        inline void setUps(const int ups){
-            this->ups = partPerSecond(ups);
-        }
-
-        inline void setDps(const int dps){
-            this->dps = partPerSecond(dps);
-        }
-
         ~Engine();
     private:
         inline void setRunning( bool running ){ this->running = running; }
@@ -45,9 +36,7 @@ class Engine
         SDL_Window* window;
         static Engine* instance;
         GameMap *map;
-        int currentFps;
-        float fps, dps, ups;
-
+        uint16_t currentFps;
 };
 
 #endif

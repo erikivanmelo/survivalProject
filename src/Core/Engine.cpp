@@ -49,10 +49,6 @@ void Engine::init(){
         map->getPixelHeight()
     );
 
-    // Set the frame rate, updates per second and debugPrint per second
-    setFps(0);
-    setUps(50);
-    setDps(10);
     running = true;
 }
 
@@ -70,26 +66,26 @@ void Engine::quit(){
 }
 
 void Engine::printDebug(){
-    startInLapse(dt, dps, Timer::getDeltaTime())
+    startInLapse(dt, DPS, Timer::getDeltaTime())
         std::cout << "FPS:" << currentFps << endl;
         player->getPosition().log("position");
         Camera::get()->getPosition()->log("Camera");
         Input::get()->getMousePosition().log("Mouse");
         cout << endl;
-    endInLapse(dt, dps)
+    endInLapse(dt, DPS)
 }
 
 void Engine::update(){
-    startInLapse(dt, ups, Timer::getDeltaTime())
+    startInLapse(dt, UPS, Timer::getDeltaTime())
         Input::get()->listen();
         player->update(dt);
         map->update();
-    endInLapse(dt, ups)
+    endInLapse(dt, UPS)
 }
 
 void Engine::render(){
-    static int frameCount = 0;
-    startInLapse(dt,fps, Timer::getDeltaTime())
+    static uint16_t frameCount = 0;
+    startInLapse(dt,FPS, Timer::getDeltaTime())
         frameCount++;
         SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
 
@@ -104,6 +100,6 @@ void Engine::render(){
         player->draw();
 
         SDL_RenderPresent(TextureManager::renderer);
-    endInLapse(dt,fps)
+    endInLapse(dt,FPS)
 }
 
