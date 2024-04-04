@@ -87,19 +87,23 @@ void Engine::render(){
     static uint16_t frameCount = 0;
     startInLapse(dt,FPS, Timer::getDeltaTime())
         frameCount++;
-        SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
 
         startInLapse(fpsTimer, 1.0, dt)
             currentFps = static_cast<double>(frameCount) / fpsTimer;
             frameCount = 0;
         endInLapse(fpsTimer, 1.0)
 
-        SDL_RenderClear(TextureManager::renderer);
+        if (map->isChanged() || player->isMoved() || Camera::get()->isViewBoxChanged()){
+            SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
+            SDL_RenderClear(TextureManager::renderer);
+            map->render();
+            player->draw();
+            SDL_RenderPresent(TextureManager::renderer);
 
-        map->render();
-        player->draw();
+            map->unsetChanged();
+            Camera::get()->unsetViewBoxChanged();
+        }
 
-        SDL_RenderPresent(TextureManager::renderer);
     endInLapse(dt,FPS)
 }
 

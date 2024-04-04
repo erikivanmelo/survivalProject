@@ -5,7 +5,7 @@
 #include "../Map/GameMap.h"
 
 // Set the frame rate, updates per second and debugPrint per second
-#define FPS 0.0
+#define FPS 0.03
 #define UPS 0.02 //1/50 ps
 #define DPS 0.1  //1/10 fps
 

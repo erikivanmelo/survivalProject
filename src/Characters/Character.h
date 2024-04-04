@@ -65,6 +65,8 @@ public:
 
         animation->update();
         GameObject::update( dt );
+        if (!moved)
+            animation->setCurrentSeq( "default", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
     }
 
 

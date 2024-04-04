@@ -3,6 +3,8 @@
 
 void GameObject::update(float dt){
     static const float widthMap = Engine::get()->getMap()->getPixelWidth();
+    if (!(moved = position != lastPosition))
+        return;
 
     if (position.x > widthMap) 
         position.x = fmod(position.x, widthMap);
@@ -10,4 +12,5 @@ void GameObject::update(float dt){
         position.x = widthMap + fmod(position.x, widthMap);
 
     updateViewPoint();
+    lastPosition = position;
 }

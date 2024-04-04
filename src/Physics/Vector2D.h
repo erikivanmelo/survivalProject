@@ -11,7 +11,8 @@ class Vector2D
 public:
     float x, y;
 
-    Vector2D( float X=0, float Y=0 ):x(X),y(Y){}
+    Vector2D( const float X=0, const float Y=0 ):x(X),y(Y){}
+    Vector2D( const Vector2D &v ):x(v.x),y(v.y){}
 
     inline Vector2D operator+(const Vector2D& v2){
         return Vector2D( this->x + v2.x, this->y + v2.y );

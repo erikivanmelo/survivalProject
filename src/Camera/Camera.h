@@ -18,6 +18,8 @@ public:
     inline const Vector2D *getPosition()const{return &position;}
     inline float getScreenScale()const{return screenScale;}
     inline void setTarget(Point *target){this->target = target;}
+    inline bool isViewBoxChanged()const{return viewBoxChanged;}
+    inline void unsetViewBoxChanged(){viewBoxChanged = false;}
 
     void setViewBoxSize(float screenWidth, float screenHeight, float screenScale = -1);
 
@@ -32,6 +34,7 @@ private:
     float screenWidth, screenHeight, screenScale; 
     Vector2D position;
     SDL_FRect viewBox;
+    bool viewBoxChanged;
 
     static Camera* instance;
 };

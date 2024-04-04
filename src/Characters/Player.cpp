@@ -70,16 +70,14 @@ void Player::checkInput( float dt ){
 
 
 void Player::update( float dt ){
-    animation->setCurrentSeq( "default", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
-
+    static GameMap *mapa = Engine::get()->getMap();
     checkInput( dt );
     Character::update( dt );
 
     Camera::get()->update();
+    mapa->setFocusBlock(mousePosition, isInteractionInRange(mousePosition)? SDL_Color{0, 255, 0,255} : SDL_Color{255, 0, 0,255});
 }
 
 void Player::draw(){
-    static GameMap *mapa = Engine::get()->getMap();
     Character::draw();
-    mapa->focusBlock(mousePosition, isInteractionInRange(mousePosition)? SDL_Color{0, 255, 0,255} : SDL_Color{255, 0, 0,255});
 }

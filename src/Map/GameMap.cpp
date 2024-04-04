@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <cstdint>
 #include "../Helper.h"
-#include "../Core/Engine.h"
 #include "../Graphics/TextureManager.h"
 
 GameMap::GameMap( const MapSize width, const MapSize height ):
@@ -14,7 +13,10 @@ GameMap::GameMap( const MapSize width, const MapSize height ):
     pixelHeight((height*CHUNK_SQUARE_SIZE)*TILE_SIZE),
     tileWidth(width*CHUNK_SQUARE_SIZE),
     tileHeight(height*CHUNK_SQUARE_SIZE),
-    tileset(AssetsManager::get()->getTileset())
+    tileset(AssetsManager::get()->getTileset()),
+    changed(false),
+    focusBlock(nullptr),
+    focusBlockColor({0,0,0,0})
 {
 
     chunks.resize(width);
@@ -60,6 +62,7 @@ void GameMap::render(){
     for(x = startX; x < endX; ++x )
         for (y = startY; y < endY; ++y)
             chunks[Helper::wrapToRange(x, chunkWidth)][y]->render();
+    drawFocusBlock();
 }
 
 void GameMap::displayPositionToMapPosition(Vector2D *position){
@@ -79,17 +82,33 @@ bool GameMap::areBlockAround(int x, int y, bool z, bool inCenterToo){
         (inCenterToo && getTile(x, y, z) != 0);
 }
 
-void GameMap::focusBlock(Vector2D position, const SDL_Color &color){
+void GameMap::setFocusBlock(Vector2D position, const SDL_Color &color) {
+    Vector2D *lastValue = nullptr;
+    if (focusBlock)
+        lastValue = new Vector2D(*focusBlock);
+    focusBlockColor = color;
     if (!areBlockAround(position.x, position.y, FOREGROUND, true) && !getTile(position.x, position.y, BACKGROUND)) 
-        return;
-    position = snapToGrid(position);
-    TextureManager::drawRect(
-        position.x*TILE_SIZE, 
-        position.y*TILE_SIZE, 
-        TILE_SIZE, 
-        TILE_SIZE, 
-        color 
-    );
+        focusBlock = nullptr;
+    else
+        focusBlock = new Vector2D(snapToGrid(position));
+
+
+    if (focusBlock && lastValue) {
+        if (*lastValue != *focusBlock)
+            changed = true;
+    } else {
+        changed = true;
+    }
 }
 
-
+void GameMap::drawFocusBlock() {
+    if (!focusBlock)
+        return;
+    TextureManager::drawRect(
+        focusBlock->x*TILE_SIZE, 
+        focusBlock->y*TILE_SIZE, 
+        TILE_SIZE, 
+        TILE_SIZE, 
+        focusBlockColor 
+    );
+}

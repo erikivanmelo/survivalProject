@@ -1,6 +1,7 @@
 #ifndef GAMEMAP_H
 #define GAMEMAP_H
 
+#include <algorithm>
 #include <iostream>
 #include <unordered_map>
 #include <vector>
@@ -30,6 +31,7 @@ public:
     }
 
     inline void setTile(int x, int y, bool z, Tile tile){
+        changed = true;
         if( !tile ){
             chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->setTile( x % CHUNK_SQUARE_SIZE, y % CHUNK_SQUARE_SIZE, z, nullptr);
             return;
@@ -69,6 +71,14 @@ public:
         return tileWidth;
     }
 
+    inline bool isChanged()const{
+        return changed;
+    }
+
+    inline void unsetChanged(){
+        changed = false;
+    }
+
     bool areBlockAround(int x, int y, bool z = FOREGROUND, bool inCenterToo = false);
 
     void displayPositionToMapPosition(Vector2D *position);
@@ -80,7 +90,8 @@ public:
         return position;
     }
 
-    void focusBlock(Vector2D position, const SDL_Color &color = {0,0,0,0});
+    void setFocusBlock(Vector2D position, const SDL_Color &color = {0,0,0,0});
+    void drawFocusBlock();
     
 
 private:
@@ -91,6 +102,9 @@ private:
     const MapSize chunkWidth, chunkHeight;
     const int     pixelWidth, pixelHeight;
     const int     tileWidth,  tileHeight;
+    bool changed;
+    Vector2D *focusBlock;
+    SDL_Color focusBlockColor;
 
 };
 
