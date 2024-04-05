@@ -24,6 +24,7 @@ SOURCES = \
 	src/Object/GameObject.cpp \
 	src/Characters/Character.cpp \
 	src/Characters/Player.cpp \
+	src/Characters/CurrentPlayer.cpp \
 	src/Graphics/Animation.cpp \
 	src/Inputs/Input.cpp \
 	src/Map/GameMap.cpp \
@@ -42,6 +43,7 @@ HEADERS = \
 	src/Object/GameObject.h \
 	src/Characters/Character.h \
 	src/Characters/Player.h \
+	src/Characters/CurrentPlayer.h \
 	src/Graphics/Animation.h \
 	src/Physics/RigidBody.h \
 	src/Inputs/Input.h \

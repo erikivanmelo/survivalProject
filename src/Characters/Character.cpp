@@ -57,12 +57,25 @@ bool Character::isInteractionInRange(Vector2D position){
             topTile  <= position.y && bottomTile >= position.y);
 }
 
-void Character::jump(){
-    if( grounded && !jumping ){
-        jumping = true;
-        grounded = false;
-        rigidBody->setVelocityY(DIRECTION_UP * jumpVelocity); 
+void Character::jump(bool impulsing){
+    if (impulsing && !flyMode){
+        if( grounded && !jumping ){
+            jumping = true;
+            grounded = false;
+            rigidBody->setVelocityY(DIRECTION_UP * jumpVelocity); 
+        }
+    } else if (this->jumping && this->rigidBody->getVelocity().y < 0) {
+        this->rigidBody->unsetVelocityY();
+        this->jumping = false;
     }
+}
+
+void Character::move(int8_t direction){
+    if (flyMode)
+        fly(direction);
+    else if (direction == OPTION_RIGHT || direction == OPTION_LEFT)
+        walk(direction == OPTION_RIGHT);
+
 }
 
 void Character::fly(int8_t direction) {

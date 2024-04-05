@@ -8,6 +8,7 @@
 #include "../Graphics/TextureManager.h"
 #include "../Camera/Camera.h"
 #include "../Helper.h"
+#include "../Characters/CurrentPlayer.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_init.h>
@@ -20,7 +21,6 @@
 using namespace std;
 
 Engine* Engine::instance = nullptr;
-Player* player = nullptr;
 void Engine::init(){
     //Initialize SDL
 
@@ -42,10 +42,10 @@ void Engine::init(){
 
     MapParser::get()->load();
     map = MapParser::get()->getMap("overworld");
-    
-    player = new Player();
-    Camera::constructor(
-        player->getOrigin(), 
+   
+    CurrentPlayer::init();
+    Camera::init(
+        CurrentPlayer::get()->getOrigin(), 
         map->getPixelHeight()
     );
 
@@ -66,25 +66,24 @@ void Engine::quit(){
 }
 
 void Engine::debug(){
-    startInLapse(dt, UPS, Timer::getDeltaTime())
-        #ifdef __linux__
-            std::cout << "\x1B[H\x1B[J";
-        #else
-            std::cout << endl;
-        #endif
-        std::cout << "FPS: " << currentFps << endl;
-        std::cout << "To Render: " << (toRender? "true" : "false") << endl;
-        player->debug();
-        Camera::get()->debug();
-        Input::get()->debug();
-    endInLapse(dt, UPS)
+    #ifdef __linux__
+        std::cout << "\x1B[H\x1B[J";
+    #else
+        std::cout << endl;
+    #endif
+    std::cout << "FPS: " << currentFps << endl;
+    std::cout << "Penderized: " << (toRender? "true" : "false") << endl;
+    CurrentPlayer::get()->debug();
+    Camera::get()->debug();
+    Input::get()->debug();
 }
 
 void Engine::update(){
     startInLapse(dt, UPS, Timer::getDeltaTime())
         Input::get()->listen();
-        player->update(dt);
+        CurrentPlayer::get()->update(dt);
         map->update();
+        this->debug();
     endInLapse(dt, UPS)
 }
 
@@ -98,20 +97,19 @@ void Engine::render(){
             frameCount = 0;
         endInLapse(fpsTimer, 1.0)
 
-        bool change = map->isChanged() || 
-            player->isMoved() || 
+        toRender = map->isChanged() || 
+            CurrentPlayer::get()->isMoved() || 
             Camera::get()->isViewBoxChanged();
 
         if (toRender){
             SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
             SDL_RenderClear(TextureManager::renderer);
             map->render();
-            player->draw();
+            CurrentPlayer::get()->draw();
             SDL_RenderPresent(TextureManager::renderer);
 
             Camera::get()->unsetViewBoxChanged();
         }
-        toRender = change;
 
     endInLapse(dt,FPS)
 }

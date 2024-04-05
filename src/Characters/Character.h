@@ -69,21 +69,28 @@ public:
             animation->setCurrentSeq( "default", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
     }
 
-
-protected:
-
     void walk(bool toRight);
 
-    void fly( int8_t direction );
+    void fly(int8_t direction);
 
+    void move(int8_t direction);
+
+    void inline toggleFlyMode() {
+        flyMode = !flyMode;
+    }
+
+    void inline toggleCollisionBoxView() {
+        collisionBoxView = !collisionBoxView;
+    }
+    void jump(bool impulsing);
     void setFlyMode(bool flyMode);
-    void jump();
     void placeBlock(Vector2D position, Tile *tile = nullptr);
     void breakBlock(Vector2D position);
     void selectBlock(Vector2D position);
 
     bool isInteractionInRange(Vector2D position);
 
+protected:
     Tile *tileSelected = nullptr;
 
 

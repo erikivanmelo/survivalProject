@@ -22,8 +22,8 @@ public:
     bool getKeyDown(SDL_Scancode key);
     bool getKeyPressed(SDL_Scancode key);
 
-    inline MouseState getMouseState()const{
-        return mouseState;
+    inline MouseState *getMouseState(){
+        return &mouseState;
     }
 
     inline Vector2D getMousePosition()const{

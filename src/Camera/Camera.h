@@ -10,8 +10,8 @@ class Camera
 public:
 
     inline static Camera *get(){ return instance; }
-    inline static void destructor(){ delete instance; }
-    inline static void constructor(Point *target, const float maxY) {
+    inline static void clean(){ delete instance; }
+    inline static void init(Point *target, const float maxY) {
         Camera::instance = new Camera(target, maxY);
     }
 
