@@ -6,7 +6,6 @@
 #include "../Helper.h"
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_mouse.h>
-#include <algorithm>
 
 Player::Player( Vector2D position ) : Character( "player", position, 32, 32 )
 {
@@ -17,7 +16,6 @@ Player::Player( Vector2D position ) : Character( "player", position, 32, 32 )
     //Rango de interaccion con los bloques
     interactionRange = 4;
 }
-
 
 
 void Player::checkInput( float dt ){
@@ -74,7 +72,8 @@ void Player::update( float dt ){
     checkInput( dt );
     Character::update( dt );
 
-    Camera::get()->update();
+    if (moved)
+        Camera::get()->update();
     mapa->setFocusBlock(mousePosition, isInteractionInRange(mousePosition)? SDL_Color{0, 255, 0,255} : SDL_Color{255, 0, 0,255});
 }
 

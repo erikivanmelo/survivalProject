@@ -7,7 +7,6 @@
 // Set the frame rate, updates per second and debugPrint per second
 #define FPS 0
 #define UPS 0.02 //1/50 ps
-#define DPS 0.1  //1/10 fps
 
 class Engine
 {
@@ -22,7 +21,7 @@ class Engine
 
         void update();
         void render();
-        void printDebug();
+        void debug();
 
         inline bool isRunning()const{ return running; }
 
@@ -37,6 +36,7 @@ class Engine
         static Engine* instance;
         GameMap *map;
         uint16_t currentFps;
+        bool toRender = false;
 };
 
 #endif

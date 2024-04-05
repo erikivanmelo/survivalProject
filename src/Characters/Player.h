@@ -21,6 +21,10 @@ public:
     void update(float dt) override;
 
     void draw()override;
+
+    inline void debug()override{
+        position.log("Player Position");
+    };
 private:
     void checkInput( float dt );
 

@@ -30,6 +30,9 @@ public:
         return mousePosition;
     }
 
+    inline void debug() {
+        mousePosition.log("Mouse Position");
+    }
 
 private:
     Input();

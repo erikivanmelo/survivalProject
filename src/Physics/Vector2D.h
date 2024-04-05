@@ -69,7 +69,7 @@ public:
 
 
     void log(const std::string &msg = "")const{
-        std::cout << msg << "(X, Y) = (" << x << " " << y << ")" << std::endl;
+        std::cout << msg << "\tX = " << x << " \tY = " << y << std::endl;
     }
 
 };

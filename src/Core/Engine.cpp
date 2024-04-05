@@ -65,14 +65,19 @@ void Engine::quit(){
     get()->setRunning(false);
 }
 
-void Engine::printDebug(){
-    startInLapse(dt, DPS, Timer::getDeltaTime())
-        std::cout << "FPS:" << currentFps << endl;
-        player->getPosition().log("position");
-        Camera::get()->getPosition()->log("Camera");
-        Input::get()->getMousePosition().log("Mouse");
-        cout << endl;
-    endInLapse(dt, DPS)
+void Engine::debug(){
+    startInLapse(dt, UPS, Timer::getDeltaTime())
+        #ifdef __linux__
+            std::cout << "\x1B[H\x1B[J";
+        #else
+            std::cout << endl;
+        #endif
+        std::cout << "FPS: " << currentFps << endl;
+        std::cout << "To Render: " << (toRender? "true" : "false") << endl;
+        player->debug();
+        Camera::get()->debug();
+        Input::get()->debug();
+    endInLapse(dt, UPS)
 }
 
 void Engine::update(){
@@ -93,12 +98,11 @@ void Engine::render(){
             frameCount = 0;
         endInLapse(fpsTimer, 1.0)
 
-        static bool lastChange = false;
         bool change = map->isChanged() || 
             player->isMoved() || 
             Camera::get()->isViewBoxChanged();
 
-        if (lastChange){
+        //if (toRender){
             SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
             SDL_RenderClear(TextureManager::renderer);
             map->render();
@@ -106,8 +110,8 @@ void Engine::render(){
             SDL_RenderPresent(TextureManager::renderer);
 
             Camera::get()->unsetViewBoxChanged();
-        }
-        lastChange = change;
+        //}
+        toRender = change;
 
     endInLapse(dt,FPS)
 }

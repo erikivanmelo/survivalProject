@@ -13,7 +13,7 @@ int main()
         while(engine->isRunning()){
             engine->update();
             engine->render();
-            engine->printDebug();
+            engine->debug();
             Timer::tickUpdate();
         }
     }catch(const string &e){

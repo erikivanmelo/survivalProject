@@ -8,12 +8,16 @@
 class Camera
 {
 public:
+
     inline static Camera *get(){ return instance; }
     inline static void destructor(){ delete instance; }
     inline static void constructor(Point *target, const float maxY) {
         Camera::instance = new Camera(target, maxY);
     }
 
+    inline void debug(){
+        position.log("Camera Position"); 
+    }
     inline const SDL_FRect *getViewBox()const{return &viewBox;}
     inline const Vector2D *getPosition()const{return &position;}
     inline float getScreenScale()const{return screenScale;}
