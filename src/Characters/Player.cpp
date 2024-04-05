@@ -33,7 +33,7 @@ void Player::checkInput( float dt ){
         this->flyMode? fly(OPTION_LEFT) : walk(false);
 
     if( INPUT_UP && this->flyMode )
-        fly(OPTION_UP);
+        fly(DIRECTION_UP);
 
     if( INPUT_DOWN && this->flyMode )
         fly(OPTION_DOWN);

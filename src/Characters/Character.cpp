@@ -66,16 +66,27 @@ void Character::jump(){
 }
 
 void Character::fly(int8_t direction) {
-    if( !flyMode )
+
+    switch (direction) {
+        case OPTION_UP:
+            rigidBody->applyMovementY( DIRECTION_UP * flySpeed );
         return;
 
-    if (direction == OPTION_UP || direction == OPTION_DOWN)
-        rigidBody->applyMovementY( direction * flySpeed );
+        case OPTION_DOWN:
+            rigidBody->applyMovementY( DIRECTION_DOWN * flySpeed );
+        return;
 
-    if (direction == OPTION_LEFT || direction == OPTION_RIGHT){
-        rigidBody->applyMovementX(direction * flySpeed);
-        lookingRight = direction == OPTION_RIGHT;
-        animation->setCurrentSeq( "default", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
+        case OPTION_LEFT:
+            rigidBody->applyMovementX(DIRECTION_LEFT * flySpeed);
+            lookingRight = false;
+            animation->setCurrentSeq("default", SDL_FLIP_HORIZONTAL);
+        return;
+
+        case OPTION_RIGHT:
+            rigidBody->applyMovementX(DIRECTION_RIGHT * flySpeed);
+            lookingRight = true;
+            animation->setCurrentSeq("default");
+        return;
     }
 }
 
