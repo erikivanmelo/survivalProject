@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL.h>
 #include "../Map/GameMap.h"
+#include "../Characters/CurrentPlayer.h"
 
 // Set the frame rate, updates per second and debugPrint per second
 #define FPS 0
@@ -37,6 +38,7 @@ class Engine
         GameMap *map;
         uint16_t currentFps;
         bool toRender = false;
+        CurrentPlayer *player = nullptr;
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include <SDL3/SDL_rect.h>
 
 #include "../Camera/Camera.h"
+#include "../Graphics/TextureManager.h"
 #include "Vector2D.h"
 
 class Collider
@@ -40,7 +41,9 @@ public:
 
     inline void setCoordinates(Vector2D v){ setCoordinates(v.x,v.y); }
 
-    void draw();
+    inline void draw() const {
+        TextureManager::drawRect(box->x, box->y, box->w, box->h, {255, 0, 0, 255});
+    }
 
 private:
     SDL_FRect *box;

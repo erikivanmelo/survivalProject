@@ -14,7 +14,10 @@ class Character: public GameObject
 public:
     Character( const string &textureId, Vector2D position, int width, int height, SDL_RendererFlip flip = SDL_FLIP_NONE ) : 
         GameObject( textureId, position, width, height, flip ),
-        animation( new Animation( AssetsManager::get()->getAnimationSeqMap( textureId ) ) ),
+        animation(new Animation(
+            AssetsManager::get()->getAnimationSeqMap(textureId), 
+            &this->position
+        )),
         rigidBody( new RigidBody() ),
         walkSpeed( 8 ),
         flySpeed( 16 ),
@@ -36,9 +39,10 @@ public:
 
 
     void draw()override{
-        animation->draw( position.x, position.y );
+        animation->draw();
         if( collisionBoxView )
             collider->draw();
+        GameObject::draw();
     }
 
 
@@ -63,10 +67,12 @@ public:
         
         grounded = collisionZone & COLLISION_ZONE_BOTTOM;
 
-        animation->update();
-        GameObject::update( dt );
+        animation->update(dt);
+        GameObject::update(dt);
         if (!moved)
             animation->setCurrentSeq( "default", lookingRight? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL );
+        if (animation->isToRender())
+            toRender = true;
     }
 
     void walk(bool toRight);
@@ -79,9 +85,15 @@ public:
         flyMode = !flyMode;
     }
 
-    void inline toggleCollisionBoxView() {
-        collisionBoxView = !collisionBoxView;
+    void inline setCollisionBoxView(bool val){
+        collisionBoxView = val;
+        toRender = true;
     }
+
+    void inline toggleCollisionBoxView() {
+        setCollisionBoxView(!collisionBoxView);
+    }
+
     void jump(bool impulsing);
     void setFlyMode(bool flyMode);
     void placeBlock(Vector2D position, Tile *tile = nullptr);

@@ -1,3 +1,6 @@
+#ifndef CURRENT_PLAYER_H
+#define CURRENT_PLAYER_H
+
 #include "Player.h"
 class CurrentPlayer : public Player{
 
@@ -27,3 +30,4 @@ private:
     void input();    
     Vector2D mousePosition;
 };
+#endif

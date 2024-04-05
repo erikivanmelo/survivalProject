@@ -31,7 +31,6 @@ SOURCES = \
 	src/Map/MapParser.cpp \
 	src/Map/Chunk.cpp \
 	src/Camera/Camera.cpp \
-	src/Physics/Collider.cpp \
 	src/Physics/CollisionHandler.cpp \
 	src/Assets/AssetsManager.cpp \
 

@@ -4,11 +4,9 @@
 #include "../Timer/Timer.h"
 #include "../Map/MapParser.h"
 #include "../Camera/Camera.h"
-#include "../Characters/Player.h"
 #include "../Graphics/TextureManager.h"
 #include "../Camera/Camera.h"
 #include "../Helper.h"
-#include "../Characters/CurrentPlayer.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_init.h>
@@ -43,9 +41,9 @@ void Engine::init(){
     MapParser::get()->load();
     map = MapParser::get()->getMap("overworld");
    
-    CurrentPlayer::init();
+    player = CurrentPlayer::init();
     Camera::init(
-        CurrentPlayer::get()->getOrigin(), 
+        player->getOrigin(), 
         map->getPixelHeight()
     );
 
@@ -73,7 +71,7 @@ void Engine::debug(){
     #endif
     std::cout << "FPS: " << currentFps << endl;
     std::cout << "Penderized: " << (toRender? "true" : "false") << endl;
-    CurrentPlayer::get()->debug();
+    player->debug();
     Camera::get()->debug();
     Input::get()->debug();
 }
@@ -81,7 +79,7 @@ void Engine::debug(){
 void Engine::update(){
     startInLapse(dt, UPS, Timer::getDeltaTime())
         Input::get()->listen();
-        CurrentPlayer::get()->update(dt);
+        player->update(dt);
         map->update();
         this->debug();
     endInLapse(dt, UPS)
@@ -97,15 +95,15 @@ void Engine::render(){
             frameCount = 0;
         endInLapse(fpsTimer, 1.0)
 
-        toRender = map->isChanged() || 
-            CurrentPlayer::get()->isMoved() || 
+        toRender = map->isToRender() || 
+            player->isToRender() || 
             Camera::get()->isViewBoxChanged();
 
         if (toRender){
             SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
             SDL_RenderClear(TextureManager::renderer);
             map->render();
-            CurrentPlayer::get()->draw();
+            player->draw();
             SDL_RenderPresent(TextureManager::renderer);
 
             Camera::get()->unsetViewBoxChanged();

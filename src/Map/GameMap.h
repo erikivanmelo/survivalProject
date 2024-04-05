@@ -31,7 +31,7 @@ public:
     }
 
     inline void setTile(int x, int y, bool z, Tile tile){
-        changed = true;
+        toRender = true;
         if( !tile ){
             chunks[ x / CHUNK_SQUARE_SIZE ][ y / CHUNK_SQUARE_SIZE ]->setTile( x % CHUNK_SQUARE_SIZE, y % CHUNK_SQUARE_SIZE, z, nullptr);
             return;
@@ -71,8 +71,8 @@ public:
         return tileWidth;
     }
 
-    inline bool isChanged()const{
-        return changed;
+    inline bool isToRender()const{
+        return toRender;
     }
 
     bool areBlockAround(int x, int y, bool z = FOREGROUND, bool inCenterToo = false);
@@ -98,7 +98,7 @@ private:
     const MapSize chunkWidth, chunkHeight;
     const int     pixelWidth, pixelHeight;
     const int     tileWidth,  tileHeight;
-    bool changed;
+    bool toRender;
     Vector2D *focusBlock;
     SDL_Color focusBlockColor;
 

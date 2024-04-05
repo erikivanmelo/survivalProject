@@ -14,7 +14,7 @@ GameMap::GameMap( const MapSize width, const MapSize height ):
     tileWidth(width*CHUNK_SQUARE_SIZE),
     tileHeight(height*CHUNK_SQUARE_SIZE),
     tileset(AssetsManager::get()->getTileset()),
-    changed(false),
+    toRender(false),
     focusBlock(nullptr),
     focusBlockColor({0,0,0,0})
 {
@@ -63,7 +63,7 @@ void GameMap::render(){
         for (y = startY; y < endY; ++y)
             chunks[Helper::wrapToRange(x, chunkWidth)][y]->render();
     drawFocusBlock();
-    changed = false;
+    toRender = false;
 }
 
 void GameMap::displayPositionToMapPosition(Vector2D *position){
@@ -95,9 +95,9 @@ void GameMap::setFocusBlock(Vector2D position, const SDL_Color &color) {
 
     if (focusBlock && lastValue) {
         if (*lastValue != *focusBlock)
-            changed = true;
+            toRender = true;
     } else if(focusBlock){
-        changed = true;
+        toRender = true;
     }
 
     if (lastValue)

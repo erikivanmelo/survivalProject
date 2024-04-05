@@ -40,15 +40,14 @@ void Character::selectBlock(Vector2D position){
 }
 
 bool Character::isInteractionInRange(Vector2D position){
-    GameMap *gameMap = Engine::get()->getMap();
-    int tilesize = TILE_SIZE;
+    const GameMap *gameMap = Engine::get()->getMap();
     int colCount = gameMap->getTileWidth();
     SDL_FRect *box = collider->getCollisionBox();
     
-    const int leftTile    =  box->x / tilesize - interactionRange;
-    const int rightTile   = (box->x + (box->w-1)) / tilesize + interactionRange;
-    const int topTile     =  box->y / tilesize - interactionRange;
-    const int bottomTile  = (box->y + (box->h-1)) / tilesize + interactionRange;
+    const int leftTile    =  box->x / TILE_SIZE - interactionRange;
+    const int rightTile   = (box->x + (box->w-1)) / TILE_SIZE + interactionRange;
+    const int topTile     =  box->y / TILE_SIZE - interactionRange;
+    const int bottomTile  = (box->y + (box->h-1)) / TILE_SIZE + interactionRange;
 
     if(rightTile > colCount && position.x < leftTile ) 
         position.x += colCount;

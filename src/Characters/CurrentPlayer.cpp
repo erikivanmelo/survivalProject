@@ -2,8 +2,6 @@
 
 #include "../Inputs/Input.h"
 #include "../Core/Engine.h"
-#include "../Helper.h"
-#include "Player.h"
 #include <SDL3/SDL_mouse.h>
 
 CurrentPlayer *CurrentPlayer::instance = nullptr;
@@ -61,7 +59,9 @@ void CurrentPlayer::update(float dt) {
     input();
     Player::update(dt);
 
-    if (moved)
+    if (moved){
         Camera::get()->update();
+        toRender = true;
+    }
     mapa->setFocusBlock(mousePosition, isInteractionInRange(mousePosition)? SDL_Color{0, 255, 0,255} : SDL_Color{255, 0, 0,255});
 }

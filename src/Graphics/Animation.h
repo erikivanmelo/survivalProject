@@ -1,14 +1,15 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
+#include "../Object/IObject.h"
+#include "../Physics/Vector2D.h"
+
 #include <SDL3/SDL_render.h>
 #include <iostream>
-using namespace std;
-
 #include <string>
-
 #include <SDL3/SDL.h>
 #include <unordered_map>
+using namespace std;
 
 struct AnimationSeq{
     AnimationSeq(
@@ -70,21 +71,24 @@ private:
 typedef struct AnimationSeq AnimationSeq;
 typedef pair<const string, AnimationSeq* > AnimationSeqPair;
 
-class Animation
+class Animation : public IObject
 {
 public:
-    Animation( AnimationSeqList *list );
+    Animation(AnimationSeqList *list, Vector2D *position);
     ~Animation();
-    void update();
-    void draw(const float x, const float y);
+    void update(float dt) override;
+    void draw() override;
+    void debug() override{};
     void setCurrentSeq( const string &seqId, SDL_RendererFlip flip = SDL_FLIP_NONE, const uint8_t animSpeed = 0);
 
 private:
     SDL_RendererFlip flip;
     AnimationSeqList *seqList;
     AnimationSeq* currentSeq;
+    
     uint8_t forceAnimSpeed;
     uint8_t spriteFrame;
+    Vector2D *position;
 };
 
 #endif // ANIMATION_H

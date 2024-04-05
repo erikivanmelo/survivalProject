@@ -1,7 +1,4 @@
 #include "Player.h"
-#include "../Physics/Collider.h"
-#include <SDL3/SDL_log.h>
-#include <SDL3/SDL_mouse.h>
 
 Player::Player( Vector2D position ) : Character( "player", position, 32, 32 )
 {
