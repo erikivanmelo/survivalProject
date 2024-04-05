@@ -99,7 +99,6 @@ void Engine::render(){
             Camera::get()->isViewBoxChanged();
 
         if (lastChange){
-            printf("update\n");
             SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
             SDL_RenderClear(TextureManager::renderer);
             map->render();
