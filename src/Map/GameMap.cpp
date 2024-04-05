@@ -63,6 +63,7 @@ void GameMap::render(){
         for (y = startY; y < endY; ++y)
             chunks[Helper::wrapToRange(x, chunkWidth)][y]->render();
     drawFocusBlock();
+    changed = false;
 }
 
 void GameMap::displayPositionToMapPosition(Vector2D *position){
@@ -87,18 +88,20 @@ void GameMap::setFocusBlock(Vector2D position, const SDL_Color &color) {
     if (focusBlock)
         lastValue = new Vector2D(*focusBlock);
     focusBlockColor = color;
-    if (!areBlockAround(position.x, position.y, FOREGROUND, true) && !getTile(position.x, position.y, BACKGROUND)) 
-        focusBlock = nullptr;
-    else
-        focusBlock = new Vector2D(snapToGrid(position));
 
+    focusBlock = areBlockAround(position.x, position.y, FOREGROUND, true) || getTile(position.x, position.y, BACKGROUND)?
+        new Vector2D(snapToGrid(position)) :
+        nullptr;
 
     if (focusBlock && lastValue) {
         if (*lastValue != *focusBlock)
             changed = true;
-    } else {
+    } else if(focusBlock){
         changed = true;
     }
+
+    if (lastValue)
+        delete lastValue;
 }
 
 void GameMap::drawFocusBlock() {

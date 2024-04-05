@@ -18,6 +18,12 @@ public:
         return Vector2D( this->x + v2.x, this->y + v2.y );
     }
 
+    Vector2D operator=(const Vector2D& v2){
+        this->x = v2.x;
+        this->y = v2.y;
+        return *this;
+    }
+
     Vector2D operator+=(const Vector2D& v2){
         this->x = this->x + v2.x;
         this->y = this->y + v2.y;

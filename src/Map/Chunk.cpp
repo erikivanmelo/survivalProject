@@ -53,11 +53,11 @@ Tile Chunk::determineRotation(Tile *tile, SDL_RendererFlip *flip)
     *flip = SDL_FLIP_NONE;
     Tile tmp = *tile;
     // Check flags
-    bool flipH = (*tile & TextureManager::TileH);
-    bool flipV = (*tile & TextureManager::TileV);
+    bool flipH = (*tile & TILE_HORIZONTAL);
+    bool flipV = (*tile & TILE_VERTICAL);
 
     // Clear flags
-    tmp &= ~(TextureManager::TileD | TextureManager::TileV | TextureManager::TileH | 0x10000000);
+    tmp &= ~(TILE_DIAGONAL | TILE_VERTICAL | TILE_HORIZONTAL | 0x10000000);
 
     // Determinar las transformaciones
     if (flipV && flipH)

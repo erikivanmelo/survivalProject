@@ -93,16 +93,22 @@ void Engine::render(){
             frameCount = 0;
         endInLapse(fpsTimer, 1.0)
 
-        if (map->isChanged() || player->isMoved() || Camera::get()->isViewBoxChanged()){
+        static bool lastChange = false;
+        bool change = map->isChanged() || 
+            player->isMoved() || 
+            Camera::get()->isViewBoxChanged();
+
+        if (lastChange){
+            printf("update\n");
             SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
             SDL_RenderClear(TextureManager::renderer);
             map->render();
             player->draw();
             SDL_RenderPresent(TextureManager::renderer);
 
-            map->unsetChanged();
             Camera::get()->unsetViewBoxChanged();
         }
+        lastChange = change;
 
     endInLapse(dt,FPS)
 }

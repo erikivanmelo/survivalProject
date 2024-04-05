@@ -4,7 +4,6 @@
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_surface.h>
-#include "../Core/Engine.h"
 #include "../Graphics/TextureManager.h"
 
 AssetsManager* AssetsManager::instance = nullptr;

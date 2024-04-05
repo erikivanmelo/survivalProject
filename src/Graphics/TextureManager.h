@@ -5,12 +5,13 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL.h>
 
+#define TILE_HORIZONTAL 0x80000000
+#define TILE_VERTICAL   0x40000000
+#define TILE_DIAGONAL   0x20000000
+
 class TextureManager{
   public:
     static SDL_Renderer *renderer;
-    static constexpr unsigned int TileH = 0x80000000;
-    static constexpr unsigned int TileV = 0x40000000;
-    static constexpr unsigned int TileD = 0x20000000;
 
     static void inline setTextureDarkness( SDL_Texture *texture, const Uint8 level) {
       SDL_SetTextureColorMod(texture, 255 - level, 255 - level, 255 - level);

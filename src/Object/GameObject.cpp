@@ -3,7 +3,7 @@
 
 void GameObject::update(float dt){
     static const float widthMap = Engine::get()->getMap()->getPixelWidth();
-    if (!(moved = position != lastPosition))
+    if (!(moved = (position != lastPosition)))
         return;
 
     if (position.x > widthMap) 

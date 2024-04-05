@@ -75,10 +75,6 @@ public:
         return changed;
     }
 
-    inline void unsetChanged(){
-        changed = false;
-    }
-
     bool areBlockAround(int x, int y, bool z = FOREGROUND, bool inCenterToo = false);
 
     void displayPositionToMapPosition(Vector2D *position);
