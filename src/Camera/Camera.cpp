@@ -13,6 +13,7 @@ void Camera::setViewBoxSize(float screenWidth, float screenHeight, float screenS
     viewBox.w = roundf(screenWidth/this->screenScale);
     viewBox.h = roundf(screenHeight/this->screenScale);
     viewBoxChanged = true;
+    update();
 }
 
 Camera::Camera(

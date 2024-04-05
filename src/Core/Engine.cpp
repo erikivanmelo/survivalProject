@@ -102,7 +102,7 @@ void Engine::render(){
             player->isMoved() || 
             Camera::get()->isViewBoxChanged();
 
-        //if (toRender){
+        if (toRender){
             SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
             SDL_RenderClear(TextureManager::renderer);
             map->render();
@@ -110,7 +110,7 @@ void Engine::render(){
             SDL_RenderPresent(TextureManager::renderer);
 
             Camera::get()->unsetViewBoxChanged();
-        //}
+        }
         toRender = change;
 
     endInLapse(dt,FPS)
