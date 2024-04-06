@@ -29,14 +29,14 @@ public:
     }
 
     inline bool isCharacterIn(int x, int y, SDL_FRect *playerBox) {
-    x *= tilesize;
-    y *= tilesize;
-    return  (
-                playerBox->x < x + tilesize         &&
-                playerBox->x     + playerBox->w > x &&
-                playerBox->y < y + tilesize         &&
-                playerBox->y     + playerBox->h > y
-            );
+        x *= TILE_SIZE;
+        y *= TILE_SIZE;
+        return  (
+            playerBox->x < x + TILE_SIZE         &&
+            playerBox->x     + playerBox->w > x &&
+            playerBox->y < y + TILE_SIZE         &&
+            playerBox->y     + playerBox->h > y
+        );
     }
 
 private:
@@ -48,7 +48,6 @@ private:
 
     int colCount;
     int rowCount;
-    int tilesize;
 
 
 };

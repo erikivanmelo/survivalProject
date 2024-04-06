@@ -1,6 +1,5 @@
 #include "MapParser.h"
 #include "../Assets/AssetsManager.h"
-#include "../Core/Engine.h"
 #include "Chunk.h"
 #include "GameMap.h"
 #include <SDL3/SDL.h>
@@ -41,10 +40,8 @@ void MapParser::parse(const std::string &id, const std::string &source)
 
     TiXmlElement *root = xml.RootElement();
     int rowCount,colCount;
-    int tilesize = 0;
     root->Attribute("width",&colCount);
     root->Attribute("height",&rowCount);
-    root->Attribute("tilewidth",&tilesize);
 
     for(TiXmlElement* e=root->FirstChildElement(); e != nullptr;e=e->NextSiblingElement()){
         if(e->Value() == std::string("tileset")){
@@ -72,8 +69,10 @@ Tileset *MapParser::parseTileSet(TiXmlElement *xmlTileset)
 
     TiXmlDocument xml;
     xml.LoadFile(source);
-    if(xml.Error())
+    if(xml.Error()){
+        delete tileset;
         throw "Failed to load: " + source;
+    }
 
     for(TiXmlElement* e=xml.RootElement(); e != nullptr;e=e->NextSiblingElement()){
         if(strcmp(e->Value(),"tileset") == 0){

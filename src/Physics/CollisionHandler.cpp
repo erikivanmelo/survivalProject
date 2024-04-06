@@ -13,8 +13,7 @@ CollisionHandler *CollisionHandler::instance = nullptr;
 CollisionHandler::CollisionHandler():
     gameMap(Engine::get()->getMap()),
     colCount(gameMap->getTileWidth()),
-    rowCount(gameMap->getTileHeight()),
-    tilesize(TILE_SIZE)
+    rowCount(gameMap->getTileHeight())
 {}
 
 bool CollisionHandler::checkColission(SDL_FRect a, SDL_FRect b)
@@ -27,10 +26,10 @@ int8_t CollisionHandler::mapCollision(SDL_FRect *a)
 {
     unsigned int x,y;
     int8_t collisionZone = COLLISION_ZONE_NONE;
-    const unsigned int leftTile    = Helper::wrapToRange(a->x / tilesize, colCount);
-    const unsigned int rightTile   = Helper::wrapToRange((a->x + (a->w-1)) / tilesize,colCount);
-    const unsigned int topTile     = std::clamp((int)   a->y            / tilesize, 0, rowCount - 1);
-    const unsigned int bottomTile  = std::clamp((int)  (a->y + (a->h-1)) / tilesize, 0, rowCount - 1);
+    const unsigned int leftTile    = Helper::wrapToRange(a->x / TILE_SIZE, colCount);
+    const unsigned int rightTile   = Helper::wrapToRange((a->x + (a->w-1)) / TILE_SIZE,colCount);
+    const unsigned int topTile     = std::clamp((int)   a->y            / TILE_SIZE, 0, rowCount - 1);
+    const unsigned int bottomTile  = std::clamp((int)  (a->y + (a->h-1)) / TILE_SIZE, 0, rowCount - 1);
     const unsigned int xEnd = rightTile+1;
 
     x = leftTile;
@@ -121,7 +120,7 @@ Vector2D CollisionHandler::getFirstCollision(Vector2D startPosition, Vector2D en
     float distance = difference.length();
     Vector2D rayPosition = startPosition;
     int journey = 0;
-    int step = ( abs(difference.x) > tilesize && abs(difference.y) > tilesize )? tilesize : 1;
+    int step = ( abs(difference.x) > TILE_SIZE && abs(difference.y) > TILE_SIZE )? TILE_SIZE : 1;
 
     if (distance < step)
         return startPosition;
