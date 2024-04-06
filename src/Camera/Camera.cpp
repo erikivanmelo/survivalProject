@@ -35,7 +35,6 @@ Camera::Camera(
 
 void Camera::update()
 {
-    viewBoxChanged = false;
     if( !target )
         return;
     position.x = viewBox.x = target->x - viewBox.w / 2;
