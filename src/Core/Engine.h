@@ -36,7 +36,7 @@ class Engine
         SDL_Window* window;
         static Engine* instance;
         GameMap *map;
-        uint16_t currentFps;
+        uint16_t currentFps, currentUps;
         bool toRender = false;
         CurrentPlayer *player = nullptr;
 };

@@ -15,6 +15,7 @@
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3/SDL_render.h>
+#include <cstdint>
 #include <iostream>
 using namespace std;
 
@@ -70,6 +71,7 @@ void Engine::debug(){
         std::cout << endl;
     #endif
     std::cout << "FPS: " << currentFps << endl;
+    std::cout << "UPS: " << currentUps << endl;
     std::cout << "Penderized: " << (toRender? "true" : "false") << endl;
     player->debug();
     Camera::get()->debug();
@@ -77,7 +79,13 @@ void Engine::debug(){
 }
 
 void Engine::update(){
+    static uint16_t updateCount = 0;
     startInLapse(dt, UPS, Timer::getDeltaTime())
+        updateCount++;
+        startInLapse(upsTimer, 1.0, dt)
+            currentUps = static_cast<double>(updateCount) / upsTimer;
+            updateCount = 0;
+        endInLapse(upsTimer, 1.0)
         Input::get()->listen();
         player->update(dt);
         map->update();
@@ -110,7 +118,6 @@ void Engine::render(){
         SDL_RenderPresent(TextureManager::renderer);
 
         Camera::get()->unsetViewBoxChanged();
-        cout << "render";
 
     endInLapse(dt,FPS)
 }
