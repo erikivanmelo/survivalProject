@@ -81,6 +81,9 @@ void Engine::update(){
         Input::get()->listen();
         player->update(dt);
         map->update();
+        toRender = map->isToRender() || 
+            player->isToRender() || 
+            Camera::get()->isViewBoxChanged();
         this->debug();
     endInLapse(dt, UPS)
 }
@@ -95,10 +98,6 @@ void Engine::render(){
             frameCount = 0;
         endInLapse(fpsTimer, 1.0)
 
-        toRender = map->isToRender() || 
-            player->isToRender() || 
-            Camera::get()->isViewBoxChanged();
-
         if (toRender){
             SDL_SetRenderDrawColor(TextureManager::renderer, 124, 218, 254, 255);
             SDL_RenderClear(TextureManager::renderer);
@@ -107,6 +106,7 @@ void Engine::render(){
             SDL_RenderPresent(TextureManager::renderer);
 
             Camera::get()->unsetViewBoxChanged();
+            cout << "render";
         }
 
     endInLapse(dt,FPS)
